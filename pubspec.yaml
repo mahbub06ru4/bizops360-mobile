@@ -1,0 +1,37 @@
+name: bizops360_mobile
+description: "BizOps 360 field operations app for agency staff and managers."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State, routing and DI.
+  get: ^4.7.3
+
+  # Networking.
+  dio: ^5.11.1
+
+  # Storage: token in the keychain/keystore, everything else in a fast KV box.
+  flutter_secure_storage: ^11.0.0
+  get_storage: ^2.1.1
+
+  # Presentation.
+  google_fonts: ^8.2.1
+  intl: ^0.20.3
+
+  # Value equality for entities.
+  equatable: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
