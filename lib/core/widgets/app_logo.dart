@@ -12,10 +12,17 @@ class AppLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return SizedBox.square(
-      dimension: size,
-      child: CustomPaint(
-        painter: _LogoPainter(border: colors.ink, accent: colors.signal),
+    // Align keeps the paint box at [size] even inside a stretch parent (which
+    // would otherwise scale the drawing to the full parent width).
+    return Align(
+      alignment: Alignment.centerLeft,
+      heightFactor: 1,
+      child: SizedBox.square(
+        dimension: size,
+        child: CustomPaint(
+          size: Size.square(size),
+          painter: _LogoPainter(border: colors.ink, accent: colors.signal),
+        ),
       ),
     );
   }
