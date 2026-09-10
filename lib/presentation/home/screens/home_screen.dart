@@ -102,6 +102,7 @@ class HomeScreen extends StatelessWidget {
             const Can(
               Perm.visaView,
               feature: Feature.travelVisa,
+              travelOnly: true,
               child: VisaSummarySection(),
             ),
             Can(
