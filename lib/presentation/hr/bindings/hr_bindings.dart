@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../../data/repositories/fake_attendance_repository.dart';
+import '../../../data/repositories/fake_expense_repository.dart';
 import '../../../data/repositories/fake_leave_repository.dart';
 import '../../../domain/repositories/attendance_repository.dart';
+import '../../../domain/repositories/expense_repository.dart';
 import '../../../domain/repositories/leave_repository.dart';
+import '../../expenses/controllers/expense_approvals_controller.dart';
 import '../controllers/approvals_controller.dart';
 import '../controllers/attendance_controller.dart';
 import '../controllers/leave_controller.dart';
@@ -42,6 +45,12 @@ class ApprovalsBinding extends Bindings {
   @override
   void dependencies() {
     _ensureLeaveRepo();
+    if (!Get.isRegistered<ExpenseRepository>()) {
+      Get.put<ExpenseRepository>(FakeExpenseRepository(), permanent: true);
+    }
     Get.lazyPut<ApprovalsController>(() => ApprovalsController(Get.find()));
+    Get.lazyPut<ExpenseApprovalsController>(
+      () => ExpenseApprovalsController(Get.find()),
+    );
   }
 }

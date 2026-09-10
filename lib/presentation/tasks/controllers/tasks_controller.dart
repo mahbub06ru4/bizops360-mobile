@@ -42,6 +42,24 @@ class TasksController extends GetxController {
 
   int countOf(TaskBucket b) => bucket(b).length;
 
+  Future<bool> create({
+    required String title,
+    required TaskPriority priority,
+    DateTime? dueDate,
+    String? assigneeName,
+  }) async {
+    final result = await _repo.create(
+      title: title,
+      priority: priority,
+      dueDate: dueDate,
+      assigneeName: assigneeName,
+    );
+    return result.fold((_) {
+      load();
+      return true;
+    }, (_) => false);
+  }
+
   Future<void> setStatus(String id, TaskStatus status) async {
     final result = await _repo.updateStatus(id, status);
     final current = state.value.valueOrNull;

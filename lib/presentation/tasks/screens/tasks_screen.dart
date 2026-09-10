@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/localization/translation_keys.dart';
+import '../../../core/permissions/can.dart';
+import '../../../core/permissions/permissions.dart';
 import '../../../core/routing/app_routes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../domain/entities/task_item.dart';
 import '../controllers/tasks_controller.dart';
+import '../widgets/task_create_sheet.dart';
 import '../widgets/task_tile.dart';
 
 /// My tasks, bucketed Today / Overdue / Upcoming.
@@ -24,6 +27,18 @@ class TasksScreen extends GetView<TasksController> {
     return DefaultTabController(
       length: _buckets.length,
       child: Scaffold(
+        floatingActionButton: Can(
+          Perm.taskCreate,
+          child: FloatingActionButton(
+            onPressed: () async {
+              final created = await showTaskCreateSheet(controller);
+              if (created) {
+                AppSnackbar.show(Tr.taskCreated.tr, tone: FeedbackTone.success);
+              }
+            },
+            child: const Icon(Icons.add),
+          ),
+        ),
         appBar: AppBar(
           title: Text(Tr.navTasks.tr),
           bottom: TabBar(

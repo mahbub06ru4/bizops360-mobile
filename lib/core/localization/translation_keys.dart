@@ -207,6 +207,12 @@ abstract final class Tr {
   static const taskDue = 'tasks.due';
   static const taskMarkDone = 'tasks.mark_done';
   static const taskReopen = 'tasks.reopen';
+  static const taskNew = 'tasks.new';
+  static const taskTitle = 'tasks.title_field';
+  static const taskPriority = 'tasks.priority';
+  static const taskAssignee = 'tasks.assignee';
+  static const taskDueDate = 'tasks.due_date';
+  static const taskCreated = 'tasks.created';
   static const viewAll = 'common.view_all';
   static const seeAll = 'common.see_all';
 
