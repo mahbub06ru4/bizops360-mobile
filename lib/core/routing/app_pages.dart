@@ -3,6 +3,12 @@ import 'package:get/get.dart';
 import '../../presentation/auth/bindings/sign_in_binding.dart';
 import '../../presentation/auth/screens/sign_in_screen.dart';
 import '../../presentation/common/coming_soon_screen.dart';
+import '../../presentation/crm/bindings/crm_bindings.dart';
+import '../../presentation/crm/screens/customer_detail_screen.dart';
+import '../../presentation/crm/screens/follow_ups_screen.dart';
+import '../../presentation/expenses/bindings/expenses_binding.dart';
+import '../../presentation/expenses/screens/expense_new_screen.dart';
+import '../../presentation/expenses/screens/expenses_screen.dart';
 import '../../presentation/hr/bindings/hr_bindings.dart';
 import '../../presentation/hr/screens/approvals_screen.dart';
 import '../../presentation/hr/screens/attendance_screen.dart';
@@ -24,6 +30,17 @@ import 'route_guard.dart';
 abstract final class AppPages {
   static const initial = Routes.splash;
 
+  static GetPage<dynamic> _guarded(
+    String name,
+    GetPageBuilder page, {
+    Bindings? binding,
+  }) => GetPage(
+    name: name,
+    page: page,
+    binding: binding,
+    middlewares: [AuthGuard()],
+  );
+
   static final routes = <GetPage<dynamic>>[
     GetPage(
       name: Routes.splash,
@@ -36,62 +53,49 @@ abstract final class AppPages {
       binding: SignInBinding(),
       middlewares: [AuthGuard()],
     ),
-    GetPage(
-      name: Routes.shell,
-      page: () => const ShellScreen(),
-      binding: ShellBinding(),
-      middlewares: [AuthGuard()],
-    ),
-    GetPage(
-      name: Routes.notifications,
-      page: () => const NotificationsScreen(),
+    _guarded(Routes.shell, () => const ShellScreen(), binding: ShellBinding()),
+    _guarded(
+      Routes.notifications,
+      () => const NotificationsScreen(),
       binding: NotificationsBinding(),
-      middlewares: [AuthGuard()],
     ),
-    GetPage(
-      name: Routes.taskDetail,
-      page: () => const TaskDetailScreen(),
+    _guarded(
+      Routes.taskDetail,
+      () => const TaskDetailScreen(),
       binding: TaskDetailBinding(),
-      middlewares: [AuthGuard()],
     ),
-    GetPage(
-      name: Routes.attendance,
-      page: () => const AttendanceScreen(),
+    _guarded(
+      Routes.attendance,
+      () => const AttendanceScreen(),
       binding: AttendanceBinding(),
-      middlewares: [AuthGuard()],
     ),
-    GetPage(
-      name: Routes.leave,
-      page: () => const LeaveScreen(),
-      binding: LeaveBinding(),
-      middlewares: [AuthGuard()],
-    ),
-    GetPage(
-      // No binding — reuses the LeaveController from the LeaveScreen beneath it.
-      name: Routes.leaveRequest,
-      page: () => const LeaveRequestScreen(),
-      middlewares: [AuthGuard()],
-    ),
-    GetPage(
-      name: Routes.approvals,
-      page: () => const ApprovalsScreen(),
+    _guarded(Routes.leave, () => const LeaveScreen(), binding: LeaveBinding()),
+    // No binding — reuses the LeaveController from the LeaveScreen beneath it.
+    _guarded(Routes.leaveRequest, () => const LeaveRequestScreen()),
+    _guarded(
+      Routes.approvals,
+      () => const ApprovalsScreen(),
       binding: ApprovalsBinding(),
-      middlewares: [AuthGuard()],
     ),
-    GetPage(
-      name: Routes.settings,
-      page: () => const SettingsScreen(),
-      middlewares: [AuthGuard()],
+    _guarded(
+      Routes.customerDetail,
+      () => const CustomerDetailScreen(),
+      binding: CustomerDetailBinding(),
     ),
-    GetPage(
-      name: Routes.profile,
-      page: () => const ProfileScreen(),
-      middlewares: [AuthGuard()],
+    _guarded(
+      Routes.followUps,
+      () => const FollowUpsScreen(),
+      binding: FollowUpsBinding(),
     ),
-    GetPage(
-      name: Routes.comingSoon,
-      page: () => const ComingSoonScreen(),
-      middlewares: [AuthGuard()],
+    _guarded(
+      Routes.expenses,
+      () => const ExpensesScreen(),
+      binding: ExpensesBinding(),
     ),
+    // No binding — reuses the ExpensesController from the ExpensesScreen beneath.
+    _guarded(Routes.expenseNew, () => const ExpenseNewScreen()),
+    _guarded(Routes.settings, () => const SettingsScreen()),
+    _guarded(Routes.profile, () => const ProfileScreen()),
+    _guarded(Routes.comingSoon, () => const ComingSoonScreen()),
   ];
 }

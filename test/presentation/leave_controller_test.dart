@@ -12,8 +12,8 @@ void main() {
 
     final ok = await controller.submit(
       type: LeaveType.casual,
-      from: DateTime(2026, 10, 1),
-      to: DateTime(2026, 10, 2),
+      from: DateTime(2026, 10, 3),
+      to: DateTime(2026, 10, 5),
       reason: 'Trip',
     );
     await Future<void>.delayed(const Duration(milliseconds: 900));

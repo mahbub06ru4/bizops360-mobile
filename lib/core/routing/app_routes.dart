@@ -9,6 +9,10 @@ abstract final class Routes {
   static const leave = '/leave';
   static const leaveRequest = '/leave/request';
   static const approvals = '/approvals';
+  static const customerDetail = '/customer';
+  static const followUps = '/follow-ups';
+  static const expenses = '/expenses';
+  static const expenseNew = '/expenses/new';
 
   // Workspace destinations
   static const settings = '/settings';
