@@ -228,16 +228,34 @@ Bring the scaffold up to the target architecture.
    Backend `stage` maps to `VisaStage`; `cancelled` collapses onto `rejected`.
    `toggleDoc` resolves the requirement id by name (re-fetch → PUT → re-fetch).
 
-**API-integration pattern (M2–M4 remaining modules follow this):**
-`lib/core/network/api_envelope.dart` unwraps `{data:[…]}` / `{data:{…}}`;
-`lib/data/repositories/remote_guard.dart` `guardRequest()` maps `DioException` →
-`Failure`; a feature `*_bindings.dart` builds `XRepositoryImpl(XRemoteDataSource
-(Get.find<ApiClient>()))` when `!Env.useFakeData`, else the fake. `ApiClient` is
-already registered permanent in `AppBinding` when `!useFakeData`. Live check:
-`flutter test --tags integration --run-skipped test/data/travel_repository_live_test.dart`
+**API-integration pattern:** `core/network/api_envelope.dart` unwraps
+`{data:[…]}` / `{data:{…}}`; `data/repositories/remote_guard.dart`
+`guardRequest()` maps `DioException` → `Failure`; `data/repositories/
+repo_registry.dart` `registerRepo<T>(real, fake)` picks impl vs fake on
+`Env.useFakeData` (fed the permanent `ApiClient`). Live checks:
+`flutter test --tags integration --run-skipped test/data/*_live_test.dart`
 (needs `bizops360-api` up; logs in as `manager@wanderlust.test`).
-Still on fakes: notifications, tasks, CRM/customers, HR (attendance/leave),
-expenses, documents, bookings, reports/overview.
+
+**Module API status (2026-09-10):**
+
+| Module | Endpoints | State |
+|---|---|---|
+| Auth | login (+ `auth/me` hydrate), logout | ✅ live, verified on device |
+| Travellers | `GET/POST /travellers`, `/{id}` | ✅ live + create |
+| Visa | `GET /visa-applications` (+/{id}), `PUT /visa-requirements/{id}`, submit/processing/decision | ✅ live, mutations verified |
+| Notifications | `GET /notifications`, `PATCH …/read`, `POST …/read-all` | ✅ live |
+| Tasks | `GET/POST /tasks`, `PUT /tasks/{id}/status` | ✅ live, create+status verified |
+| CRM | `GET /customers` (+/{id}, +/history), `GET /follow-ups`, `POST …/complete` | ✅ live; customer stage is read-only (`moveStage` fails closed — pipeline lives on the lead) |
+| Bookings | `GET/POST /bookings`, `POST …/issue|cancel` | ✅ live; `departures` filtered client-side; `type` folds 8→3 kinds |
+| Reports | composes crm/finance/travel overview + finance/monthly + customer-dues | ✅ live; travel part optional for non-travel tenants |
+| Attendance | `GET /attendance`, `POST /attendance/check-in|check-out` | ⚠️ wired — needs the account linked to an employee (owner/manager demo users aren't) |
+| Leave | `GET /leave-balances`, `/leave-requests`, `POST` + approve/reject | ⚠️ wired — needs employee link; `submit` resolves `leave_type_id` by code, 422s until leave types are seeded |
+| Expenses | `GET/POST /expenses` | ⚠️ list+submit live; **no server-side approval** → `pendingApprovals` empty, `decide` unavailable |
+| Documents | `GET /employee-documents` | ⚠️ wired (empty seed); signed `download_url` not surfaced in UI |
+
+Backend follow-ups that would close the ⚠️ items: seed leave types + link
+`manager`/`owner` demo users to employee records; add an expense
+approval state + endpoints; seed a few tasks / notifications.
 
 **Auth hydration (2026-09-10):** `POST auth/login` returns `roles` but **not
 `permissions`** — `AuthRepositoryImpl.signIn` now chains `auth/me` after storing
