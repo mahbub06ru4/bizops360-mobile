@@ -196,15 +196,16 @@ Bring the scaffold up to the target architecture.
    categories, expiry flags, upload / download via signed URLs. *(the one M2
    slice still on the placeholder route)*
 
-### M3 — Common business features
-1. **CRM / customers** (`presentation/crm/`) — pipeline (stage chips → filtered
-   lead cards), lead / customer detail + history, contacts, activities, notes.
-   In **More** unless a travel tenant promotes it. Backend: `app/Modules/CRM`.
-2. **Follow-ups** — Today / Overdue / Upcoming with an outcome sheet, quick-add.
-   Also feeds a Home dashboard section.
-3. **Expenses** (`presentation/expenses/`) — submit with a receipt photo
-   (category chips, amount in mono, date, note); my submitted expenses + status;
-   manager approve / reject. Backend: `app/Modules/Finance` — Expense.
+### M3 — Common business features ✅ (static)
+1. **CRM / customers** — ✅ `CustomersScreen` (stage chips + search),
+   `CustomerDetailScreen` (call/message, stage dropdown, activity timeline).
+   Ahead: quick-add customer, contacts. Backend: `app/Modules/CRM`.
+2. **Follow-ups** — ✅ `FollowUpsScreen` (Today/Overdue/Upcoming/Done tabs,
+   `AppBottomSheet` outcome logger). Feeds the Home follow-ups section.
+   Ahead: quick-add.
+3. **Expenses** — ✅ `ExpensesScreen` (list + pending total) + `ExpenseNewScreen`
+   (category chips, amount, date, receipt toggle — real photo picker later).
+   Ahead: manager approve / reject. Backend: `app/Modules/Finance`.
 
 ### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`)
 1. **Travel customers & passengers** — search, profile, passenger info, travel
