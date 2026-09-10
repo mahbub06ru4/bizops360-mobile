@@ -184,15 +184,17 @@ Bring the scaffold up to the target architecture.
    checklist, comments thread + input, mark done / reopen). Subtasks + comments
    are **static sample** (`// TODO(api)`). Still ahead: manager assign / reassign
    / create, real attachments. Backend: `app/Modules/Operations`.
-7. **Attendance + Leave** (`presentation/attendance`, `presentation/leave`) —
-   check-in / check-out with geolocation (`geolocator`), optional selfie
-   (`image_picker`), today's status, week bars, history. **Offline queue**:
-   persist unsent check-ins in `KvStore`/Hive, flush on connectivity
-   (`connectivity_plus`), idempotency key per item. Leave: request form, balance,
-   my requests + status, holiday calendar; manager approve / reject with a note.
-   Backend: `app/Modules/HR`.
+7. **Attendance + Leave** (`presentation/hr/`) — ✅ Attendance punch card
+   (in/out, worked time) + history list; ✅ Leave (balance cards, my requests,
+   request form with type chips + range picker + reason); ✅ Approvals screen
+   (approve / reject). Routes wired into Workspace. Fakes seeded.
+   **Still ahead** (real-data concerns): geolocation (`geolocator`) + optional
+   selfie (`image_picker`) on check-in, **offline queue** (persist unsent
+   check-ins in `KvStore`/Hive, flush on `connectivity_plus`, idempotency key),
+   holiday calendar. Backend: `app/Modules/HR`.
 8. **Documents** (`presentation/documents/`) — list per employee/customer,
-   categories, expiry flags, upload / download via signed URLs.
+   categories, expiry flags, upload / download via signed URLs. *(the one M2
+   slice still on the placeholder route)*
 
 ### M3 — Common business features
 1. **CRM / customers** (`presentation/crm/`) — pipeline (stage chips → filtered
