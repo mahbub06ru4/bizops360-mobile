@@ -192,9 +192,9 @@ Bring the scaffold up to the target architecture.
    selfie (`image_picker`) on check-in, **offline queue** (persist unsent
    check-ins in `KvStore`/Hive, flush on `connectivity_plus`, idempotency key),
    holiday calendar. Backend: `app/Modules/HR`.
-8. **Documents** (`presentation/documents/`) — list per employee/customer,
-   categories, expiry flags, upload / download via signed URLs. *(the one M2
-   slice still on the placeholder route)*
+8. **Documents** — ✅ `DocumentsScreen` (filter chips: Expiring + categories;
+   rows with owner / date / size, expiry chip). Upload / signed-URL download
+   still ahead. `FakeDocumentRepository` seeded.
 
 ### M3 — Common business features ✅ (static)
 1. **CRM / customers** — ✅ `CustomersScreen` (stage chips + search),
@@ -205,24 +205,37 @@ Bring the scaffold up to the target architecture.
    Ahead: quick-add.
 3. **Expenses** — ✅ `ExpensesScreen` (list + pending total) + `ExpenseNewScreen`
    (category chips, amount, date, receipt toggle — real photo picker later).
-   Ahead: manager approve / reject. Backend: `app/Modules/Finance`.
+   ✅ manager approve / reject (Approvals screen, Expenses tab).
+   Backend: `app/Modules/Finance`.
+3b. **Manager task actions** — ✅ `TasksScreen` FAB (`Can(task.create)`) →
+   task_create_sheet (title, priority, assignee, due). Reassign still ahead.
 
-### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`)
+### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`) ✅ (static)
+1. **Travellers & passenger info** — ✅ `TravellersScreen` (search by name /
+   passport, expiry warnings), `TravellerDetailScreen` (passport card + expiry
+   chip, travel-history timeline). `FakeTravellerRepository` seeded.
+2. **Passport** — ✅ folded into the traveller detail (number, expiry, DOB,
+   expired / expiring-soon chip). Deadline reminders still ahead.
 3. **Visa applications** — ✅ `VisaQueueScreen` (stage filter chips, doc-progress
-   cards), `VisaDetailScreen` (doc checklist whose completion **gates submit**,
-   stage-aware action bar: submit → processing → approve/reject, terminal
-   decision state). `FakeVisaRepository` seeded.
-1. **Travel customers & passengers** — search, profile, passenger info, travel
-   history. *(next)*
-2. **Passport** — passport records, expiry tracking. *(next)*
-4. **Visa documents & deadlines** — pending-documents list + deadline reminders;
-   `VisaSummarySection` on Home already shows the pipeline counts (static).
-5. **Travel operations** — bookings (list, quick create, PNR / segments / hotel /
-   itinerary, issue / cancel), departures board, ticket tasks. *(next)*
+   cards), `VisaDetailScreen` (doc checklist gates **submit**, stage-aware
+   action bar: submit → processing → approve/reject, terminal decision state).
+4. **Visa documents & deadlines** — `VisaSummarySection` on Home shows the
+   pipeline counts (static). A dedicated pending-docs list is still ahead.
+5. **Travel operations** — ✅ `BookingsScreen` (status filter, quick-create
+   sheet), `BookingDetailScreen` (PNR mono, flight segments, hotel, itinerary,
+   issue / cancel), `DeparturesScreen` (board grouped by day).
+   `FakeBookingRepository` seeded.
 6. **Travel dashboard sections** — `VisaSummarySection` done; follow-up /
-   ticket-task / KPI sections still to register.
-   Backend: `app/Modules/Industry/Travel` (routes are `industry:travel` gated —
-   a non-travel token gets 403, matching the app-side gate).
+   ticket-task sections still to register on Home.
+   Backend: `app/Modules/Industry/Travel` (routes `industry:travel` gated).
+
+### M7 — Manager dashboards ✅ (static)
+- ✅ `ReportsScreen` (`presentation/reports/`) — KPI tile grid (revenue,
+  pipeline, outstanding, dues, converted, visa counts) + a hand-rolled bar
+  chart (no chart package). `FakeReportRepository`. Reached from Workspace →
+  Reports (`Can(reports.view, feature: reports)`).
+- Ahead: money actions (create invoice from a booking, record a payment),
+  drill-through from a tile.
 
 ### M5 — Role / permission UX
 - Validate the real Travel Agency roles (owner / manager / agent / visa officer /
