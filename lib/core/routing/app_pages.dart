@@ -1,5 +1,12 @@
 import 'package:get/get.dart';
 
+import '../../modules/travel/bookings/bindings/bookings_bindings.dart';
+import '../../modules/travel/bookings/screens/booking_detail_screen.dart';
+import '../../modules/travel/bookings/screens/bookings_screen.dart';
+import '../../modules/travel/bookings/screens/departures_screen.dart';
+import '../../modules/travel/travellers/bindings/travellers_bindings.dart';
+import '../../modules/travel/travellers/screens/traveller_detail_screen.dart';
+import '../../modules/travel/travellers/screens/travellers_screen.dart';
 import '../../modules/travel/visa/bindings/visa_bindings.dart';
 import '../../modules/travel/visa/screens/visa_detail_screen.dart';
 import '../../presentation/auth/bindings/sign_in_binding.dart';
@@ -8,6 +15,8 @@ import '../../presentation/common/coming_soon_screen.dart';
 import '../../presentation/crm/bindings/crm_bindings.dart';
 import '../../presentation/crm/screens/customer_detail_screen.dart';
 import '../../presentation/crm/screens/follow_ups_screen.dart';
+import '../../presentation/documents/bindings/documents_binding.dart';
+import '../../presentation/documents/screens/documents_screen.dart';
 import '../../presentation/expenses/bindings/expenses_binding.dart';
 import '../../presentation/expenses/screens/expense_new_screen.dart';
 import '../../presentation/expenses/screens/expenses_screen.dart';
@@ -19,6 +28,8 @@ import '../../presentation/hr/screens/leave_screen.dart';
 import '../../presentation/notifications/bindings/notifications_binding.dart';
 import '../../presentation/notifications/screens/notifications_screen.dart';
 import '../../presentation/profile/screens/profile_screen.dart';
+import '../../presentation/reports/bindings/reports_binding.dart';
+import '../../presentation/reports/screens/reports_screen.dart';
 import '../../presentation/settings/screens/settings_screen.dart';
 import '../../presentation/shell/bindings/shell_binding.dart';
 import '../../presentation/shell/screens/shell_screen.dart';
@@ -100,6 +111,41 @@ abstract final class AppPages {
       Routes.visaDetail,
       () => const VisaDetailScreen(),
       binding: VisaDetailBinding(),
+    ),
+    _guarded(
+      Routes.documents,
+      () => const DocumentsScreen(),
+      binding: DocumentsBinding(),
+    ),
+    _guarded(
+      Routes.travellers,
+      () => const TravellersScreen(),
+      binding: TravellersBinding(),
+    ),
+    _guarded(
+      Routes.travellerDetail,
+      () => const TravellerDetailScreen(),
+      binding: TravellerDetailBinding(),
+    ),
+    _guarded(
+      Routes.bookings,
+      () => const BookingsScreen(),
+      binding: BookingsBinding(),
+    ),
+    _guarded(
+      Routes.bookingDetail,
+      () => const BookingDetailScreen(),
+      binding: BookingDetailBinding(),
+    ),
+    _guarded(
+      Routes.departures,
+      () => const DeparturesScreen(),
+      binding: DeparturesBinding(),
+    ),
+    _guarded(
+      Routes.reports,
+      () => const ReportsScreen(),
+      binding: ReportsBinding(),
     ),
     _guarded(Routes.settings, () => const SettingsScreen()),
     _guarded(Routes.profile, () => const ProfileScreen()),

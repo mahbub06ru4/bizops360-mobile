@@ -8,4 +8,12 @@ abstract interface class TaskRepository {
   Future<Result<TaskItem>> byId(String id);
 
   Future<Result<TaskItem>> updateStatus(String id, TaskStatus status);
+
+  /// Manager action — create and (optionally) assign a task.
+  Future<Result<TaskItem>> create({
+    required String title,
+    required TaskPriority priority,
+    DateTime? dueDate,
+    String? assigneeName,
+  });
 }

@@ -82,9 +82,30 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.folder_outlined,
               Tr.wsDocuments.tr,
-              () => _soon(Tr.wsDocuments.tr),
+              () => Get.toNamed<void>(Routes.documents),
               permission: Perm.documentView,
               feature: Feature.documents,
+            ),
+          ]),
+
+          _Group(Tr.wsSectionTravel.tr, [
+            _Row(
+              Icons.groups_2_outlined,
+              Tr.wsTravellers.tr,
+              () => Get.toNamed<void>(Routes.travellers),
+              permission: Perm.travellerView,
+            ),
+            _Row(
+              Icons.flight_outlined,
+              Tr.wsBookings.tr,
+              () => Get.toNamed<void>(Routes.bookings),
+              permission: Perm.bookingView,
+            ),
+            _Row(
+              Icons.flight_takeoff_outlined,
+              Tr.wsDepartures.tr,
+              () => Get.toNamed<void>(Routes.departures),
+              permission: Perm.bookingView,
             ),
           ]),
 
@@ -105,7 +126,7 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.insights_outlined,
               Tr.wsReports.tr,
-              () => _soon(Tr.wsReports.tr),
+              () => Get.toNamed<void>(Routes.reports),
               permission: Perm.reportsView,
               feature: Feature.reports,
             ),

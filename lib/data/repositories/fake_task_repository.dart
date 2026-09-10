@@ -91,4 +91,25 @@ class FakeTaskRepository implements TaskRepository {
       result == null ? const Result.err(NotFoundFailure()) : Result.ok(result),
     );
   }
+
+  var _nextId = 90;
+
+  @override
+  Future<Result<TaskItem>> create({
+    required String title,
+    required TaskPriority priority,
+    DateTime? dueDate,
+    String? assigneeName,
+  }) {
+    final task = TaskItem(
+      id: 't${_nextId++}',
+      title: title,
+      status: TaskStatus.open,
+      priority: priority,
+      dueDate: dueDate,
+      assigneeName: assigneeName ?? 'You',
+    );
+    _items = [task, ..._items];
+    return _delayed(Result.ok(task));
+  }
 }

@@ -13,6 +13,7 @@ class Expense extends Equatable {
     required this.status,
     this.note,
     this.hasReceipt = false,
+    this.submittedBy,
   });
 
   final String id;
@@ -25,6 +26,20 @@ class Expense extends Equatable {
   final String? note;
   final bool hasReceipt;
 
+  /// Set on rows a manager sees; null for the user's own list.
+  final String? submittedBy;
+
+  Expense copyWith({ExpenseStatus? status}) => Expense(
+    id: id,
+    category: category,
+    amount: amount,
+    date: date,
+    status: status ?? this.status,
+    note: note,
+    hasReceipt: hasReceipt,
+    submittedBy: submittedBy,
+  );
+
   @override
   List<Object?> get props => [
     id,
@@ -34,5 +49,6 @@ class Expense extends Equatable {
     status,
     note,
     hasReceipt,
+    submittedBy,
   ];
 }
