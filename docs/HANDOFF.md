@@ -157,33 +157,44 @@ Bring the scaffold up to the target architecture.
 4. **Sessions** — list active devices, revoke (`/auth/sessions`).
 
 ### M2 — Core workspace
-1. **Permission-driven shell** — rebuild `application/navigation/ShellController`
-   to emit `Home | Customers | Visa | Tasks | More` for a travel tenant,
-   filtered by permissions + enabled features; **More / Workspace** hosts the
-   role-aware common capabilities. Retire the fixed Desk/CRM/Insights tabs.
-   New `Tr` keys: `nav.customers`, `nav.visa`, `nav.workspace`; deprecate
-   `nav.desk` / `nav.crm` / `nav.insights` / `nav.team` from the bar.
-2. **Travel Home dashboard shell** — `presentation/home/`: a section registry
-   over reusable `DashboardSection` widgets. Ships with generic sections
-   (my tasks, notifications, quick actions); travel sections land in M4.
-3. **Notifications** (`presentation/notifications/`) — list
-   (`GET /api/v1/notifications`), mark read, grouped Today / Earlier, unread
-   badge on the app bar, deep-link routing stub.
-4. **Profile & Settings** (`presentation/profile`, `presentation/settings`) —
-   profile view/edit, theme mode (Light/Dark/System), language, sign-out,
-   app-lock placeholder.
-5. **Tasks** (`presentation/tasks/`) — My tasks (Today / Overdue / Upcoming),
-   detail (one-tap status, subtasks + progress, comments thread, attachments).
-   Manager: assign / reassign / create. Backend: `app/Modules/Operations`.
-6. **Attendance + Leave** (`presentation/attendance`, `presentation/leave`) —
-   check-in / check-out with geolocation (`geolocator`), optional selfie
-   (`image_picker`), today's status, week bars, history. **Offline queue**:
-   persist unsent check-ins in `KvStore`/Hive, flush on connectivity
-   (`connectivity_plus`), idempotency key per item. Leave: request form, balance,
-   my requests + status, holiday calendar; manager approve / reject with a note.
-   Backend: `app/Modules/HR`.
-7. **Documents** (`presentation/documents/`) — list per employee/customer,
-   categories, expiry flags, upload / download via signed URLs.
+1. **Permission-driven shell** — ✅ `shellTabsFor(PermissionResolver)` (pure,
+   tested) emits `Home | Customers | Visa | Tasks | More`, gated by
+   permission + enabled feature; `ShellScreen` maps `ShellTabId` → screen.
+   Old Desk/CRM/Insights/Team tabs retired. `nav.*` keys updated (en + bn).
+2. **Travel Home dashboard** — ✅ `presentation/home/`: greeting app bar +
+   notification badge, composed `DashboardSection`s — `QuickActionsSection`
+   (self-gating), `AgendaSection` (follow-ups, my tasks), and
+   `modules/travel/dashboard/VisaSummarySection` (travel-gated). All content is
+   **static sample data** (`// TODO(M3/M4)`) until the repos land. Pull-to-refresh
+   wired.
+3. **Workspace ("More") + Settings** — ✅ `presentation/workspace/`:
+   role-aware grouped list (`Can`-gated rows) → Profile, Attendance, Leave,
+   Expenses, Documents, Team, CRM, Reports, Approvals, Settings, Help. Routes:
+   `/settings` (real: theme mode + language + sign-out), `/profile` (identity +
+   roles), `/coming-soon` (generic placeholder, title via `Get.arguments`).
+   `AuthGuard` now covers every route.
+4. **Notifications** (`presentation/notifications/`) — ✅ grouped Today / Earlier
+   list, unread emphasis + dot, mark-all-read, tap → markRead + optional route,
+   pull-to-refresh. `FakeNotificationRepository` seeded. Home bell navigates
+   here (badge count still static — wire to a real unread count later).
+5. **Profile edit / app-lock** — profile is read-only for now; edit + biometric
+   app-lock (`local_auth`) land with M6 hardening.
+6. **Tasks** (`presentation/tasks/`) — ✅ list (Today / Overdue / Upcoming tabs
+   with counts, `TaskTile`), ✅ detail (status chips, subtask progress bar +
+   checklist, comments thread + input, mark done / reopen). Subtasks + comments
+   are **static sample** (`// TODO(api)`). Still ahead: manager assign / reassign
+   / create, real attachments. Backend: `app/Modules/Operations`.
+7. **Attendance + Leave** (`presentation/hr/`) — ✅ Attendance punch card
+   (in/out, worked time) + history list; ✅ Leave (balance cards, my requests,
+   request form with type chips + range picker + reason); ✅ Approvals screen
+   (approve / reject). Routes wired into Workspace. Fakes seeded.
+   **Still ahead** (real-data concerns): geolocation (`geolocator`) + optional
+   selfie (`image_picker`) on check-in, **offline queue** (persist unsent
+   check-ins in `KvStore`/Hive, flush on `connectivity_plus`, idempotency key),
+   holiday calendar. Backend: `app/Modules/HR`.
+8. **Documents** (`presentation/documents/`) — list per employee/customer,
+   categories, expiry flags, upload / download via signed URLs. *(the one M2
+   slice still on the placeholder route)*
 
 ### M3 — Common business features
 1. **CRM / customers** (`presentation/crm/`) — pipeline (stage chips → filtered

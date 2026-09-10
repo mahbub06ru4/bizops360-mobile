@@ -2,139 +2,117 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../application/auth/auth_controller.dart';
-import '../../../application/settings/settings_controller.dart';
 import '../../../core/localization/translation_keys.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_card.dart';
-import '../../../core/widgets/app_status_chip.dart';
+import '../../../core/permissions/can.dart';
+import '../../../core/permissions/permissions.dart';
+import '../../../core/routing/app_routes.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/widgets/widgets.dart';
+import '../../../modules/travel/dashboard/visa_summary_section.dart';
+import '../widgets/agenda_section.dart';
+import '../widgets/quick_actions_section.dart';
 
-/// Scaffold-stage home: greets the signed-in user, shows what their session
-/// unlocks, and lets them switch language / theme and sign out. Feature decks
-/// (attendance, tasks, follow-ups) land in the slices that follow.
+/// The operational travel dashboard. A greeting header over a stack of
+/// permission-gated [DashboardSection]s — compose, don't grow a build method.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  // TODO(M3/M4): these come from the follow-up / task repositories.
+  static const _followUps = [
+    AgendaItem(
+      'Call Rahim about Schengen quote',
+      'Today',
+      tone: ChipTone.brand,
+    ),
+    AgendaItem(
+      'Send Dubai package to Nusrat',
+      'Overdue',
+      tone: ChipTone.critical,
+    ),
+  ];
+  static const _tasks = [
+    AgendaItem(
+      'Collect passport — Karim family',
+      'Today',
+      tone: ChipTone.brand,
+    ),
+    AgendaItem('Confirm hotel — Bali group', 'Tomorrow'),
+    AgendaItem('Review invoice #2043', 'Fri'),
+  ];
+
+  String _greetingKey() {
+    final h = DateTime.now().hour;
+    if (h < 12) return Tr.greetingMorning;
+    if (h < 17) return Tr.greetingAfternoon;
+    return Tr.greetingEvening;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final auth = Get.find<AuthController>();
-    final settings = Get.find<SettingsController>();
-    final user = auth.user;
+    final user = Get.find<AuthController>().user;
     final text = Theme.of(context).textTheme;
-    final c = context.colors;
+    final firstName = (user?.name ?? '').split(' ').first;
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-      children: [
-        Text(
-          user?.isManager == true ? Tr.myTeam.tr : Tr.myDay.tr,
-          style: text.displaySmall,
-        ),
-        if (user?.tenant != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Text(user!.tenant!.name, style: text.bodyMedium),
-          ),
-        const SizedBox(height: 20),
-        AppCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: c.brandSoft,
-                    child: Text(
-                      user?.initials ?? '?',
-                      style: text.titleMedium?.copyWith(color: c.brandInk),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(user?.name ?? '', style: text.titleMedium),
-                        Text(user?.email ?? '', style: text.bodySmall),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: [
-                  for (final role in user?.roles ?? const <String>[])
-                    AppStatusChip(role, dot: false),
-                  if (user?.tenant?.industry != null)
-                    AppStatusChip(
-                      user!.tenant!.industry!,
-                      tone: ChipTone.info,
-                      dot: false,
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 14),
-        const AppSectionLabel('Access'),
-        AppCard(
-          padding: EdgeInsets.zero,
-          child: Column(
-            children: [
-              for (final perm in (user?.permissions ?? const <String>[]).take(
-                8,
-              ))
-                ListTile(
-                  dense: true,
-                  leading: Icon(
-                    Icons.key_outlined,
-                    size: 18,
-                    color: c.inkFaint,
-                  ),
-                  title: Text(perm, style: text.bodyLarge),
-                ),
-              if ((user?.permissions.length ?? 0) > 8)
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    '+ ${user!.permissions.length - 8} more',
-                    style: text.bodySmall,
-                  ),
-                ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
+    return Scaffold(
+      appBar: AppBar(
+        titleSpacing: AppSpacing.lg,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: settings.toggleLocale,
-                icon: const Icon(Icons.translate, size: 18),
-                label: Obx(
-                  () => Text(
-                    settings.locale.value.languageCode == 'bn'
-                        ? Tr.english.tr
-                        : Tr.bengali.tr,
-                  ),
-                ),
+            Text('${_greetingKey().tr}, $firstName', style: text.titleLarge),
+            if (user?.tenant != null)
+              Text(user!.tenant!.name, style: text.bodySmall),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => Get.toNamed<void>(Routes.notifications),
+            icon: const AppBadge(
+              count: 3,
+              child: Icon(Icons.notifications_none),
+            ),
+          ),
+          SizedBox(width: AppSpacing.xs),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () =>
+            Future<void>.delayed(const Duration(milliseconds: 600)),
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.md,
+            AppSpacing.lg,
+            AppSpacing.xxl,
+          ),
+          children: [
+            const QuickActionsSection(),
+            const Can(
+              Perm.visaView,
+              feature: Feature.travelVisa,
+              child: VisaSummarySection(),
+            ),
+            Can(
+              Perm.followUpManage,
+              feature: Feature.crm,
+              child: AgendaSection(
+                title: Tr.homeFollowUps.tr,
+                items: _followUps,
+                onViewAll: () {},
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: auth.signOut,
-                icon: const Icon(Icons.logout, size: 18),
-                label: Text(Tr.signOut.tr),
+            Can(
+              Perm.taskView,
+              feature: Feature.tasks,
+              child: AgendaSection(
+                title: Tr.homeMyTasks.tr,
+                items: _tasks,
+                onViewAll: () {},
               ),
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

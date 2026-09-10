@@ -3,71 +3,79 @@ import 'package:get/get.dart';
 
 import '../../../application/navigation/shell_controller.dart';
 import '../../../core/localization/translation_keys.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../modules/travel/visa/screens/visa_queue_screen.dart';
+import '../../customers/screens/customers_screen.dart';
 import '../../home/screens/home_screen.dart';
+import '../../tasks/screens/tasks_screen.dart';
+import '../../workspace/screens/workspace_screen.dart';
 
-/// The signed-in container: a bottom nav assembled by [ShellController] over an
-/// [IndexedStack] of feature roots. Only "Home" is built for the scaffold; the
-/// rest are placeholders until their slices land.
+/// The signed-in container: a permission-driven bottom nav over an
+/// [IndexedStack] of the destination roots.
 class ShellScreen extends GetView<ShellController> {
   const ShellScreen({super.key});
+
+  static ({String labelKey, IconData icon, IconData selectedIcon, Widget page})
+  _spec(ShellTabId id) {
+    return switch (id) {
+      ShellTabId.home => (
+        labelKey: Tr.navHome,
+        icon: Icons.home_outlined,
+        selectedIcon: Icons.home,
+        page: const HomeScreen(),
+      ),
+      ShellTabId.customers => (
+        labelKey: Tr.navCustomers,
+        icon: Icons.people_outline,
+        selectedIcon: Icons.people,
+        page: const CustomersScreen(),
+      ),
+      ShellTabId.visa => (
+        labelKey: Tr.navVisa,
+        icon: Icons.description_outlined,
+        selectedIcon: Icons.description,
+        page: const VisaQueueScreen(),
+      ),
+      ShellTabId.tasks => (
+        labelKey: Tr.navTasks,
+        icon: Icons.check_circle_outline,
+        selectedIcon: Icons.check_circle,
+        page: const TasksScreen(),
+      ),
+      ShellTabId.workspace => (
+        labelKey: Tr.navMore,
+        icon: Icons.grid_view_outlined,
+        selectedIcon: Icons.grid_view,
+        page: const WorkspaceScreen(),
+      ),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final tabs = controller.tabs;
-      final index = controller.currentIndex.value.clamp(0, tabs.length - 1);
+      final specs = controller.tabs.map(_spec).toList();
+      final index = controller.currentIndex.value.clamp(0, specs.length - 1);
 
       return Scaffold(
-        appBar: AppBar(title: Text(tabs[index].labelKey.tr)),
         body: SafeArea(
           child: IndexedStack(
             index: index,
-            children: [
-              for (var i = 0; i < tabs.length; i++)
-                i == 0
-                    ? const HomeScreen()
-                    : _Placeholder(labelKey: tabs[i].labelKey),
-            ],
+            children: [for (final s in specs) s.page],
           ),
         ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: index,
           onDestinationSelected: controller.select,
           destinations: [
-            for (final tab in tabs)
+            for (final s in specs)
               NavigationDestination(
-                icon: Icon(tab.icon),
-                selectedIcon: Icon(tab.selectedIcon),
-                label: tab.labelKey.tr,
+                icon: Icon(s.icon),
+                selectedIcon: Icon(s.selectedIcon),
+                label: s.labelKey.tr,
               ),
           ],
         ),
       );
     });
-  }
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder({required this.labelKey});
-
-  final String labelKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final text = Theme.of(context).textTheme;
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.construction_outlined, size: 40, color: c.lineStrong),
-          const SizedBox(height: 12),
-          Text(labelKey.tr, style: text.titleLarge),
-          const SizedBox(height: 4),
-          Text(Tr.comingSoon.tr, style: text.bodyMedium),
-        ],
-      ),
-    );
   }
 }

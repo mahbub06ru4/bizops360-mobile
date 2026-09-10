@@ -12,6 +12,79 @@ abstract final class Tr {
   static const somethingWrong = 'common.something_wrong';
   static const english = 'common.english';
   static const bengali = 'common.bengali';
+  static const today = 'common.today';
+  static const earlier = 'common.earlier';
+  static const overdue = 'common.overdue';
+  static const upcoming = 'common.upcoming';
+
+  // Notifications
+  static const notificationsTitle = 'notifications.title';
+  static const markAllRead = 'notifications.mark_all_read';
+  static const notificationsEmpty = 'notifications.empty';
+
+  // Attendance
+  static const attTitle = 'att.title';
+  static const attCheckIn = 'att.check_in';
+  static const attCheckOut = 'att.check_out';
+  static const attCheckedInAt = 'att.checked_in_at';
+  static const attWorked = 'att.worked';
+  static const attThisWeek = 'att.this_week';
+  static const attHistory = 'att.history';
+  static const attDone = 'att.done';
+  static const attNotIn = 'att.not_in';
+  static const attStatusPresent = 'att.status_present';
+  static const attStatusLate = 'att.status_late';
+  static const attStatusEarly = 'att.status_early';
+  static const attStatusAbsent = 'att.status_absent';
+  static const attStatusLeave = 'att.status_leave';
+  static const attStatusHoliday = 'att.status_holiday';
+
+  // Leave
+  static const leaveTitle = 'leave.title';
+  static const leaveBalance = 'leave.balance';
+  static const leaveRemaining = 'leave.remaining';
+  static const leaveMyRequests = 'leave.my_requests';
+  static const leaveNew = 'leave.new';
+  static const leaveType = 'leave.type';
+  static const leaveTypeCasual = 'leave.type_casual';
+  static const leaveTypeSick = 'leave.type_sick';
+  static const leaveTypeAnnual = 'leave.type_annual';
+  static const leaveTypeUnpaid = 'leave.type_unpaid';
+  static const leaveFrom = 'leave.from';
+  static const leaveTo = 'leave.to';
+  static const leaveReason = 'leave.reason';
+  static const leaveSubmit = 'leave.submit';
+  static const leaveDaysN = 'leave.days_n';
+  static const leaveStatusPending = 'leave.status_pending';
+  static const leaveStatusApproved = 'leave.status_approved';
+  static const leaveStatusRejected = 'leave.status_rejected';
+  static const leaveStatusCancelled = 'leave.status_cancelled';
+  static const leaveSubmitted = 'leave.submitted';
+
+  // Approvals
+  static const approvalsTitle = 'approvals.title';
+  static const approvalsEmpty = 'approvals.empty';
+  static const approve = 'approvals.approve';
+  static const reject = 'approvals.reject';
+
+  // Tasks
+  static const tasksEmpty = 'tasks.empty';
+  static const taskStatusOpen = 'tasks.status_open';
+  static const taskStatusInProgress = 'tasks.status_in_progress';
+  static const taskStatusBlocked = 'tasks.status_blocked';
+  static const taskStatusDone = 'tasks.status_done';
+  static const taskPriorityLow = 'tasks.priority_low';
+  static const taskPriorityNormal = 'tasks.priority_normal';
+  static const taskPriorityHigh = 'tasks.priority_high';
+  static const taskPriorityUrgent = 'tasks.priority_urgent';
+  static const taskSubtasks = 'tasks.subtasks';
+  static const taskComments = 'tasks.comments';
+  static const taskAddComment = 'tasks.add_comment';
+  static const taskDue = 'tasks.due';
+  static const taskMarkDone = 'tasks.mark_done';
+  static const taskReopen = 'tasks.reopen';
+  static const viewAll = 'common.view_all';
+  static const seeAll = 'common.see_all';
 
   // Common — state views
   static const emptyTitle = 'common.empty_title';
@@ -32,16 +105,55 @@ abstract final class Tr {
 
   // Shell / nav
   static const navHome = 'nav.home';
-  static const navTeam = 'nav.team';
+  static const navCustomers = 'nav.customers';
+  static const navVisa = 'nav.visa';
   static const navTasks = 'nav.tasks';
-  static const navDesk = 'nav.desk';
-  static const navCrm = 'nav.crm';
-  static const navInsights = 'nav.insights';
   static const navMore = 'nav.more';
 
-  // Home (placeholder copy for the scaffold)
-  static const myDay = 'home.my_day';
-  static const myTeam = 'home.my_team';
+  // Workspace (the "More" tab)
+  static const workspaceTitle = 'workspace.title';
+  static const wsProfile = 'workspace.profile';
+  static const wsAttendance = 'workspace.attendance';
+  static const wsLeave = 'workspace.leave';
+  static const wsExpenses = 'workspace.expenses';
+  static const wsDocuments = 'workspace.documents';
+  static const wsTeam = 'workspace.team';
+  static const wsCrm = 'workspace.crm';
+  static const wsReports = 'workspace.reports';
+  static const wsApprovals = 'workspace.approvals';
+  static const wsSettings = 'workspace.settings';
+  static const wsHelp = 'workspace.help';
+  static const wsSectionWork = 'workspace.section_work';
+  static const wsSectionManage = 'workspace.section_manage';
+  static const wsSectionAccount = 'workspace.section_account';
+
+  // Home dashboard
+  static const greetingMorning = 'home.greeting_morning';
+  static const greetingAfternoon = 'home.greeting_afternoon';
+  static const greetingEvening = 'home.greeting_evening';
+  static const homeVisaSummary = 'home.visa_summary';
+  static const homeVisaDocs = 'home.visa_docs';
+  static const homeFollowUps = 'home.follow_ups';
+  static const homeTicketTasks = 'home.ticket_tasks';
+  static const homeMyTasks = 'home.my_tasks';
+  static const homeQuickActions = 'home.quick_actions';
+  static const homeQaNewCustomer = 'home.qa_new_customer';
+  static const homeQaNewTask = 'home.qa_new_task';
+  static const homeQaCheckIn = 'home.qa_check_in';
+  static const homeQaNewBooking = 'home.qa_new_booking';
+  static const homeNothingToday = 'home.nothing_today';
+  static const homeVisaInProgress = 'home.visa_in_progress';
+  static const homeVisaAwaitingDocs = 'home.visa_awaiting_docs';
+  static const homeVisaDecisionDue = 'home.visa_decision_due';
+
+  // Settings
+  static const settingsTitle = 'settings.title';
+  static const settingsAppearance = 'settings.appearance';
+  static const settingsThemeSystem = 'settings.theme_system';
+  static const settingsThemeLight = 'settings.theme_light';
+  static const settingsThemeDark = 'settings.theme_dark';
+  static const settingsLanguage = 'settings.language';
+
+  // Placeholder copy
   static const comingSoon = 'home.coming_soon';
-  static const signedInAs = 'home.signed_in_as';
 }
