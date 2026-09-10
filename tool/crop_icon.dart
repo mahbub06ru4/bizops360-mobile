@@ -43,6 +43,8 @@ void main(List<String> args) {
     'assets/icon/app_icon_foreground.png',
   ).writeAsBytesSync(img.encodePng(fg));
 
-  stdout.writeln('wrote assets/icon/app_icon.png + app_icon_foreground.png '
-      '(crop ${size}px @ $left,$top)');
+  stdout.writeln(
+    'wrote assets/icon/app_icon.png + app_icon_foreground.png '
+    '(crop ${size}px @ $left,$top)',
+  );
 }

@@ -1,16 +1,23 @@
 import 'package:get/get.dart';
 
+import '../../../../core/config/env.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../data/datasources/visa_remote_datasource.dart';
 import '../../../../data/repositories/fake_visa_repository.dart';
+import '../../../../data/repositories/visa_repository_impl.dart';
 import '../../../../domain/entities/visa_application.dart';
 import '../../../../domain/repositories/visa_repository.dart';
 import '../controllers/visa_detail_controller.dart';
 import '../controllers/visa_queue_controller.dart';
 
-// TODO(api): VisaRepositoryImpl (industry:travel routes) when not useFakeData.
+/// Registers the real HTTP-backed repository, or the in-memory fake when
+/// `Env.useFakeData` is on (the default until the API is reachable).
 void _ensureVisaRepo() {
-  if (!Get.isRegistered<VisaRepository>()) {
-    Get.put<VisaRepository>(FakeVisaRepository(), permanent: true);
-  }
+  if (Get.isRegistered<VisaRepository>()) return;
+  final VisaRepository repo = Env.useFakeData
+      ? FakeVisaRepository()
+      : VisaRepositoryImpl(VisaRemoteDataSource(Get.find<ApiClient>()));
+  Get.put<VisaRepository>(repo, permanent: true);
 }
 
 class VisaQueueBinding extends Bindings {
