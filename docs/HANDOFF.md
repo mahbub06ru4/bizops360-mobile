@@ -80,6 +80,22 @@ login / me / logout. Activation, password-reset, `/me/bootstrap`, `/devices` are
 
 ## 3. Work queue
 
+### Working style: UI-first, API last
+
+Screens and controllers are built now, on Windows, without the backend. Each
+feature defines its **domain entities + repository interface + a
+`FakeXRepository`** (canned data shaped like the documented API envelope, seeded
+from the mockup). `Env.useFakeData` (default **on** for non-prod;
+`--dart-define=USE_FAKE_DATA=false` to disable) makes the feature binding pick
+the fake or the real `XRepositoryImpl`.
+
+So the flow per feature is: entities → repo interface → **fake impl + UI +
+controller + all states + tests** (reviewable on device immediately) → real
+`XRepositoryImpl` + datasource + mappers (verified on the Mac against a running
+`bizops360-api`). Flipping `USE_FAKE_DATA` changes only the binding — never a
+controller, screen, or test. This does not change the milestone order below; it
+just means the "real impl" half of each slice can trail the UI half.
+
 Build in milestone order. Every PR: `dart format` clean, `flutter analyze
 --fatal-infos` clean, `flutter test` green, new strings `en` + `bn`, new screens
 in light + dark with loading / empty / error / refresh (+ pagination) states,
@@ -103,23 +119,29 @@ In `app/Modules/Identity`:
 ### M0 — Flutter foundation
 Bring the scaffold up to the target architecture.
 
-1. **Structure migration** (see §1) — mechanical move, one PR.
-2. **Design tokens** — add `AppSpacing`, `AppRadius`, `AppElevation`, status
+1. **Structure migration** (see §1) — mechanical move, one PR. ✅ done
+2. **Responsive sizing** — `flutter_screenutil` wired via `ScreenUtilInit` in
+   `app/app.dart` (design frame 375 × 812). ✅ done. Remaining: express the
+   design tokens in `.w` / `.r` / `.sp` so widgets read tokens, not raw units.
+3. **Fake-data switch** — `Env.useFakeData` added. ✅ done. Remaining: a
+   `FakeRepository` convention + example, and per-feature bindings that branch
+   on it.
+4. **Design tokens** — add `AppSpacing`, `AppRadius`, `AppElevation`, status
    colours to `core/theme/`; document the scale. Replace magic numbers as
    touched.
-3. **Common widget library** (`core/widgets/`) — `AppButton`, `AppTextField`,
+5. **Common widget library** (`core/widgets/`) — `AppButton`, `AppTextField`,
    `AppDropdown`, `AppSearchField`, `AppCard`, `AppDialog`, `AppBottomSheet`,
    `AppSnackbar`, `AppLoader`, `AppEmptyState`, `AppErrorState`,
    `AppNetworkError`, `AppPagination`, `AppAvatar`, `AppBadge`, `AppStatusChip`,
    `AppShimmer`. Each themed, bilingual-safe, with a widget test.
-4. **Permissions layer** — `core/permissions/`: a permission-name catalogue, a
+6. **Permissions layer** — `core/permissions/`: a permission-name catalogue, a
    pure `PermissionResolver`, and a `Can(permission, child, fallback)` widget.
    `application/permissions/PermissionsController` exposes it.
-5. **Use-case layer** — introduce `domain/usecases/`; migrate the auth flow
+7. **Use-case layer** — introduce `domain/usecases/`; migrate the auth flow
    (`SignIn`, `LoadSession`, `SignOut`) to call use cases from the controller.
-6. **Routing + guard** — `core/routing/`: named routes, `GetPages`,
+8. **Routing + guard** — `core/routing/`: named routes, `GetPages`,
    `RouteGuard` (redirect to sign-in when no session).
-7. **Logger + BDT formatter** — `core/utils/`, `core/extensions/` (`৳`, 2-2-3,
+9. **Logger + BDT formatter** — `core/utils/`, `core/extensions/` (`৳`, 2-2-3,
    lakh/crore).
 
 ### M1 — Auth & context

@@ -60,6 +60,10 @@ Screen (GetView<Controller>)        ← no logic, no direct Dio / repo Get.find
   avoid a construction cycle; a 401 (outside `/auth/login`) ends the session
   once, centrally.
 - Reactivity: `.obs` fields + `Obx(() => …)`. Don't `setState`.
+- **UI-first**: every feature has a `FakeXRepository` (canned `Result.ok`, data
+  shaped like the API envelope) next to the real impl. The feature binding picks
+  one on `Env.useFakeData` (`--dart-define=USE_FAKE_DATA`, default on for
+  non-prod). Controllers/screens/tests are identical either way.
 
 ## Permissions & navigation
 
@@ -80,6 +84,9 @@ Screen (GetView<Controller>)        ← no logic, no direct Dio / repo Get.find
   magic padding in a widget. Define new tokens in **both** light and dark (and in
   `copyWith` / `lerp`).
 - Support **Light / Dark / System** (`SettingsController.themeMode`).
+- **Responsive**: `flutter_screenutil` against a 375 × 812 frame (`ScreenUtilInit`
+  in `app/app.dart`). Use `.w` / `.h` / `.r` for sizing and `.sp` for raw font
+  sizes; tokens are already in those units, so widgets mostly read tokens.
 - Type: `Theme.of(context).textTheme` for prose; `AppTypography.mono(color)` for
   PNRs, flight numbers, references and money (`৳`, 2-2-3 grouping, lakh/crore).
 - Every string is a `Tr.*` key with `en` **and** `bn` entries in

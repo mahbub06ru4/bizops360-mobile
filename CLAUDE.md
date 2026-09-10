@@ -21,6 +21,7 @@ amber; Bricolage Grotesque · Public Sans · IBM Plex Mono · Hind Siliguri).
 
 - Flutter 3.38, Dart 3.10 · **GetX** for state, routing and DI · Dio for HTTP
 - `flutter_secure_storage` for the API token, `get_storage` for prefs/caches
+- `flutter_screenutil` for responsive sizing (design frame **375 × 812**)
 - `google_fonts`, `intl`, `equatable`
 - Auth: email + password → per-device Sanctum token. No OTP, no social. First
   password is set from an emailed activation link.
@@ -127,7 +128,18 @@ grid. Compose it from small section widgets, not one giant `HomeScreen`.
 5. **Colours and metrics come from design tokens** (`context.colors`,
    `AppSpacing`, `AppRadius`, `AppElevation`, `AppTypography`), never a literal
    `Color(0x…)` / magic padding in a widget. Both themes must stay legible.
+   Layouts are **responsive**: size with `flutter_screenutil` (`.w` `.h` `.r`
+   for spacing/dimensions/radius, `.sp` for any raw font size) against the
+   375 × 812 frame; the design tokens are defined in those units so widgets
+   mostly just read tokens. Verify on a phone and a tablet width.
 6. **One `ApiClient`**, injected. Data sources depend on it, never on `Dio()`.
+   **UI-first is fine, but build against the repository interface, never fake
+   widgets.** Each feature ships a `FakeXRepository` (canned `Result.ok`, data
+   shaped exactly like the documented API envelope) alongside the real
+   `XRepositoryImpl`. Bindings pick one via `Env.useFakeData`
+   (`--dart-define=USE_FAKE_DATA=true`, the default until the API is reachable).
+   Controllers, screens and tests never change when the switch flips — only the
+   binding and the mappers.
 7. **DI in bindings.** Permanent services (stores, `ApiClient`, repositories,
    `AuthController`, `SettingsController`, `TenantContext`, `PermissionsController`)
    in the app-wide binding; per-feature controllers + use cases `lazyPut` in the
