@@ -253,10 +253,14 @@ Bring the scaffold up to the target architecture.
   (git-ignored), falls back to debug keys. See `docs/RELEASE.md`.
 - ✅ **Firebase — Android** — `google-services.json` in place;
   `firebase_core` / `_crashlytics` / `_messaging` + Gradle plugins wired.
-  `bootstrap` brings Firebase up (guarded), swaps in `FirebaseCrashReporter`,
-  starts `PushService` (FCM token + tap→route). **iOS** needs the plist + APNs
-  key; **device registration** waits on backend 7a `POST /devices` (marked
-  `// TODO(7a)` in `push_service.dart`). See `docs/FIREBASE.md`.
+  `bootstrap` brings Firebase up (guarded), swaps in `FirebaseCrashReporter`.
+- ✅ **Push notifications, full** — `PushService` (permission, APNs+FCM token,
+  `DeviceRepository` register/unregister on login/logout), foreground display +
+  data-only background handler via `flutter_local_notifications`, tap→route
+  deep-link. Native wiring done both platforms.
+  **Left:** iOS `GoogleService-Info.plist` + APNs auth key (Apple account);
+  backend `POST /devices` is 7a (impl swallows the 404 until then).
+  See `docs/FIREBASE.md`.
 - ✅ **Launcher icon** — generated from `assets/logo.png` via
   `tool/crop_icon.dart` → `flutter_launcher_icons` (Android legacy + adaptive,
   iOS, web). Re-run: `dart run tool/crop_icon.dart && dart run flutter_launcher_icons`.
