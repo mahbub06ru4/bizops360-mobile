@@ -27,6 +27,7 @@ dependencies:
 
   # Value equality for entities.
   equatable: ^2.1.0
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:

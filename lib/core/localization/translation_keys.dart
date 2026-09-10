@@ -8,9 +8,17 @@ abstract final class Tr {
   static const retry = 'common.retry';
   static const cancel = 'common.cancel';
   static const save = 'common.save';
+  static const ok = 'common.ok';
   static const somethingWrong = 'common.something_wrong';
   static const english = 'common.english';
   static const bengali = 'common.bengali';
+
+  // Common — state views
+  static const emptyTitle = 'common.empty_title';
+  static const errorTitle = 'common.error_title';
+  static const offlineTitle = 'common.offline_title';
+  static const offlineBody = 'common.offline_body';
+  static const loading = 'common.loading';
 
   // Auth
   static const signInTitle = 'auth.sign_in_title';
