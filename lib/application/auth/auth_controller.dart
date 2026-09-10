@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../../core/localization/translation_keys.dart';
@@ -6,6 +8,7 @@ import '../../core/routing/app_routes.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/usecases/auth/load_session_usecase.dart';
 import '../../domain/usecases/auth/sign_out_usecase.dart';
+import '../push/push_service.dart';
 
 /// Holds the session for the whole app. Registered permanently in [AppBinding];
 /// every gated screen, the shell and `PermissionsController` read [user] here.
@@ -36,13 +39,20 @@ class AuthController extends GetxController {
 
   void setUser(AuthUser user) => _bind(user);
 
-  /// Sets the session and tags crash reports with who / which tenant.
+  /// Sets the session, tags crash reports, and syncs the push registration.
   void _bind(AuthUser? user) {
     _user.value = user;
     CrashReporter.instance
       ..setKey('user_id', user?.id)
       ..setKey('tenant', user?.tenant?.slug)
       ..setKey('industry', user?.tenant?.industry);
+
+    if (Get.isRegistered<PushService>()) {
+      final push = Get.find<PushService>();
+      unawaited(
+        user == null ? push.clearRegistration() : push.syncRegistration(),
+      );
+    }
   }
 
   Future<void> signOut() async {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +28,9 @@ Future<void> bootstrap(FlavorConfig config) async {
       final firebaseReady = await _initFirebase();
       if (firebaseReady) {
         CrashReporter.instance = FirebaseCrashReporter();
+        FirebaseMessaging.onBackgroundMessage(
+          firebaseMessagingBackgroundHandler,
+        );
       }
       installCrashHandlers();
 
@@ -36,7 +40,7 @@ Future<void> bootstrap(FlavorConfig config) async {
       runApp(const BizOpsApp());
 
       if (firebaseReady) {
-        final push = PushService();
+        final push = PushService(Get.find());
         Get.put<PushService>(push, permanent: true);
         unawaited(push.init());
       }
