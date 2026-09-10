@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../core/localization/translation_keys.dart';
+import '../../core/observability/crash_reporter.dart';
 import '../../core/routing/app_routes.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/usecases/auth/load_session_usecase.dart';
@@ -28,16 +29,25 @@ class AuthController extends GetxController {
   Future<String> resolveStartRoute() async {
     final result = await _loadSession();
     return result.fold((u) {
-      _user.value = u;
+      _bind(u);
       return Routes.shell;
     }, (_) => Routes.signIn);
   }
 
-  void setUser(AuthUser user) => _user.value = user;
+  void setUser(AuthUser user) => _bind(user);
+
+  /// Sets the session and tags crash reports with who / which tenant.
+  void _bind(AuthUser? user) {
+    _user.value = user;
+    CrashReporter.instance
+      ..setKey('user_id', user?.id)
+      ..setKey('tenant', user?.tenant?.slug)
+      ..setKey('industry', user?.tenant?.industry);
+  }
 
   Future<void> signOut() async {
     await _signOut();
-    _user.value = null;
+    _bind(null);
     await Get.offAllNamed<void>(Routes.signIn);
   }
 
@@ -45,7 +55,7 @@ class AuthController extends GetxController {
   Future<void> onUnauthorized() async {
     if (_handlingUnauthorized || !isAuthenticated) return;
     _handlingUnauthorized = true;
-    _user.value = null;
+    _bind(null);
     await Get.offAllNamed<void>(Routes.signIn);
     Get.snackbar(
       Tr.appName.tr,
