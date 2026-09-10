@@ -248,13 +248,18 @@ Bring the scaffold up to the target architecture.
   Noop + Logging defaults). `bootstrap.dart` runs inside `runZonedGuarded` and
   installs `FlutterError.onError` + `PlatformDispatcher.onError` handlers.
   `AuthController` tags reports with `user_id` / `tenant` / `industry`.
-- ✅ **Identifiers + names** — `com.bizops360.app` on both platforms; display
+- ✅ **Identifiers + names** — `com.bizops360.bizops360_mobile` on both platforms; display
   name "BizOps 360". Android release signing reads `android/key.properties`
   (git-ignored), falls back to debug keys. See `docs/RELEASE.md`.
-- **Firebase (FCM + Crashlytics)** — seam ready; blocked on config files.
-  See `docs/FIREBASE.md` — the user drops `google-services.json` /
-  `GoogleService-Info.plist`, then the packages + `FirebaseCrashReporter` +
-  `FirebaseMessagingPushService` slot in. Needs backend 7a `POST /devices`.
+- ✅ **Firebase — Android** — `google-services.json` in place;
+  `firebase_core` / `_crashlytics` / `_messaging` + Gradle plugins wired.
+  `bootstrap` brings Firebase up (guarded), swaps in `FirebaseCrashReporter`,
+  starts `PushService` (FCM token + tap→route). **iOS** needs the plist + APNs
+  key; **device registration** waits on backend 7a `POST /devices` (marked
+  `// TODO(7a)` in `push_service.dart`). See `docs/FIREBASE.md`.
+- ✅ **Launcher icon** — generated from `assets/logo.png` via
+  `tool/crop_icon.dart` → `flutter_launcher_icons` (Android legacy + adaptive,
+  iOS, web). Re-run: `dart run tool/crop_icon.dart && dart run flutter_launcher_icons`.
 - **Deep links from payloads** — the in-app path works already
   (`AppNotification.route` → `NotificationsController.open` → `Get.toNamed`).
   OS-level links (`app_links` + manifest intent-filters / associated domains)

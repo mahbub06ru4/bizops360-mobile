@@ -1,7 +1,8 @@
 # Release build & store setup
 
-Identifiers (both platforms): **`com.bizops360.app`**
-App display name: **BizOps 360**
+- Android `applicationId`: **`com.bizops360.bizops360_mobile`**
+- iOS bundle id: **`com.bizops360.bizops360Mobile`** (camelCase — iOS disallows `_`)
+- App display name: **BizOps 360**
 
 ## Versioning
 

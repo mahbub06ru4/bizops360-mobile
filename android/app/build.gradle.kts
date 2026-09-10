@@ -6,9 +6,9 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
-    // Firebase: uncomment once android/app/google-services.json is in place.
-    // id("com.google.gms.google-services")
-    // id("com.google.firebase.crashlytics")
+    // Firebase (needs android/app/google-services.json).
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 // Release signing is read from android/key.properties (git-ignored). See
@@ -21,7 +21,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.bizops360.app"
+    namespace = "com.bizops360.bizops360_mobile"
     // Pinned to a released platform — the toolchain's default (37) resolves to a
     // preview the local SDK manager can't install cleanly.
     compileSdk = 36
@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.bizops360.app"
+        applicationId = "com.bizops360.bizops360_mobile"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
