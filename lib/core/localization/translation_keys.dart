@@ -67,6 +67,70 @@ abstract final class Tr {
   static const approve = 'approvals.approve';
   static const reject = 'approvals.reject';
 
+  // CRM
+  static const navFollowUps = 'crm.nav_follow_ups';
+  static const crmSearch = 'crm.search';
+  static const crmValue = 'crm.value';
+  static const crmSource = 'crm.source';
+  static const crmHistory = 'crm.history';
+  static const crmMoveStage = 'crm.move_stage';
+  static const crmEmpty = 'crm.empty';
+  static const crmCall = 'crm.call';
+  static const crmMessage = 'crm.message';
+  static const followUpsTitle = 'crm.follow_ups_title';
+  static const followUpLogOutcome = 'crm.log_outcome';
+  static const stageNewLead = 'crm.stage_new_lead';
+  static const stageContacted = 'crm.stage_contacted';
+  static const stageInterested = 'crm.stage_interested';
+  static const stageFollowUp = 'crm.stage_follow_up';
+  static const stageNegotiation = 'crm.stage_negotiation';
+  static const stageConverted = 'crm.stage_converted';
+  static const stageLost = 'crm.stage_lost';
+  static const outcomeReached = 'crm.outcome_reached';
+  static const outcomeNoAnswer = 'crm.outcome_no_answer';
+  static const outcomeRescheduled = 'crm.outcome_rescheduled';
+  static const outcomeNotInterested = 'crm.outcome_not_interested';
+  static const outcomeWon = 'crm.outcome_won';
+
+  // Travel — visa
+  static const visaStageCase = 'visa.stage_case';
+  static const visaStageDocsRequired = 'visa.stage_docs_required';
+  static const visaStageDocsCollected = 'visa.stage_docs_collected';
+  static const visaStageSubmitted = 'visa.stage_submitted';
+  static const visaStageProcessing = 'visa.stage_processing';
+  static const visaStageApproved = 'visa.stage_approved';
+  static const visaStageRejected = 'visa.stage_rejected';
+  static const visaDocsChecklist = 'visa.docs_checklist';
+  static const visaSubmit = 'visa.submit';
+  static const visaSubmitBlocked = 'visa.submit_blocked';
+  static const visaSubmittedOn = 'visa.submitted_on';
+  static const visaDecidedOn = 'visa.decided_on';
+  static const visaDecision = 'visa.decision';
+  static const visaApprove = 'visa.approve';
+  static const visaReject = 'visa.reject';
+  static const visaStartProcessing = 'visa.start_processing';
+
+  // Expenses
+  static const expensesTitle = 'exp.title';
+  static const expenseNew = 'exp.new';
+  static const expenseAmount = 'exp.amount';
+  static const expenseCategory = 'exp.category';
+  static const expenseDate = 'exp.date';
+  static const expenseNote = 'exp.note';
+  static const expenseReceipt = 'exp.receipt';
+  static const expenseSubmit = 'exp.submit';
+  static const expenseSubmitted = 'exp.submitted';
+  static const expenseEmpty = 'exp.empty';
+  static const expCatTravel = 'exp.cat_travel';
+  static const expCatMeals = 'exp.cat_meals';
+  static const expCatOffice = 'exp.cat_office';
+  static const expCatSupplier = 'exp.cat_supplier';
+  static const expCatOther = 'exp.cat_other';
+  static const expStatusPending = 'exp.status_pending';
+  static const expStatusApproved = 'exp.status_approved';
+  static const expStatusRejected = 'exp.status_rejected';
+  static const expStatusReimbursed = 'exp.status_reimbursed';
+
   // Tasks
   static const tasksEmpty = 'tasks.empty';
   static const taskStatusOpen = 'tasks.status_open';

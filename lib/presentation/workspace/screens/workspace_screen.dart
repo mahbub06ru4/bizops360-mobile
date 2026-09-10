@@ -75,7 +75,7 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.receipt_long_outlined,
               Tr.wsExpenses.tr,
-              () => _soon(Tr.wsExpenses.tr),
+              () => Get.toNamed<void>(Routes.expenses),
               permission: Perm.expenseSubmit,
               feature: Feature.expenses,
             ),
@@ -96,10 +96,10 @@ class WorkspaceScreen extends StatelessWidget {
               permission: Perm.employeeView,
             ),
             _Row(
-              Icons.contacts_outlined,
-              Tr.wsCrm.tr,
-              () => _soon(Tr.wsCrm.tr),
-              permission: Perm.customerView,
+              Icons.campaign_outlined,
+              Tr.navFollowUps.tr,
+              () => Get.toNamed<void>(Routes.followUps),
+              permission: Perm.followUpManage,
               feature: Feature.crm,
             ),
             _Row(

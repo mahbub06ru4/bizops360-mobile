@@ -196,30 +196,31 @@ Bring the scaffold up to the target architecture.
    categories, expiry flags, upload / download via signed URLs. *(the one M2
    slice still on the placeholder route)*
 
-### M3 — Common business features
-1. **CRM / customers** (`presentation/crm/`) — pipeline (stage chips → filtered
-   lead cards), lead / customer detail + history, contacts, activities, notes.
-   In **More** unless a travel tenant promotes it. Backend: `app/Modules/CRM`.
-2. **Follow-ups** — Today / Overdue / Upcoming with an outcome sheet, quick-add.
-   Also feeds a Home dashboard section.
-3. **Expenses** (`presentation/expenses/`) — submit with a receipt photo
-   (category chips, amount in mono, date, note); my submitted expenses + status;
-   manager approve / reject. Backend: `app/Modules/Finance` — Expense.
+### M3 — Common business features ✅ (static)
+1. **CRM / customers** — ✅ `CustomersScreen` (stage chips + search),
+   `CustomerDetailScreen` (call/message, stage dropdown, activity timeline).
+   Ahead: quick-add customer, contacts. Backend: `app/Modules/CRM`.
+2. **Follow-ups** — ✅ `FollowUpsScreen` (Today/Overdue/Upcoming/Done tabs,
+   `AppBottomSheet` outcome logger). Feeds the Home follow-ups section.
+   Ahead: quick-add.
+3. **Expenses** — ✅ `ExpensesScreen` (list + pending total) + `ExpenseNewScreen`
+   (category chips, amount, date, receipt toggle — real photo picker later).
+   Ahead: manager approve / reject. Backend: `app/Modules/Finance`.
 
 ### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`)
+3. **Visa applications** — ✅ `VisaQueueScreen` (stage filter chips, doc-progress
+   cards), `VisaDetailScreen` (doc checklist whose completion **gates submit**,
+   stage-aware action bar: submit → processing → approve/reject, terminal
+   decision state). `FakeVisaRepository` seeded.
 1. **Travel customers & passengers** — search, profile, passenger info, travel
-   history.
-2. **Passport** — passport records, expiry tracking.
-3. **Visa** — visa types; **applications** queued by stage
-   (`Case → Docs Required → Docs Collected → Submitted → Processing → Approved/Rejected`);
-   a document checklist whose completion gates "submit"; stage moves; decision.
-4. **Visa documents & deadlines** — pending-documents list, deadline reminders;
-   feeds Home sections "visa application summary" + "pending visa documents".
+   history. *(next)*
+2. **Passport** — passport records, expiry tracking. *(next)*
+4. **Visa documents & deadlines** — pending-documents list + deadline reminders;
+   `VisaSummarySection` on Home already shows the pipeline counts (static).
 5. **Travel operations** — bookings (list, quick create, PNR / segments / hotel /
-   itinerary, issue / cancel), departures board, ticket tasks. Payments /
-   commissions where in MVP scope.
-6. **Travel dashboard sections** (`modules/travel/dashboard/`) — register the
-   visa / follow-up / ticket-task / KPI sections into `presentation/home`.
+   itinerary, issue / cancel), departures board, ticket tasks. *(next)*
+6. **Travel dashboard sections** — `VisaSummarySection` done; follow-up /
+   ticket-task / KPI sections still to register.
    Backend: `app/Modules/Industry/Travel` (routes are `industry:travel` gated —
    a non-travel token gets 403, matching the app-side gate).
 

@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
               child: AgendaSection(
                 title: Tr.homeFollowUps.tr,
                 items: _followUps,
-                onViewAll: () {},
+                onViewAll: () => Get.toNamed<void>(Routes.followUps),
               ),
             ),
             Can(
