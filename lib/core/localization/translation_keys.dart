@@ -12,6 +12,11 @@ abstract final class Tr {
   static const somethingWrong = 'common.something_wrong';
   static const english = 'common.english';
   static const bengali = 'common.bengali';
+  static const today = 'common.today';
+  static const overdue = 'common.overdue';
+  static const upcoming = 'common.upcoming';
+  static const viewAll = 'common.view_all';
+  static const seeAll = 'common.see_all';
 
   // Common — state views
   static const emptyTitle = 'common.empty_title';
@@ -32,16 +37,55 @@ abstract final class Tr {
 
   // Shell / nav
   static const navHome = 'nav.home';
-  static const navTeam = 'nav.team';
+  static const navCustomers = 'nav.customers';
+  static const navVisa = 'nav.visa';
   static const navTasks = 'nav.tasks';
-  static const navDesk = 'nav.desk';
-  static const navCrm = 'nav.crm';
-  static const navInsights = 'nav.insights';
   static const navMore = 'nav.more';
 
-  // Home (placeholder copy for the scaffold)
-  static const myDay = 'home.my_day';
-  static const myTeam = 'home.my_team';
+  // Workspace (the "More" tab)
+  static const workspaceTitle = 'workspace.title';
+  static const wsProfile = 'workspace.profile';
+  static const wsAttendance = 'workspace.attendance';
+  static const wsLeave = 'workspace.leave';
+  static const wsExpenses = 'workspace.expenses';
+  static const wsDocuments = 'workspace.documents';
+  static const wsTeam = 'workspace.team';
+  static const wsCrm = 'workspace.crm';
+  static const wsReports = 'workspace.reports';
+  static const wsApprovals = 'workspace.approvals';
+  static const wsSettings = 'workspace.settings';
+  static const wsHelp = 'workspace.help';
+  static const wsSectionWork = 'workspace.section_work';
+  static const wsSectionManage = 'workspace.section_manage';
+  static const wsSectionAccount = 'workspace.section_account';
+
+  // Home dashboard
+  static const greetingMorning = 'home.greeting_morning';
+  static const greetingAfternoon = 'home.greeting_afternoon';
+  static const greetingEvening = 'home.greeting_evening';
+  static const homeVisaSummary = 'home.visa_summary';
+  static const homeVisaDocs = 'home.visa_docs';
+  static const homeFollowUps = 'home.follow_ups';
+  static const homeTicketTasks = 'home.ticket_tasks';
+  static const homeMyTasks = 'home.my_tasks';
+  static const homeQuickActions = 'home.quick_actions';
+  static const homeQaNewCustomer = 'home.qa_new_customer';
+  static const homeQaNewTask = 'home.qa_new_task';
+  static const homeQaCheckIn = 'home.qa_check_in';
+  static const homeQaNewBooking = 'home.qa_new_booking';
+  static const homeNothingToday = 'home.nothing_today';
+  static const homeVisaInProgress = 'home.visa_in_progress';
+  static const homeVisaAwaitingDocs = 'home.visa_awaiting_docs';
+  static const homeVisaDecisionDue = 'home.visa_decision_due';
+
+  // Settings
+  static const settingsTitle = 'settings.title';
+  static const settingsAppearance = 'settings.appearance';
+  static const settingsThemeSystem = 'settings.theme_system';
+  static const settingsThemeLight = 'settings.theme_light';
+  static const settingsThemeDark = 'settings.theme_dark';
+  static const settingsLanguage = 'settings.language';
+
+  // Placeholder copy
   static const comingSoon = 'home.coming_soon';
-  static const signedInAs = 'home.signed_in_as';
 }

@@ -11,3 +11,4 @@ export 'app_shimmer.dart';
 export 'app_state_views.dart';
 export 'app_status_chip.dart';
 export 'app_text_field.dart';
+export 'coming_soon.dart';

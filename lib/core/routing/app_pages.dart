@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 
 import '../../presentation/auth/bindings/sign_in_binding.dart';
 import '../../presentation/auth/screens/sign_in_screen.dart';
+import '../../presentation/common/coming_soon_screen.dart';
+import '../../presentation/profile/screens/profile_screen.dart';
+import '../../presentation/settings/screens/settings_screen.dart';
 import '../../presentation/shell/bindings/shell_binding.dart';
 import '../../presentation/shell/screens/shell_screen.dart';
 import '../../presentation/splash/splash_binding.dart';
@@ -28,6 +31,21 @@ abstract final class AppPages {
       name: Routes.shell,
       page: () => const ShellScreen(),
       binding: ShellBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.settings,
+      page: () => const SettingsScreen(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => const ProfileScreen(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.comingSoon,
+      page: () => const ComingSoonScreen(),
       middlewares: [AuthGuard()],
     ),
   ];
