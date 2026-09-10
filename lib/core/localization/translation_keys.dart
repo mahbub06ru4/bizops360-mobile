@@ -21,6 +21,23 @@ abstract final class Tr {
   static const notificationsTitle = 'notifications.title';
   static const markAllRead = 'notifications.mark_all_read';
   static const notificationsEmpty = 'notifications.empty';
+
+  // Tasks
+  static const tasksEmpty = 'tasks.empty';
+  static const taskStatusOpen = 'tasks.status_open';
+  static const taskStatusInProgress = 'tasks.status_in_progress';
+  static const taskStatusBlocked = 'tasks.status_blocked';
+  static const taskStatusDone = 'tasks.status_done';
+  static const taskPriorityLow = 'tasks.priority_low';
+  static const taskPriorityNormal = 'tasks.priority_normal';
+  static const taskPriorityHigh = 'tasks.priority_high';
+  static const taskPriorityUrgent = 'tasks.priority_urgent';
+  static const taskSubtasks = 'tasks.subtasks';
+  static const taskComments = 'tasks.comments';
+  static const taskAddComment = 'tasks.add_comment';
+  static const taskDue = 'tasks.due';
+  static const taskMarkDone = 'tasks.mark_done';
+  static const taskReopen = 'tasks.reopen';
   static const viewAll = 'common.view_all';
   static const seeAll = 'common.see_all';
 

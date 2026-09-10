@@ -7,7 +7,9 @@ plugins {
 
 android {
     namespace = "com.bizops360.bizops360_mobile"
-    compileSdk = flutter.compileSdkVersion
+    // Pinned to a released platform — the toolchain's default (37) resolves to a
+    // preview the local SDK manager can't install cleanly.
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -24,8 +26,8 @@ android {
         applicationId = "com.bizops360.bizops360_mobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 23 // flutter_secure_storage 11.x
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

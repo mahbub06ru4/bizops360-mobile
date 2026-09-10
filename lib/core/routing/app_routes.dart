@@ -4,6 +4,7 @@ abstract final class Routes {
   static const shell = '/shell';
 
   static const notifications = '/notifications';
+  static const taskDetail = '/task';
 
   // Workspace destinations
   static const settings = '/settings';

@@ -1,0 +1,94 @@
+import '../../core/error/failure.dart';
+import '../../core/error/result.dart';
+import '../../domain/entities/task_item.dart';
+import '../../domain/repositories/task_repository.dart';
+
+/// In-memory tasks for UI-first development (`Env.useFakeData`).
+class FakeTaskRepository implements TaskRepository {
+  FakeTaskRepository() : _items = _seed();
+
+  List<TaskItem> _items;
+
+  static DateTime _day(int offset) {
+    final n = DateTime.now();
+    return DateTime(n.year, n.month, n.day).add(Duration(days: offset));
+  }
+
+  static List<TaskItem> _seed() => [
+    TaskItem(
+      id: 't1',
+      title: 'Collect passports — Karim family',
+      description: 'Four passports for the Schengen application. Front desk.',
+      status: TaskStatus.inProgress,
+      priority: TaskPriority.high,
+      dueDate: _day(0),
+      assigneeName: 'You',
+      subtasksTotal: 4,
+      subtasksDone: 2,
+      commentCount: 3,
+    ),
+    TaskItem(
+      id: 't2',
+      title: 'Send Dubai package quote to Nusrat',
+      status: TaskStatus.open,
+      priority: TaskPriority.urgent,
+      dueDate: _day(-1),
+      assigneeName: 'You',
+      commentCount: 1,
+    ),
+    TaskItem(
+      id: 't3',
+      title: 'Confirm hotel block — Bali group (12 pax)',
+      status: TaskStatus.blocked,
+      priority: TaskPriority.normal,
+      dueDate: _day(1),
+      assigneeName: 'You',
+      subtasksTotal: 3,
+      subtasksDone: 1,
+    ),
+    TaskItem(
+      id: 't4',
+      title: 'Review invoice #2043 before it goes out',
+      status: TaskStatus.open,
+      priority: TaskPriority.normal,
+      dueDate: _day(3),
+      assigneeName: 'You',
+    ),
+    TaskItem(
+      id: 't5',
+      title: 'File visa outcome — Rahman honeymoon',
+      status: TaskStatus.done,
+      priority: TaskPriority.low,
+      dueDate: _day(-2),
+      assigneeName: 'You',
+    ),
+  ];
+
+  Future<T> _delayed<T>(T value) =>
+      Future<T>.delayed(const Duration(milliseconds: 350), () => value);
+
+  @override
+  Future<Result<List<TaskItem>>> myTasks() =>
+      _delayed(Result.ok(List.unmodifiable(_items)));
+
+  @override
+  Future<Result<TaskItem>> byId(String id) {
+    final match = _items.where((t) => t.id == id).firstOrNull;
+    return _delayed(
+      match == null ? const Result.err(NotFoundFailure()) : Result.ok(match),
+    );
+  }
+
+  @override
+  Future<Result<TaskItem>> updateStatus(String id, TaskStatus status) {
+    TaskItem? updated;
+    _items = [
+      for (final t in _items)
+        if (t.id == id) updated = t.copyWith(status: status) else t,
+    ];
+    final result = updated;
+    return _delayed(
+      result == null ? const Result.err(NotFoundFailure()) : Result.ok(result),
+    );
+  }
+}

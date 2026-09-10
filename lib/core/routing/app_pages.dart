@@ -11,6 +11,8 @@ import '../../presentation/shell/bindings/shell_binding.dart';
 import '../../presentation/shell/screens/shell_screen.dart';
 import '../../presentation/splash/splash_binding.dart';
 import '../../presentation/splash/splash_screen.dart';
+import '../../presentation/tasks/bindings/task_detail_binding.dart';
+import '../../presentation/tasks/screens/task_detail_screen.dart';
 import 'app_routes.dart';
 import 'route_guard.dart';
 
@@ -39,6 +41,12 @@ abstract final class AppPages {
       name: Routes.notifications,
       page: () => const NotificationsScreen(),
       binding: NotificationsBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.taskDetail,
+      page: () => const TaskDetailScreen(),
+      binding: TaskDetailBinding(),
       middlewares: [AuthGuard()],
     ),
     GetPage(

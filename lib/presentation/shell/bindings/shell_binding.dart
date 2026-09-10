@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 
 import '../../../application/navigation/shell_controller.dart';
+import '../../tasks/bindings/tasks_binding.dart';
 
+/// The shell embeds its tab screens as widgets (not routes), so their feature
+/// bindings run here rather than per-route.
 class ShellBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ShellController>(() => ShellController(Get.find()));
-    // PermissionsController is permanent from AppBinding; ShellController just
-    // reads it. Feature controllers are lazy-registered by their own routes.
+    TasksBinding().dependencies();
   }
 }
