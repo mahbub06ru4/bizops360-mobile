@@ -7,7 +7,7 @@ class SignInBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<SignInController>(
       () => SignInController(
-        repo: Get.find(),
+        signIn: Get.find(),
         auth: Get.find(),
         store: Get.find(),
       ),

@@ -8,18 +8,18 @@ import '../../../core/error/failure.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/routing/app_routes.dart';
 import '../../../core/storage/kv_store.dart';
-import '../../../domain/repositories/auth_repository.dart';
+import '../../../domain/usecases/auth/sign_in_usecase.dart';
 
 class SignInController extends GetxController {
   SignInController({
-    required AuthRepository repo,
+    required SignInUseCase signIn,
     required AuthController auth,
     required KvStore store,
-  }) : _repo = repo,
+  }) : _signIn = signIn,
        _auth = auth,
        _store = store;
 
-  final AuthRepository _repo;
+  final SignInUseCase _signIn;
   final AuthController _auth;
   final KvStore _store;
 
@@ -64,10 +64,7 @@ class SignInController extends GetxController {
 
     submitting.value = true;
     final email = emailCtrl.text.trim();
-    final result = await _repo.signIn(
-      email: email,
-      password: passwordCtrl.text,
-    );
+    final result = await _signIn(email: email, password: passwordCtrl.text);
     submitting.value = false;
 
     result.fold((user) {

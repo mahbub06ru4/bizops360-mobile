@@ -28,20 +28,13 @@ The **scaffold + email sign-in flow**, nothing feature-specific yet.
 | Tests | `flutter test` — 10 passing (auth mappers, `DioException`→`Failure`, `StatusPill` light/dark). `test/flutter_test_config.dart` disables google_fonts network fetch. |
 | CI | `.github/workflows/ci.yaml` — `dart format --set-exit-if-changed` → `flutter analyze --fatal-infos` → `flutter test`. Green on `main`. |
 
-### Structure migration (do this as its own PR, early in M0)
+### Structure migration ✅ done (commit `c1f58ee`)
 
-The repo still uses the old `lib/app/` + `lib/features/` layout. Move to the
-layout in [`CLAUDE.md`](../CLAUDE.md):
-
-- `lib/app/routes/` → `lib/core/routing/`
-- `lib/app/bindings/initial_binding.dart` → `lib/application/` (rename `AppBinding`)
-- `lib/features/auth|settings` cross-cutting controllers → `lib/application/{auth,session,tenant,permissions,navigation}/`
-- `lib/features/<common>/` → `lib/presentation/<common>/`
-- travel features (none yet) → `lib/modules/travel/<area>/`
-- add `lib/domain/usecases/`, `lib/core/permissions/`, `lib/core/extensions/`,
-  `lib/core/constants/`, `lib/core/utils/`
-
-Keep it mechanical — imports + paths only, no behaviour change, tests stay green.
+The layered layout from [`CLAUDE.md`](../CLAUDE.md) is in place: `lib/app/app.dart`
+(wiring), `lib/core/routing/`, `lib/application/{auth,settings,navigation,permissions}/`,
+`lib/presentation/{auth,home,shell,splash}/`, `lib/domain/usecases/`,
+`lib/core/{permissions,extensions,utils}/`. `lib/modules/travel/` and
+`lib/application/{session,tenant}/` are created as features land.
 
 **Design source of truth:** the approved mockup artifact (hangar-green ink,
 terminal-grey ground, wayfinding amber; the 14 key screens).
@@ -138,15 +131,19 @@ Bring the scaffold up to the target architecture.
    (`pumpInHost` = theme + `ScreenUtilInit` + translations).
    Still to add when first needed: `AppDropdown`, `AppSearchField`,
    `AppPagination` (infinite-scroll list footer).
-6. **Permissions layer** — `core/permissions/`: a permission-name catalogue, a
-   pure `PermissionResolver`, and a `Can(permission, child, fallback)` widget.
-   `application/permissions/PermissionsController` exposes it.
-7. **Use-case layer** — introduce `domain/usecases/`; migrate the auth flow
-   (`SignIn`, `LoadSession`, `SignOut`) to call use cases from the controller.
-8. **Routing + guard** — `core/routing/`: named routes, `GetPages`,
-   `RouteGuard` (redirect to sign-in when no session).
-9. **Logger + BDT formatter** — `core/utils/`, `core/extensions/` (`৳`, 2-2-3,
-   lakh/crore).
+6. **Permissions layer** — ✅ `core/permissions/`: `Perm.*` + `Feature.*`
+   catalogue, pure `PermissionResolver`, `Can(...)` / `Can.anyOf(...)` widget.
+   `application/permissions/PermissionsController` derives the resolver from the
+   live session (permanent in `AppBinding`). Wire `enabledFeatures` in M1 once
+   `/me/bootstrap` lands.
+7. **Use-case layer** — ✅ `domain/usecases/auth/`: `SignInUseCase`,
+   `LoadSessionUseCase`, `SignOutUseCase`. `AuthController` / `SignInController`
+   depend on use cases, not the repo. `FakeAuthRepository` added as the
+   fake-repo convention example; `AppBinding` branches on `Env.useFakeData`.
+8. **Routing + guard** — ✅ `core/routing/route_guard.dart` (`AuthGuard`
+   middleware on `signIn` + `shell`). Splash still does first-launch routing.
+9. **Logger + BDT formatter** — ✅ `core/utils/logger.dart` (`AppLog`, silent in
+   prod), `core/extensions/money_format.dart` (`num.toBdt()` → `৳ 12,34,567.50`).
 
 ### M1 — Auth & context
 1. **Bootstrap** — `AuthRepository.bootstrap()` → `GET /me/bootstrap`; add a

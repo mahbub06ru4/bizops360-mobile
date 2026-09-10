@@ -23,8 +23,10 @@ class Env {
     return _config;
   }
 
+  static bool get isInitialised => _initialised;
+
   static Flavor get flavor => config.flavor;
-  static bool get isProd => config.isProd;
+  static bool get isProd => _initialised && config.isProd;
 
   /// When true, feature bindings register the `FakeXRepository`s instead of the
   /// real HTTP-backed impls — so screens can be built and reviewed on a device

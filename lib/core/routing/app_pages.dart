@@ -7,6 +7,7 @@ import '../../presentation/shell/screens/shell_screen.dart';
 import '../../presentation/splash/splash_binding.dart';
 import '../../presentation/splash/splash_screen.dart';
 import 'app_routes.dart';
+import 'route_guard.dart';
 
 abstract final class AppPages {
   static const initial = Routes.splash;
@@ -21,11 +22,13 @@ abstract final class AppPages {
       name: Routes.signIn,
       page: () => const SignInScreen(),
       binding: SignInBinding(),
+      middlewares: [AuthGuard()],
     ),
     GetPage(
       name: Routes.shell,
       page: () => const ShellScreen(),
       binding: ShellBinding(),
+      middlewares: [AuthGuard()],
     ),
   ];
 }
