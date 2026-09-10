@@ -92,6 +92,24 @@ abstract final class Tr {
   static const outcomeNotInterested = 'crm.outcome_not_interested';
   static const outcomeWon = 'crm.outcome_won';
 
+  // Travel — visa
+  static const visaStageCase = 'visa.stage_case';
+  static const visaStageDocsRequired = 'visa.stage_docs_required';
+  static const visaStageDocsCollected = 'visa.stage_docs_collected';
+  static const visaStageSubmitted = 'visa.stage_submitted';
+  static const visaStageProcessing = 'visa.stage_processing';
+  static const visaStageApproved = 'visa.stage_approved';
+  static const visaStageRejected = 'visa.stage_rejected';
+  static const visaDocsChecklist = 'visa.docs_checklist';
+  static const visaSubmit = 'visa.submit';
+  static const visaSubmitBlocked = 'visa.submit_blocked';
+  static const visaSubmittedOn = 'visa.submitted_on';
+  static const visaDecidedOn = 'visa.decided_on';
+  static const visaDecision = 'visa.decision';
+  static const visaApprove = 'visa.approve';
+  static const visaReject = 'visa.reject';
+  static const visaStartProcessing = 'visa.start_processing';
+
   // Expenses
   static const expensesTitle = 'exp.title';
   static const expenseNew = 'exp.new';

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../modules/travel/visa/bindings/visa_bindings.dart';
+import '../../modules/travel/visa/screens/visa_detail_screen.dart';
 import '../../presentation/auth/bindings/sign_in_binding.dart';
 import '../../presentation/auth/screens/sign_in_screen.dart';
 import '../../presentation/common/coming_soon_screen.dart';
@@ -94,6 +96,11 @@ abstract final class AppPages {
     ),
     // No binding — reuses the ExpensesController from the ExpensesScreen beneath.
     _guarded(Routes.expenseNew, () => const ExpenseNewScreen()),
+    _guarded(
+      Routes.visaDetail,
+      () => const VisaDetailScreen(),
+      binding: VisaDetailBinding(),
+    ),
     _guarded(Routes.settings, () => const SettingsScreen()),
     _guarded(Routes.profile, () => const ProfileScreen()),
     _guarded(Routes.comingSoon, () => const ComingSoonScreen()),

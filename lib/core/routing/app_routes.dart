@@ -13,6 +13,7 @@ abstract final class Routes {
   static const followUps = '/follow-ups';
   static const expenses = '/expenses';
   static const expenseNew = '/expenses/new';
+  static const visaDetail = '/visa/case';
 
   // Workspace destinations
   static const settings = '/settings';
