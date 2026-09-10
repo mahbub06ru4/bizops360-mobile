@@ -13,8 +13,14 @@ abstract final class Tr {
   static const english = 'common.english';
   static const bengali = 'common.bengali';
   static const today = 'common.today';
+  static const earlier = 'common.earlier';
   static const overdue = 'common.overdue';
   static const upcoming = 'common.upcoming';
+
+  // Notifications
+  static const notificationsTitle = 'notifications.title';
+  static const markAllRead = 'notifications.mark_all_read';
+  static const notificationsEmpty = 'notifications.empty';
   static const viewAll = 'common.view_all';
   static const seeAll = 'common.see_all';
 

@@ -3,6 +3,8 @@ abstract final class Routes {
   static const signIn = '/sign-in';
   static const shell = '/shell';
 
+  static const notifications = '/notifications';
+
   // Workspace destinations
   static const settings = '/settings';
   static const profile = '/profile';

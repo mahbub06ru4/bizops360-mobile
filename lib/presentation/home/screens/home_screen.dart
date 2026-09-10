@@ -5,6 +5,7 @@ import '../../../application/auth/auth_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/permissions/can.dart';
 import '../../../core/permissions/permissions.dart';
+import '../../../core/routing/app_routes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../modules/travel/dashboard/visa_summary_section.dart';
@@ -65,7 +66,7 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Get.toNamed<void>(Routes.notifications),
             icon: const AppBadge(
               count: 3,
               child: Icon(Icons.notifications_none),

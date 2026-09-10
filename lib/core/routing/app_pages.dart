@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../../presentation/auth/bindings/sign_in_binding.dart';
 import '../../presentation/auth/screens/sign_in_screen.dart';
 import '../../presentation/common/coming_soon_screen.dart';
+import '../../presentation/notifications/bindings/notifications_binding.dart';
+import '../../presentation/notifications/screens/notifications_screen.dart';
 import '../../presentation/profile/screens/profile_screen.dart';
 import '../../presentation/settings/screens/settings_screen.dart';
 import '../../presentation/shell/bindings/shell_binding.dart';
@@ -31,6 +33,12 @@ abstract final class AppPages {
       name: Routes.shell,
       page: () => const ShellScreen(),
       binding: ShellBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.notifications,
+      page: () => const NotificationsScreen(),
+      binding: NotificationsBinding(),
       middlewares: [AuthGuard()],
     ),
     GetPage(
