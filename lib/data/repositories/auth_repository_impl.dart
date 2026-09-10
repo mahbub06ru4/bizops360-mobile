@@ -27,7 +27,15 @@ class AuthRepositoryImpl implements AuthRepository {
     return _guard(() async {
       final result = await _remote.login(email: email, password: password);
       await _secureStore.writeToken(result.token);
-      return authUserFromJson(result.user);
+      // The login payload carries roles but not `permissions`; hydrate the full
+      // profile via `auth/me` so the permission-gated UI (nav, actions) is
+      // correct from the first frame. Fall back to the login user if that call
+      // fails — the token is already stored, so a resume will hydrate later.
+      try {
+        return authUserFromJson(await _remote.me());
+      } on DioException {
+        return authUserFromJson(result.user);
+      }
     });
   }
 

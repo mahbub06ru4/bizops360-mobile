@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('PermissionResolver', () {
     const r = PermissionResolver(
-      permissions: {'task.view', 'visa.view'},
+      permissions: {'task.view', 'visa_application.view'},
       roles: {'manager'},
       enabledFeatures: {'tasks'},
       industry: 'travel',
@@ -13,8 +13,8 @@ void main() {
     test('can / canAny / canAll', () {
       expect(r.can('task.view'), isTrue);
       expect(r.can('task.create'), isFalse);
-      expect(r.canAny(['task.create', 'visa.view']), isTrue);
-      expect(r.canAll(['task.view', 'visa.view']), isTrue);
+      expect(r.canAny(['task.create', 'visa_application.view']), isTrue);
+      expect(r.canAll(['task.view', 'visa_application.view']), isTrue);
       expect(r.canAll(['task.view', 'task.create']), isFalse);
     });
 
@@ -34,7 +34,7 @@ void main() {
     test('allows combines permission and feature', () {
       expect(r.allows('task.view', feature: 'tasks'), isTrue);
       expect(r.allows('task.view', feature: 'crm'), isFalse);
-      expect(r.allows('visa.view'), isTrue);
+      expect(r.allows('visa_application.view'), isTrue);
     });
   });
 }
