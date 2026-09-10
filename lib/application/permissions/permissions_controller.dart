@@ -25,4 +25,9 @@ class PermissionsController extends GetxController {
   bool canAny(Iterable<String> perms) => resolver.canAny(perms);
   bool allows(String permission, {String? feature}) =>
       resolver.allows(permission, feature: feature);
+
+  /// The tenant's industry runs a travel agency — travel-only nav and dashboard
+  /// sections gate on this, not just on a permission the owner role happens to
+  /// hold in every industry.
+  bool get isTravel => resolver.isTravel;
 }

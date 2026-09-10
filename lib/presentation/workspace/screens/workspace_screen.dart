@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../application/auth/auth_controller.dart';
+import '../../../application/permissions/permissions_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/permissions/can.dart';
 import '../../../core/permissions/permissions.dart';
@@ -88,26 +89,27 @@ class WorkspaceScreen extends StatelessWidget {
             ),
           ]),
 
-          _Group(Tr.wsSectionTravel.tr, [
-            _Row(
-              Icons.groups_2_outlined,
-              Tr.wsTravellers.tr,
-              () => Get.toNamed<void>(Routes.travellers),
-              permission: Perm.travellerView,
-            ),
-            _Row(
-              Icons.flight_outlined,
-              Tr.wsBookings.tr,
-              () => Get.toNamed<void>(Routes.bookings),
-              permission: Perm.bookingView,
-            ),
-            _Row(
-              Icons.flight_takeoff_outlined,
-              Tr.wsDepartures.tr,
-              () => Get.toNamed<void>(Routes.departures),
-              permission: Perm.bookingView,
-            ),
-          ]),
+          if (Get.find<PermissionsController>().isTravel)
+            _Group(Tr.wsSectionTravel.tr, [
+              _Row(
+                Icons.groups_2_outlined,
+                Tr.wsTravellers.tr,
+                () => Get.toNamed<void>(Routes.travellers),
+                permission: Perm.travellerView,
+              ),
+              _Row(
+                Icons.flight_outlined,
+                Tr.wsBookings.tr,
+                () => Get.toNamed<void>(Routes.bookings),
+                permission: Perm.bookingView,
+              ),
+              _Row(
+                Icons.flight_takeoff_outlined,
+                Tr.wsDepartures.tr,
+                () => Get.toNamed<void>(Routes.departures),
+                permission: Perm.bookingView,
+              ),
+            ]),
 
           _Group(Tr.wsSectionManage.tr, [
             _Row(
