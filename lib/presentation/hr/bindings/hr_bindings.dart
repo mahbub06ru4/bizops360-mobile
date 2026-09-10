@@ -1,8 +1,14 @@
 import 'package:get/get.dart';
 
+import '../../../data/datasources/finance_remote_datasource.dart';
+import '../../../data/datasources/hr_remote_datasource.dart';
+import '../../../data/repositories/attendance_repository_impl.dart';
+import '../../../data/repositories/expense_repository_impl.dart';
 import '../../../data/repositories/fake_attendance_repository.dart';
 import '../../../data/repositories/fake_expense_repository.dart';
 import '../../../data/repositories/fake_leave_repository.dart';
+import '../../../data/repositories/leave_repository_impl.dart';
+import '../../../data/repositories/repo_registry.dart';
 import '../../../domain/repositories/attendance_repository.dart';
 import '../../../domain/repositories/expense_repository.dart';
 import '../../../domain/repositories/leave_repository.dart';
@@ -11,19 +17,20 @@ import '../controllers/approvals_controller.dart';
 import '../controllers/attendance_controller.dart';
 import '../controllers/leave_controller.dart';
 
-// TODO(api): swap the fakes for HTTP-backed impls when Env.useFakeData is false.
+void _ensureAttendanceRepo() => registerRepo<AttendanceRepository>(
+  (client) => AttendanceRepositoryImpl(HrRemoteDataSource(client)),
+  FakeAttendanceRepository.new,
+);
 
-void _ensureAttendanceRepo() {
-  if (!Get.isRegistered<AttendanceRepository>()) {
-    Get.put<AttendanceRepository>(FakeAttendanceRepository(), permanent: true);
-  }
-}
+void _ensureLeaveRepo() => registerRepo<LeaveRepository>(
+  (client) => LeaveRepositoryImpl(HrRemoteDataSource(client)),
+  FakeLeaveRepository.new,
+);
 
-void _ensureLeaveRepo() {
-  if (!Get.isRegistered<LeaveRepository>()) {
-    Get.put<LeaveRepository>(FakeLeaveRepository(), permanent: true);
-  }
-}
+void ensureExpenseRepo() => registerRepo<ExpenseRepository>(
+  (client) => ExpenseRepositoryImpl(FinanceRemoteDataSource(client)),
+  FakeExpenseRepository.new,
+);
 
 class AttendanceBinding extends Bindings {
   @override
@@ -45,9 +52,7 @@ class ApprovalsBinding extends Bindings {
   @override
   void dependencies() {
     _ensureLeaveRepo();
-    if (!Get.isRegistered<ExpenseRepository>()) {
-      Get.put<ExpenseRepository>(FakeExpenseRepository(), permanent: true);
-    }
+    ensureExpenseRepo();
     Get.lazyPut<ApprovalsController>(() => ApprovalsController(Get.find()));
     Get.lazyPut<ExpenseApprovalsController>(
       () => ExpenseApprovalsController(Get.find()),

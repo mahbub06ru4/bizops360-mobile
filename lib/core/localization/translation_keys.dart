@@ -129,6 +129,10 @@ abstract final class Tr {
   static const travHistory = 'trav.history';
   static const travPassportExpired = 'trav.passport_expired';
   static const travPassportSoon = 'trav.passport_soon';
+  static const travNew = 'trav.new';
+  static const travFullName = 'trav.full_name';
+  static const travPhone = 'trav.phone';
+  static const travCreated = 'trav.created';
 
   // Travel — bookings
   static const bookingsTitle = 'bk.title';

@@ -17,4 +17,12 @@ class TravellerRemoteDataSource {
     final res = await _client.get<Map<String, dynamic>>('/travellers/$id');
     return envelopeObject(res.data);
   }
+
+  Future<Map<String, dynamic>> create(Map<String, dynamic> body) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/travellers',
+      body: body,
+    );
+    return envelopeObject(res.data);
+  }
 }

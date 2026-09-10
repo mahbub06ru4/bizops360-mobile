@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/localization/translation_keys.dart';
+import '../../../../core/permissions/can.dart';
+import '../../../../core/permissions/permissions.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -9,6 +11,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../../../domain/entities/traveller.dart';
 import '../controllers/travellers_controller.dart';
+import 'traveller_create_sheet.dart';
 
 class TravellersScreen extends GetView<TravellersController> {
   const TravellersScreen({super.key});
@@ -17,6 +20,15 @@ class TravellersScreen extends GetView<TravellersController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(Tr.travellersTitle.tr)),
+      floatingActionButton: Can(
+        Perm.travellerCreate,
+        travelOnly: true,
+        child: FloatingActionButton.extended(
+          onPressed: () => showTravellerCreateSheet(controller),
+          icon: const Icon(Icons.person_add_alt_1),
+          label: Text(Tr.travNew.tr),
+        ),
+      ),
       body: Column(
         children: [
           Padding(

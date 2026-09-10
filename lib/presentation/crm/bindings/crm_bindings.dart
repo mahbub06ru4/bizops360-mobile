@@ -1,18 +1,19 @@
 import 'package:get/get.dart';
 
+import '../../../data/datasources/crm_remote_datasource.dart';
+import '../../../data/repositories/crm_repository_impl.dart';
 import '../../../data/repositories/fake_crm_repository.dart';
+import '../../../data/repositories/repo_registry.dart';
 import '../../../domain/entities/customer.dart';
 import '../../../domain/repositories/crm_repository.dart';
 import '../controllers/customer_detail_controller.dart';
 import '../controllers/customers_controller.dart';
 import '../controllers/follow_ups_controller.dart';
 
-// TODO(api): CrmRepositoryImpl when Env.useFakeData is false.
-void _ensureCrmRepo() {
-  if (!Get.isRegistered<CrmRepository>()) {
-    Get.put<CrmRepository>(FakeCrmRepository(), permanent: true);
-  }
-}
+void _ensureCrmRepo() => registerRepo<CrmRepository>(
+  (client) => CrmRepositoryImpl(CrmRemoteDataSource(client)),
+  FakeCrmRepository.new,
+);
 
 class CustomersBinding extends Bindings {
   @override
