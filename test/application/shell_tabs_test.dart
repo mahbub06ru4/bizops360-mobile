@@ -6,7 +6,7 @@ void main() {
   group('shellTabsFor', () {
     test('travel manager sees Home · Customers · Visa · Tasks · More', () {
       const r = PermissionResolver(
-        permissions: {'traveller.view', 'visa.view', 'task.view'},
+        permissions: {'traveller.view', 'visa_application.view', 'task.view'},
         roles: {'manager'},
         industry: 'travel',
       );
@@ -21,7 +21,7 @@ void main() {
 
     test('non-travel tenant never gets the Visa tab', () {
       const r = PermissionResolver(
-        permissions: {'customer.view', 'visa.view', 'task.view'},
+        permissions: {'customer.view', 'visa_application.view', 'task.view'},
         industry: 'consultancy',
       );
       expect(shellTabsFor(r), isNot(contains(ShellTabId.visa)));
@@ -30,7 +30,7 @@ void main() {
 
     test('a disabled feature hides its tab even with the permission', () {
       const r = PermissionResolver(
-        permissions: {'visa.view', 'task.view'},
+        permissions: {'visa_application.view', 'task.view'},
         enabledFeatures: {'travel_visa'}, // tasks feature off
         industry: 'travel',
       );

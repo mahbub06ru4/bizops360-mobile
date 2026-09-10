@@ -7,7 +7,7 @@
 abstract final class Perm {
   // Organisation / people
   static const employeeView = 'employee.view';
-  static const employeeManage = 'employee.manage';
+  static const employeeManage = 'employee.update';
 
   // Tasks & operations
   static const taskView = 'task.view';
@@ -15,37 +15,37 @@ abstract final class Perm {
   static const taskAssign = 'task.assign';
 
   // Attendance & leave
-  static const attendanceSelf = 'attendance.self';
+  static const attendanceSelf = 'attendance.check_in';
   static const attendanceView = 'attendance.view';
   static const leaveRequest = 'leave.request';
   static const leaveApprove = 'leave.approve';
 
   // Documents
-  static const documentView = 'document.view';
-  static const documentManage = 'document.manage';
+  static const documentView = 'employee_document.view';
+  static const documentManage = 'employee_document.upload';
 
   // CRM
   static const customerView = 'customer.view';
-  static const customerManage = 'customer.manage';
-  static const followUpManage = 'follow_up.manage';
+  static const customerManage = 'customer.update';
+  static const followUpManage = 'follow_up.update';
 
   // Finance
-  static const expenseSubmit = 'expense.submit';
-  static const expenseApprove = 'expense.approve';
+  static const expenseSubmit = 'expense.create';
+  static const expenseApprove = 'expense.update';
   static const invoiceView = 'invoice.view';
-  static const invoiceManage = 'invoice.manage';
-  static const paymentRecord = 'payment.record';
+  static const invoiceManage = 'invoice.update';
+  static const paymentRecord = 'invoice.record_payment';
 
   // Travel (industry:travel)
   static const travellerView = 'traveller.view';
-  static const travellerManage = 'traveller.manage';
-  static const visaView = 'visa.view';
-  static const visaManage = 'visa.manage';
+  static const travellerManage = 'traveller.update';
+  static const visaView = 'visa_application.view';
+  static const visaManage = 'visa_application.update';
   static const bookingView = 'booking.view';
-  static const bookingManage = 'booking.manage';
+  static const bookingManage = 'booking.update';
 
   // Reports / dashboards
-  static const reportsView = 'reports.view';
+  static const reportsView = 'finance.view_reports';
 }
 
 /// Named feature flags carried by `/me/bootstrap` `enabled_features`. A feature

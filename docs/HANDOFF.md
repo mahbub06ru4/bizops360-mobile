@@ -239,7 +239,26 @@ already registered permanent in `AppBinding` when `!useFakeData`. Live check:
 Still on fakes: notifications, tasks, CRM/customers, HR (attendance/leave),
 expenses, documents, bookings, reports/overview.
 
-**Toolchain (Mac, 2026-09-10):** host JDK is 26 → `flutter build apk` fails
+**Auth hydration (2026-09-10):** `POST auth/login` returns `roles` but **not
+`permissions`** — `AuthRepositoryImpl.signIn` now chains `auth/me` after storing
+the token so the permission-gated nav/actions are correct on first frame
+(falls back to the login user if `me` fails). The `Perm.*` catalogue was
+reconciled against the live `/auth/me` payload (`visa.view` →
+`visa_application.view`, `attendance.self` → `attendance.check_in`,
+`document.view` → `employee_document.view`, `*.manage` → `*.update`,
+`reports.view` → `finance.view_reports`, …). `Feature.*` flags still all-on
+until `/me/bootstrap` (7a) ships.
+
+**Verified on iOS simulator (2026-09-10):** login → Home (travel nav: Home ·
+Customers · Visa · Tasks · More) → Visa queue + detail render live
+`visa-applications` data; toggling a requirement round-trips through
+`PUT /visa-requirements/{id}` and the backend advances
+`documents_pending → documents_collected`.
+
+**Toolchain (Mac, 2026-09-10):** iOS needs CocoaPods (`brew install cocoapods`)
++ deployment target **15.0** (bumped in `ios/Podfile`, `project.pbxproj`,
+`AppFrameworkInfo.plist` — firebase_core 4.x requires it). host JDK is 26 →
+`flutter build apk` fails
 (needs JDK 17); web build fails (`firebase_core_web` 3.11 vs current Dart
 `isA`); iOS needs CocoaPods (not installed). None block `flutter analyze` /
 `flutter test`. Fix the JDK before an Android run.
