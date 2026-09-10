@@ -3,6 +3,11 @@ import 'package:get/get.dart';
 import '../../presentation/auth/bindings/sign_in_binding.dart';
 import '../../presentation/auth/screens/sign_in_screen.dart';
 import '../../presentation/common/coming_soon_screen.dart';
+import '../../presentation/hr/bindings/hr_bindings.dart';
+import '../../presentation/hr/screens/approvals_screen.dart';
+import '../../presentation/hr/screens/attendance_screen.dart';
+import '../../presentation/hr/screens/leave_request_screen.dart';
+import '../../presentation/hr/screens/leave_screen.dart';
 import '../../presentation/notifications/bindings/notifications_binding.dart';
 import '../../presentation/notifications/screens/notifications_screen.dart';
 import '../../presentation/profile/screens/profile_screen.dart';
@@ -47,6 +52,30 @@ abstract final class AppPages {
       name: Routes.taskDetail,
       page: () => const TaskDetailScreen(),
       binding: TaskDetailBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.attendance,
+      page: () => const AttendanceScreen(),
+      binding: AttendanceBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.leave,
+      page: () => const LeaveScreen(),
+      binding: LeaveBinding(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      // No binding — reuses the LeaveController from the LeaveScreen beneath it.
+      name: Routes.leaveRequest,
+      page: () => const LeaveRequestScreen(),
+      middlewares: [AuthGuard()],
+    ),
+    GetPage(
+      name: Routes.approvals,
+      page: () => const ApprovalsScreen(),
+      binding: ApprovalsBinding(),
       middlewares: [AuthGuard()],
     ),
     GetPage(

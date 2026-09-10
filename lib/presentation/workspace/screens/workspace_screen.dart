@@ -61,14 +61,14 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.fingerprint,
               Tr.wsAttendance.tr,
-              () => _soon(Tr.wsAttendance.tr),
+              () => Get.toNamed<void>(Routes.attendance),
               permission: Perm.attendanceSelf,
               feature: Feature.attendance,
             ),
             _Row(
               Icons.event_available_outlined,
               Tr.wsLeave.tr,
-              () => _soon(Tr.wsLeave.tr),
+              () => Get.toNamed<void>(Routes.leave),
               permission: Perm.leaveRequest,
               feature: Feature.leave,
             ),
@@ -112,7 +112,7 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.rule_outlined,
               Tr.wsApprovals.tr,
-              () => _soon(Tr.wsApprovals.tr),
+              () => Get.toNamed<void>(Routes.approvals),
               anyOf: const [Perm.leaveApprove, Perm.expenseApprove],
             ),
           ]),

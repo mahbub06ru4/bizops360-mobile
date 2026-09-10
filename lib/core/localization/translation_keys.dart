@@ -22,6 +22,51 @@ abstract final class Tr {
   static const markAllRead = 'notifications.mark_all_read';
   static const notificationsEmpty = 'notifications.empty';
 
+  // Attendance
+  static const attTitle = 'att.title';
+  static const attCheckIn = 'att.check_in';
+  static const attCheckOut = 'att.check_out';
+  static const attCheckedInAt = 'att.checked_in_at';
+  static const attWorked = 'att.worked';
+  static const attThisWeek = 'att.this_week';
+  static const attHistory = 'att.history';
+  static const attDone = 'att.done';
+  static const attNotIn = 'att.not_in';
+  static const attStatusPresent = 'att.status_present';
+  static const attStatusLate = 'att.status_late';
+  static const attStatusEarly = 'att.status_early';
+  static const attStatusAbsent = 'att.status_absent';
+  static const attStatusLeave = 'att.status_leave';
+  static const attStatusHoliday = 'att.status_holiday';
+
+  // Leave
+  static const leaveTitle = 'leave.title';
+  static const leaveBalance = 'leave.balance';
+  static const leaveRemaining = 'leave.remaining';
+  static const leaveMyRequests = 'leave.my_requests';
+  static const leaveNew = 'leave.new';
+  static const leaveType = 'leave.type';
+  static const leaveTypeCasual = 'leave.type_casual';
+  static const leaveTypeSick = 'leave.type_sick';
+  static const leaveTypeAnnual = 'leave.type_annual';
+  static const leaveTypeUnpaid = 'leave.type_unpaid';
+  static const leaveFrom = 'leave.from';
+  static const leaveTo = 'leave.to';
+  static const leaveReason = 'leave.reason';
+  static const leaveSubmit = 'leave.submit';
+  static const leaveDaysN = 'leave.days_n';
+  static const leaveStatusPending = 'leave.status_pending';
+  static const leaveStatusApproved = 'leave.status_approved';
+  static const leaveStatusRejected = 'leave.status_rejected';
+  static const leaveStatusCancelled = 'leave.status_cancelled';
+  static const leaveSubmitted = 'leave.submitted';
+
+  // Approvals
+  static const approvalsTitle = 'approvals.title';
+  static const approvalsEmpty = 'approvals.empty';
+  static const approve = 'approvals.approve';
+  static const reject = 'approvals.reject';
+
   // Tasks
   static const tasksEmpty = 'tasks.empty';
   static const taskStatusOpen = 'tasks.status_open';
