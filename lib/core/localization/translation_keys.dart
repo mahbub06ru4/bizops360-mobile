@@ -92,6 +92,17 @@ abstract final class Tr {
   static const outcomeNotInterested = 'crm.outcome_not_interested';
   static const outcomeWon = 'crm.outcome_won';
 
+  // Reports
+  static const reportsTitle = 'reports.title';
+  static const repConverted = 'reports.converted';
+  static const repPipeline = 'reports.pipeline';
+  static const repRevenue = 'reports.revenue';
+  static const repOutstanding = 'reports.outstanding';
+  static const repDues = 'reports.dues';
+  static const repVisaApproved = 'reports.visa_approved';
+  static const repVisaInProgress = 'reports.visa_in_progress';
+  static const repMonthlyRevenue = 'reports.monthly_revenue';
+
   // Documents
   static const docExpiring = 'doc.expiring';
   static const docExpired = 'doc.expired';
@@ -105,6 +116,41 @@ abstract final class Tr {
   static const docCatCertificate = 'doc.cat_certificate';
   static const docCatNid = 'doc.cat_nid';
   static const docCatOther = 'doc.cat_other';
+
+  // Travel — travellers
+  static const travellersTitle = 'trav.title';
+  static const travSearch = 'trav.search';
+  static const travPassport = 'trav.passport';
+  static const travPassportNo = 'trav.passport_no';
+  static const travExpiry = 'trav.expiry';
+  static const travNationality = 'trav.nationality';
+  static const travDob = 'trav.dob';
+  static const travTrips = 'trav.trips';
+  static const travHistory = 'trav.history';
+  static const travPassportExpired = 'trav.passport_expired';
+  static const travPassportSoon = 'trav.passport_soon';
+
+  // Travel — bookings
+  static const bookingsTitle = 'bk.title';
+  static const departuresTitle = 'bk.departures_title';
+  static const bkRef = 'bk.ref';
+  static const bkIssue = 'bk.issue';
+  static const bkCancel = 'bk.cancel';
+  static const bkSegments = 'bk.segments';
+  static const bkHotel = 'bk.hotel';
+  static const bkItinerary = 'bk.itinerary';
+  static const bkNew = 'bk.new';
+  static const bkTraveller = 'bk.traveller';
+  static const bkAmount = 'bk.amount';
+  static const bkDate = 'bk.date';
+  static const bkCreated = 'bk.created';
+  static const bkKindFlight = 'bk.kind_flight';
+  static const bkKindHotel = 'bk.kind_hotel';
+  static const bkKindPackage = 'bk.kind_package';
+  static const bkStatusHeld = 'bk.status_held';
+  static const bkStatusTicketed = 'bk.status_ticketed';
+  static const bkStatusCancelled = 'bk.status_cancelled';
+  static const bkStatusCompleted = 'bk.status_completed';
 
   // Travel — visa
   static const visaStageCase = 'visa.stage_case';
@@ -201,6 +247,10 @@ abstract final class Tr {
   static const wsApprovals = 'workspace.approvals';
   static const wsSettings = 'workspace.settings';
   static const wsHelp = 'workspace.help';
+  static const wsTravellers = 'workspace.travellers';
+  static const wsBookings = 'workspace.bookings';
+  static const wsDepartures = 'workspace.departures';
+  static const wsSectionTravel = 'workspace.section_travel';
   static const wsSectionWork = 'workspace.section_work';
   static const wsSectionManage = 'workspace.section_manage';
   static const wsSectionAccount = 'workspace.section_account';
