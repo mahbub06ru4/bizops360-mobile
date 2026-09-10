@@ -173,16 +173,17 @@ Bring the scaffold up to the target architecture.
    `/settings` (real: theme mode + language + sign-out), `/profile` (identity +
    roles), `/coming-soon` (generic placeholder, title via `Get.arguments`).
    `AuthGuard` now covers every route.
-4. **Notifications** (`presentation/notifications/`) — list
-   (`GET /api/v1/notifications`), mark read, grouped Today / Earlier, unread
-   badge on the app bar (badge widget already on Home), deep-link routing stub.
-   *(next)*
+4. **Notifications** (`presentation/notifications/`) — ✅ grouped Today / Earlier
+   list, unread emphasis + dot, mark-all-read, tap → markRead + optional route,
+   pull-to-refresh. `FakeNotificationRepository` seeded. Home bell navigates
+   here (badge count still static — wire to a real unread count later).
 5. **Profile edit / app-lock** — profile is read-only for now; edit + biometric
    app-lock (`local_auth`) land with M6 hardening.
-6. **Tasks** (`presentation/tasks/`) — My tasks (Today / Overdue / Upcoming),
-   detail (one-tap status, subtasks + progress, comments thread, attachments).
-   Manager: assign / reassign / create. Backend: `app/Modules/Operations`.
-   Placeholder screen + nav slot already wired.
+6. **Tasks** (`presentation/tasks/`) — ✅ list (Today / Overdue / Upcoming tabs
+   with counts, `TaskTile`), ✅ detail (status chips, subtask progress bar +
+   checklist, comments thread + input, mark done / reopen). Subtasks + comments
+   are **static sample** (`// TODO(api)`). Still ahead: manager assign / reassign
+   / create, real attachments. Backend: `app/Modules/Operations`.
 7. **Attendance + Leave** (`presentation/attendance`, `presentation/leave`) —
    check-in / check-out with geolocation (`geolocator`), optional selfie
    (`image_picker`), today's status, week bars, history. **Offline queue**:
