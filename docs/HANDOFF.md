@@ -210,15 +210,39 @@ Bring the scaffold up to the target architecture.
 3b. **Manager task actions** — ✅ `TasksScreen` FAB (`Can(task.create)`) →
    task_create_sheet (title, priority, assignee, due). Reassign still ahead.
 
-### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`) ✅ (static)
+### M4 — Travel agency (`modules/travel/`, gated on `TenantContext.isTravel`) — UI ✅, API wired for travellers + visa
 1. **Travellers & passenger info** — ✅ `TravellersScreen` (search by name /
    passport, expiry warnings), `TravellerDetailScreen` (passport card + expiry
-   chip, travel-history timeline). `FakeTravellerRepository` seeded.
+   chip, travel-history timeline). **API wired:** `TravellerRepositoryImpl`
+   (`GET /travellers`, `/travellers/{id}`) via `TravellerRemoteDataSource` +
+   `travel_mappers.dart`; `travellers_bindings.dart` picks real vs
+   `FakeTravellerRepository` on `Env.useFakeData`. History endpoint not built
+   server-side yet → impl returns an empty timeline.
 2. **Passport** — ✅ folded into the traveller detail (number, expiry, DOB,
    expired / expiring-soon chip). Deadline reminders still ahead.
 3. **Visa applications** — ✅ `VisaQueueScreen` (stage filter chips, doc-progress
    cards), `VisaDetailScreen` (doc checklist gates **submit**, stage-aware
    action bar: submit → processing → approve/reject, terminal decision state).
+   **API wired:** `VisaRepositoryImpl` (`GET /visa-applications`, `/{id}`,
+   `PUT /visa-requirements/{id}`, `POST .../submit|processing|decision`).
+   Backend `stage` maps to `VisaStage`; `cancelled` collapses onto `rejected`.
+   `toggleDoc` resolves the requirement id by name (re-fetch → PUT → re-fetch).
+
+**API-integration pattern (M2–M4 remaining modules follow this):**
+`lib/core/network/api_envelope.dart` unwraps `{data:[…]}` / `{data:{…}}`;
+`lib/data/repositories/remote_guard.dart` `guardRequest()` maps `DioException` →
+`Failure`; a feature `*_bindings.dart` builds `XRepositoryImpl(XRemoteDataSource
+(Get.find<ApiClient>()))` when `!Env.useFakeData`, else the fake. `ApiClient` is
+already registered permanent in `AppBinding` when `!useFakeData`. Live check:
+`flutter test --tags integration --run-skipped test/data/travel_repository_live_test.dart`
+(needs `bizops360-api` up; logs in as `manager@wanderlust.test`).
+Still on fakes: notifications, tasks, CRM/customers, HR (attendance/leave),
+expenses, documents, bookings, reports/overview.
+
+**Toolchain (Mac, 2026-09-10):** host JDK is 26 → `flutter build apk` fails
+(needs JDK 17); web build fails (`firebase_core_web` 3.11 vs current Dart
+`isA`); iOS needs CocoaPods (not installed). None block `flutter analyze` /
+`flutter test`. Fix the JDK before an Android run.
 4. **Visa documents & deadlines** — `VisaSummarySection` on Home shows the
    pipeline counts (static). A dedicated pending-docs list is still ahead.
 5. **Travel operations** — ✅ `BookingsScreen` (status filter, quick-create
