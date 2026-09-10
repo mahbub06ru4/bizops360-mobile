@@ -1,4 +1,4 @@
-package com.bizops360.bizops360_mobile
+package com.bizops360.app
 
 import io.flutter.embedding.android.FlutterActivity
 

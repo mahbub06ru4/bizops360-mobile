@@ -244,17 +244,32 @@ Bring the scaffold up to the target architecture.
 - Cross-check `enabledFeatures` toggles hide whole nav branches cleanly.
 
 ### M6 — Production mobile
-- Crash reporting + APM (Sentry / Firebase Crashlytics), after 7a `/devices`.
-- Performance pass, secure-storage review, list pagination + response caching.
-- Push notifications (FCM) + deep links from notification payloads.
-- Force-update / maintenance banner from a bootstrap flag.
-- App-lock (biometric) in Profile (`local_auth`).
-- CI/CD to store tracks; store listing readiness.
+- ✅ **Crash-reporting seam** — `core/observability/CrashReporter` (abstract;
+  Noop + Logging defaults). `bootstrap.dart` runs inside `runZonedGuarded` and
+  installs `FlutterError.onError` + `PlatformDispatcher.onError` handlers.
+  `AuthController` tags reports with `user_id` / `tenant` / `industry`.
+- ✅ **Identifiers + names** — `com.bizops360.app` on both platforms; display
+  name "BizOps 360". Android release signing reads `android/key.properties`
+  (git-ignored), falls back to debug keys. See `docs/RELEASE.md`.
+- **Firebase (FCM + Crashlytics)** — seam ready; blocked on config files.
+  See `docs/FIREBASE.md` — the user drops `google-services.json` /
+  `GoogleService-Info.plist`, then the packages + `FirebaseCrashReporter` +
+  `FirebaseMessagingPushService` slot in. Needs backend 7a `POST /devices`.
+- **Deep links from payloads** — the in-app path works already
+  (`AppNotification.route` → `NotificationsController.open` → `Get.toNamed`).
+  OS-level links (`app_links` + manifest intent-filters / associated domains)
+  are a follow-up once the URL scheme / domain is decided.
+- **App-lock (biometric)** — dropped as optional polish; `local_auth` 3.x is
+  native-heavy and hard to verify without a device. Revisit if needed.
+- Still ahead: list pagination + response caching (`AppPagination` widget +
+  a `KvStore` TTL cache) once a real endpoint returns large lists;
+  force-update / maintenance banner from a `/me/bootstrap` flag; store assets
+  (icon, splash, screenshots); CI publish to store tracks.
 
 ### Cross-cutting (fold in as you go)
-- `flavor.dart` staging config + `--flavor` story for Android/iOS if needed.
-- Firebase (FCM + Crashlytics) wiring — after 7a `/devices`.
-- Keep `intl` BDT helper (`৳`, 2-2-3, lakh/crore) in one place.
+- `flavor.dart` staging config + a `--flavor` story for Android/iOS if needed.
+- Keep the `intl` BDT helper (`৳`, 2-2-3, lakh/crore) in one place
+  (`core/extensions/money_format.dart`).
 
 ---
 

@@ -42,6 +42,15 @@ migrate_working_dir/
 *.app
 *.dill
 
+# Firebase config (project keys — keep out of the public repo; see docs/FIREBASE.md)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Release signing (see docs/RELEASE.md)
+android/key.properties
+**/*.jks
+**/*.keystore
+
 # Symbolication related
 app.*.symbols
 
