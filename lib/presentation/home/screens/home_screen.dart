@@ -56,12 +56,24 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: AppSpacing.lg,
+        toolbarHeight: 72,
         title: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${_greetingKey().tr}, $firstName', style: text.titleLarge),
+            Text(
+              '${_greetingKey().tr}, $firstName',
+              style: text.titleLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             if (user?.tenant != null)
-              Text(user!.tenant!.name, style: text.bodySmall),
+              Text(
+                user!.tenant!.name,
+                style: text.bodySmall,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
           ],
         ),
         actions: [

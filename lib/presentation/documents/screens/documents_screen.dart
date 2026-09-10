@@ -19,12 +19,16 @@ class DocumentsScreen extends GetView<DocumentsController> {
       appBar: AppBar(title: Text(Tr.wsDocuments.tr)),
       body: Column(
         children: [
-          SizedBox(
-            height: 44,
-            child: Obx(
-              () => ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          Obx(
+            () => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.xs,
+                AppSpacing.lg,
+                AppSpacing.xs,
+              ),
+              child: Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: AppSpacing.sm),

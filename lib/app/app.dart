@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -38,6 +39,13 @@ class BizOpsApp extends StatelessWidget {
           supportedLocales: const [
             AppTranslations.english,
             AppTranslations.bengali,
+          ],
+          // Without these, switching to bn_BD throws "No MaterialLocalizations
+          // found" as soon as a Scaffold / AppBar / TabBar rebuilds.
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
           ],
         ),
       ),

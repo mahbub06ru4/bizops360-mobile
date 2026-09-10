@@ -105,7 +105,7 @@ class AppTheme {
         backgroundColor: c.surface,
         indicatorColor: c.brandSoft,
         elevation: 0,
-        height: 64,
+        height: 68,
         labelTextStyle: WidgetStatePropertyAll(
           text.labelSmall?.copyWith(letterSpacing: 0.2),
         ),

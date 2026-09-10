@@ -33,12 +33,16 @@ class CustomersScreen extends GetView<CustomersController> {
               onChanged: (v) => controller.query.value = v,
             ),
           ),
-          SizedBox(
-            height: 44,
-            child: Obx(
-              () => ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          Obx(
+            () => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.xs,
+                AppSpacing.lg,
+                AppSpacing.xs,
+              ),
+              child: Row(
                 children: [
                   for (final stage in PipelineStage.values)
                     Padding(

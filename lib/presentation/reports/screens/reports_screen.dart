@@ -27,13 +27,15 @@ class ReportsScreen extends GetView<ReportsController> {
             data: (o) => ListView(
               padding: EdgeInsets.all(AppSpacing.lg),
               children: [
-                GridView.count(
-                  crossAxisCount: 2,
+                GridView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: AppSpacing.sm,
-                  crossAxisSpacing: AppSpacing.sm,
-                  childAspectRatio: 1.7,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: AppSpacing.sm,
+                    crossAxisSpacing: AppSpacing.sm,
+                    mainAxisExtent: 96,
+                  ),
                   children: [
                     _Kpi(
                       Tr.repRevenue.tr,

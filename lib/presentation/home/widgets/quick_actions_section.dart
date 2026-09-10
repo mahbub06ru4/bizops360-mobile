@@ -43,7 +43,7 @@ class QuickActionsSection extends StatelessWidget {
             child: Text(Tr.homeQuickActions.tr, style: text.titleMedium),
           ),
           SizedBox(
-            height: 92,
+            height: 108,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: actions.length,
@@ -81,7 +81,7 @@ class _ActionTile extends StatelessWidget {
       onTap: onTap,
       borderRadius: AppRadius.brMd,
       child: Container(
-        width: 96,
+        width: 104,
         padding: EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
           color: c.surface,

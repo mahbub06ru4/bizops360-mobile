@@ -19,12 +19,16 @@ class VisaQueueScreen extends GetView<VisaQueueController> {
       appBar: AppBar(title: Text(Tr.navVisa.tr)),
       body: Column(
         children: [
-          SizedBox(
-            height: 44,
-            child: Obx(
-              () => ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          Obx(
+            () => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.xs,
+                AppSpacing.lg,
+                AppSpacing.xs,
+              ),
+              child: Row(
                 children: [
                   for (final stage in VisaStage.values)
                     Padding(
