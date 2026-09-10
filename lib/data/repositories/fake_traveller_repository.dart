@@ -10,7 +10,7 @@ class FakeTravellerRepository implements TravellerRepository {
   static DateTime _fromNow(int days) =>
       DateTime.now().add(Duration(days: days));
 
-  static final _items = <Traveller>[
+  static var _items = <Traveller>[
     Traveller(
       id: 't1',
       name: 'Karim Rahman',
@@ -56,6 +56,30 @@ class FakeTravellerRepository implements TravellerRepository {
     return _delayed(
       m == null ? const Result.err(NotFoundFailure()) : Result.ok(m),
     );
+  }
+
+  var _nextId = 90;
+
+  @override
+  Future<Result<Traveller>> create({
+    required String name,
+    String? nationality,
+    String? phone,
+    String? passportNumber,
+    DateTime? passportExpiry,
+  }) {
+    final t = Traveller(
+      id: 't${_nextId++}',
+      name: name,
+      nationality: (nationality == null || nationality.isEmpty)
+          ? 'Bangladeshi'
+          : nationality,
+      phone: phone,
+      passportNumber: passportNumber,
+      passportExpiry: passportExpiry,
+    );
+    _items = [t, ..._items];
+    return _delayed(Result.ok(t));
   }
 
   @override

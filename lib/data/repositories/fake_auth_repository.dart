@@ -30,6 +30,7 @@ class FakeAuthRepository implements AuthRepository {
       'expense.update',
       'employee_document.view',
       'traveller.view',
+      'traveller.create',
       'traveller.update',
       'visa_application.view',
       'visa_application.update',

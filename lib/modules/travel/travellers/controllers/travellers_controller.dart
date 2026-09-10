@@ -27,6 +27,37 @@ class TravellersController extends GetxController {
     );
   }
 
+  final RxnString createError = RxnString();
+
+  /// Creates a traveller, then reloads the list from the source so the new row
+  /// reflects exactly what the backend stored. Returns true on success.
+  Future<bool> create({
+    required String name,
+    String? nationality,
+    String? phone,
+    String? passportNumber,
+    DateTime? passportExpiry,
+  }) async {
+    createError.value = null;
+    final result = await _repo.create(
+      name: name,
+      nationality: nationality,
+      phone: phone,
+      passportNumber: passportNumber,
+      passportExpiry: passportExpiry,
+    );
+    return result.fold(
+      (_) {
+        load();
+        return true;
+      },
+      (f) {
+        createError.value = f.message;
+        return false;
+      },
+    );
+  }
+
   List<Traveller> get visible {
     final all = state.value.valueOrNull ?? const [];
     final q = query.value.trim().toLowerCase();

@@ -38,6 +38,7 @@ abstract final class Perm {
 
   // Travel (industry:travel)
   static const travellerView = 'traveller.view';
+  static const travellerCreate = 'traveller.create';
   static const travellerManage = 'traveller.update';
   static const visaView = 'visa_application.view';
   static const visaManage = 'visa_application.update';
