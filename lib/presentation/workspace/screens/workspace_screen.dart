@@ -82,7 +82,7 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.folder_outlined,
               Tr.wsDocuments.tr,
-              () => _soon(Tr.wsDocuments.tr),
+              () => Get.toNamed<void>(Routes.documents),
               permission: Perm.documentView,
               feature: Feature.documents,
             ),

@@ -92,6 +92,20 @@ abstract final class Tr {
   static const outcomeNotInterested = 'crm.outcome_not_interested';
   static const outcomeWon = 'crm.outcome_won';
 
+  // Documents
+  static const docExpiring = 'doc.expiring';
+  static const docExpired = 'doc.expired';
+  static const docExpires = 'doc.expires';
+  static const docCatPassport = 'doc.cat_passport';
+  static const docCatVisa = 'doc.cat_visa';
+  static const docCatTicket = 'doc.cat_ticket';
+  static const docCatContract = 'doc.cat_contract';
+  static const docCatInvoice = 'doc.cat_invoice';
+  static const docCatAgreement = 'doc.cat_agreement';
+  static const docCatCertificate = 'doc.cat_certificate';
+  static const docCatNid = 'doc.cat_nid';
+  static const docCatOther = 'doc.cat_other';
+
   // Travel — visa
   static const visaStageCase = 'visa.stage_case';
   static const visaStageDocsRequired = 'visa.stage_docs_required';

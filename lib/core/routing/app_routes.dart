@@ -14,6 +14,7 @@ abstract final class Routes {
   static const expenses = '/expenses';
   static const expenseNew = '/expenses/new';
   static const visaDetail = '/visa/case';
+  static const documents = '/documents';
 
   // Workspace destinations
   static const settings = '/settings';

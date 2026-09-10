@@ -8,6 +8,8 @@ import '../../presentation/common/coming_soon_screen.dart';
 import '../../presentation/crm/bindings/crm_bindings.dart';
 import '../../presentation/crm/screens/customer_detail_screen.dart';
 import '../../presentation/crm/screens/follow_ups_screen.dart';
+import '../../presentation/documents/bindings/documents_binding.dart';
+import '../../presentation/documents/screens/documents_screen.dart';
 import '../../presentation/expenses/bindings/expenses_binding.dart';
 import '../../presentation/expenses/screens/expense_new_screen.dart';
 import '../../presentation/expenses/screens/expenses_screen.dart';
@@ -100,6 +102,11 @@ abstract final class AppPages {
       Routes.visaDetail,
       () => const VisaDetailScreen(),
       binding: VisaDetailBinding(),
+    ),
+    _guarded(
+      Routes.documents,
+      () => const DocumentsScreen(),
+      binding: DocumentsBinding(),
     ),
     _guarded(Routes.settings, () => const SettingsScreen()),
     _guarded(Routes.profile, () => const ProfileScreen()),
