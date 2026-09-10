@@ -1,20 +1,20 @@
 import 'package:get/get.dart';
 
-import '../../core/network/api_client.dart';
-import '../../core/network/auth_interceptor.dart';
-import '../../core/storage/kv_store.dart';
-import '../../core/storage/secure_store.dart';
-import '../../data/datasources/auth_remote_datasource.dart';
-import '../../data/repositories/auth_repository_impl.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../features/auth/controllers/auth_controller.dart';
-import '../../features/settings/settings_controller.dart';
+import '../core/network/api_client.dart';
+import '../core/network/auth_interceptor.dart';
+import '../core/storage/kv_store.dart';
+import '../core/storage/secure_store.dart';
+import '../data/datasources/auth_remote_datasource.dart';
+import '../data/repositories/auth_repository_impl.dart';
+import '../domain/repositories/auth_repository.dart';
+import 'auth/auth_controller.dart';
+import 'settings/settings_controller.dart';
 
 /// Wires the object graph once, before the first route. Order matters: storage →
 /// interceptor → client → data source → repository → session controller. The
 /// interceptor's unauthorized hook resolves [AuthController] lazily to avoid a
 /// cycle.
-class InitialBinding extends Bindings {
+class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<KvStore>(KvStore(), permanent: true);

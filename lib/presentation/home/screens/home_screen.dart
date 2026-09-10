@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/localization/translation_keys.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/widgets/section_card.dart';
-import '../../core/widgets/status_pill.dart';
-import '../auth/controllers/auth_controller.dart';
-import '../settings/settings_controller.dart';
+import '../../../application/auth/auth_controller.dart';
+import '../../../application/settings/settings_controller.dart';
+import '../../../core/localization/translation_keys.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/section_card.dart';
+import '../../../core/widgets/status_pill.dart';
 
 /// Scaffold-stage home: greets the signed-in user, shows what their session
 /// unlocks, and lets them switch language / theme and sign out. Feature decks

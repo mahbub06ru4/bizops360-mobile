@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'app/app.dart';
-import 'app/bindings/initial_binding.dart';
+import 'application/app_binding.dart';
 import 'core/config/env.dart';
 import 'core/config/flavor.dart';
 import 'core/storage/kv_store.dart';
@@ -12,6 +12,6 @@ Future<void> bootstrap(FlavorConfig config) async {
   WidgetsFlutterBinding.ensureInitialized();
   Env.init(config);
   await KvStore.ensureInitialised();
-  InitialBinding().dependencies();
+  AppBinding().dependencies();
   runApp(const BizOpsApp());
 }

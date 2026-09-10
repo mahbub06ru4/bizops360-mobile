@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../application/auth/auth_controller.dart';
 import '../../core/widgets/app_logo.dart';
-import '../auth/controllers/auth_controller.dart';
 
 /// First frame while the stored session is validated against `auth/me`.
 class SplashScreen extends StatefulWidget {

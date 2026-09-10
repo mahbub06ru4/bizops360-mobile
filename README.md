@@ -1,15 +1,18 @@
 # BizOps 360 — mobile
 
 Flutter (GetX) client for the [BizOps 360](../bizops360-api) field operations
-platform. One role-adaptive app for agency staff and managers — sign in with a
-company email, and the app builds itself around the roles, permissions and
-tenant industry returned by the API.
+platform. **One** multi-tenant, role- and permission-aware app — sign in with a
+company email and the app builds itself around the tenant industry, roles and
+permissions returned by the API. The first commercial release is focused on
+**Travel Agency Management**; the common platform (HR, tasks, CRM, finance,
+documents) is reached through role-aware **More / Workspace** navigation.
 
 ## Status
 
-Scaffold: architecture, theme (light/dark), EN/বাংলা, networking, and the
-**email sign-in → session → shell** flow. Feature decks (attendance, tasks,
-CRM, travel desk, expenses, manager dashboards) land in subsequent slices,
+Scaffold: architecture, theme (Light/Dark/System), EN/বাংলা, networking, and the
+**email sign-in → session → shell** flow. The permission-driven travel navigation
+(`Home | Customers | Visa | Tasks | More`), the travel Home dashboard, and the
+feature slices land in milestones M0–M6 — see [`docs/HANDOFF.md`](docs/HANDOFF.md),
 following the approved design mockup.
 
 ## Running

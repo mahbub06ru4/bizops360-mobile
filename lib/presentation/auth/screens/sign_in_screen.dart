@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../application/settings/settings_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_logo.dart';
-import '../../settings/settings_controller.dart';
 import '../controllers/sign_in_controller.dart';
 
 class SignInScreen extends GetView<SignInController> {

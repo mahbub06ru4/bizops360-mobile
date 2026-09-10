@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../application/navigation/shell_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../home/home_screen.dart';
-import '../controllers/shell_controller.dart';
+import '../../home/screens/home_screen.dart';
 
 /// The signed-in container: a bottom nav assembled by [ShellController] over an
 /// [IndexedStack] of feature roots. Only "Home" is built for the scaffold; the

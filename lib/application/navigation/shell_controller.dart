@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/localization/translation_keys.dart';
-import '../../auth/controllers/auth_controller.dart';
+import '../../core/localization/translation_keys.dart';
+import '../auth/auth_controller.dart';
 
 /// One bottom-nav destination.
 class NavTab {

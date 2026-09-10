@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
-import '../../../app/routes/app_routes.dart';
-import '../../../core/localization/translation_keys.dart';
-import '../../../domain/entities/auth_user.dart';
-import '../../../domain/repositories/auth_repository.dart';
+import '../../core/localization/translation_keys.dart';
+import '../../core/routing/app_routes.dart';
+import '../../domain/entities/auth_user.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 /// Holds the session for the whole app. Registered permanently in the initial
 /// binding; every gated screen and the shell read [user] from here.

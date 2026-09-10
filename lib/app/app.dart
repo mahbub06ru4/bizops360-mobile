@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../application/settings/settings_controller.dart';
 import '../core/localization/app_translations.dart';
 import '../core/localization/translation_keys.dart';
+import '../core/routing/app_pages.dart';
 import '../core/theme/app_theme.dart';
-import '../features/settings/settings_controller.dart';
-import 'routes/app_pages.dart';
 
 class BizOpsApp extends StatelessWidget {
   const BizOpsApp({super.key});

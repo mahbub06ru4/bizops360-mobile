@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../app/routes/app_routes.dart';
+import '../../../application/auth/auth_controller.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/localization/translation_keys.dart';
+import '../../../core/routing/app_routes.dart';
 import '../../../core/storage/kv_store.dart';
 import '../../../domain/repositories/auth_repository.dart';
-import 'auth_controller.dart';
 
 class SignInController extends GetxController {
   SignInController({
