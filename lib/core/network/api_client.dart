@@ -54,6 +54,9 @@ class ApiClient {
   Future<Response<T>> put<T>(String path, {Object? body}) =>
       _dio.put<T>(path, data: body);
 
+  Future<Response<T>> patch<T>(String path, {Object? body}) =>
+      _dio.patch<T>(path, data: body);
+
   Future<Response<T>> delete<T>(String path, {Object? body}) =>
       _dio.delete<T>(path, data: body);
 }
