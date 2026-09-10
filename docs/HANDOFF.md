@@ -126,14 +126,18 @@ Bring the scaffold up to the target architecture.
 3. **Fake-data switch** — `Env.useFakeData` added. ✅ done. Remaining: a
    `FakeRepository` convention + example, and per-feature bindings that branch
    on it.
-4. **Design tokens** — add `AppSpacing`, `AppRadius`, `AppElevation`, status
-   colours to `core/theme/`; document the scale. Replace magic numbers as
-   touched.
-5. **Common widget library** (`core/widgets/`) — `AppButton`, `AppTextField`,
-   `AppDropdown`, `AppSearchField`, `AppCard`, `AppDialog`, `AppBottomSheet`,
-   `AppSnackbar`, `AppLoader`, `AppEmptyState`, `AppErrorState`,
-   `AppNetworkError`, `AppPagination`, `AppAvatar`, `AppBadge`, `AppStatusChip`,
-   `AppShimmer`. Each themed, bilingual-safe, with a widget test.
+4. **Design tokens** — `AppSpacing` / `Gap`, `AppRadius` / `AppElevation` in
+   `core/theme/` (screenutil units). ✅ done. `AppColors` already carries the
+   status pairs. Replace remaining magic numbers as screens are touched.
+5. **Common widget library** (`core/widgets/`, barrel `widgets.dart`) —
+   ✅ `AppButton`, `AppTextField`, `AppCard` / `AppSectionLabel`,
+   `AppStatusChip`, `AppLoader`, `AppEmptyState`, `AppErrorState`,
+   `AppNetworkError`, `AppAvatar`, `AppBadge`, `AppShimmer`, and the
+   `AppSnackbar` / `AppDialog` / `AppBottomSheet` helpers. Tests in
+   `test/widgets/common_widgets_test.dart` via `test/support/test_host.dart`
+   (`pumpInHost` = theme + `ScreenUtilInit` + translations).
+   Still to add when first needed: `AppDropdown`, `AppSearchField`,
+   `AppPagination` (infinite-scroll list footer).
 6. **Permissions layer** — `core/permissions/`: a permission-name catalogue, a
    pure `PermissionResolver`, and a `Can(permission, child, fallback)` widget.
    `application/permissions/PermissionsController` exposes it.

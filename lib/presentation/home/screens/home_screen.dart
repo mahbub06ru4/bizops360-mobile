@@ -5,8 +5,8 @@ import '../../../application/auth/auth_controller.dart';
 import '../../../application/settings/settings_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/section_card.dart';
-import '../../../core/widgets/status_pill.dart';
+import '../../../core/widgets/app_card.dart';
+import '../../../core/widgets/app_status_chip.dart';
 
 /// Scaffold-stage home: greets the signed-in user, shows what their session
 /// unlocks, and lets them switch language / theme and sign out. Feature decks
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             child: Text(user!.tenant!.name, style: text.bodyMedium),
           ),
         const SizedBox(height: 20),
-        SectionCard(
+        AppCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -67,11 +67,11 @@ class HomeScreen extends StatelessWidget {
                 runSpacing: 6,
                 children: [
                   for (final role in user?.roles ?? const <String>[])
-                    StatusPill(role, dot: false),
+                    AppStatusChip(role, dot: false),
                   if (user?.tenant?.industry != null)
-                    StatusPill(
+                    AppStatusChip(
                       user!.tenant!.industry!,
-                      tone: PillTone.info,
+                      tone: ChipTone.info,
                       dot: false,
                     ),
                 ],
@@ -80,8 +80,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-        const SectionLabel('Access'),
-        SectionCard(
+        const AppSectionLabel('Access'),
+        AppCard(
           padding: EdgeInsets.zero,
           child: Column(
             children: [
