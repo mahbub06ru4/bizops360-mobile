@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'task_subtask.dart';
+
 enum TaskStatus { open, inProgress, blocked, done }
 
 enum TaskPriority { low, normal, high, urgent }
@@ -16,6 +18,7 @@ class TaskItem extends Equatable {
     this.subtasksTotal = 0,
     this.subtasksDone = 0,
     this.commentCount = 0,
+    this.subtasks = const [],
   });
 
   final String id;
@@ -28,6 +31,7 @@ class TaskItem extends Equatable {
   final int subtasksTotal;
   final int subtasksDone;
   final int commentCount;
+  final List<TaskSubtask> subtasks;
 
   bool get isDone => status == TaskStatus.done;
 
@@ -48,18 +52,22 @@ class TaskItem extends Equatable {
   double get subtaskProgress =>
       subtasksTotal == 0 ? 0 : subtasksDone / subtasksTotal;
 
-  TaskItem copyWith({TaskStatus? status}) => TaskItem(
-    id: id,
-    title: title,
-    description: description,
-    status: status ?? this.status,
-    priority: priority,
-    dueDate: dueDate,
-    assigneeName: assigneeName,
-    subtasksTotal: subtasksTotal,
-    subtasksDone: subtasksDone,
-    commentCount: commentCount,
-  );
+  TaskItem copyWith({TaskStatus? status, List<TaskSubtask>? subtasks}) =>
+      TaskItem(
+        id: id,
+        title: title,
+        description: description,
+        status: status ?? this.status,
+        priority: priority,
+        dueDate: dueDate,
+        assigneeName: assigneeName,
+        subtasksTotal: subtasks?.length ?? subtasksTotal,
+        subtasksDone: subtasks != null
+            ? subtasks.where((s) => s.done).length
+            : subtasksDone,
+        commentCount: commentCount,
+        subtasks: subtasks ?? this.subtasks,
+      );
 
   @override
   List<Object?> get props => [
@@ -73,5 +81,6 @@ class TaskItem extends Equatable {
     subtasksTotal,
     subtasksDone,
     commentCount,
+    subtasks,
   ];
 }

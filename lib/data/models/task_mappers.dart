@@ -1,5 +1,6 @@
 import '../../domain/entities/task_comment.dart';
 import '../../domain/entities/task_item.dart';
+import '../../domain/entities/task_subtask.dart';
 
 /// `TaskResource` ↔ [TaskItem].
 ///
@@ -40,6 +41,18 @@ TaskItem taskFromJson(Map<String, dynamic> json) {
   final assignee = json['assignee_employee'];
   final subtasksCount = json['subtasks_count'];
   final subtasks = json['subtasks'];
+  final subtaskItems = subtasks is List
+      ? subtasks
+            .whereType<Map<dynamic, dynamic>>()
+            .map(
+              (t) => TaskSubtask(
+                id: t['id'].toString(),
+                title: t['title'] as String? ?? '',
+                done: t['status'] == 'done' || t['status'] == 'cancelled',
+              ),
+            )
+            .toList(growable: false)
+      : const <TaskSubtask>[];
 
   return TaskItem(
     id: json['id'].toString(),
@@ -58,6 +71,7 @@ TaskItem taskFromJson(Map<String, dynamic> json) {
               .where((t) => t['status'] == 'done' || t['status'] == 'cancelled')
               .length
         : 0,
+    subtasks: subtaskItems,
   );
 }
 

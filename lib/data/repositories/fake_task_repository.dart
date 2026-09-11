@@ -2,6 +2,7 @@ import '../../core/error/failure.dart';
 import '../../core/error/result.dart';
 import '../../domain/entities/task_comment.dart';
 import '../../domain/entities/task_item.dart';
+import '../../domain/entities/task_subtask.dart';
 import '../../domain/repositories/task_repository.dart';
 
 /// In-memory tasks for UI-first development (`Env.useFakeData`).
@@ -27,6 +28,12 @@ class FakeTaskRepository implements TaskRepository {
       subtasksTotal: 4,
       subtasksDone: 2,
       commentCount: 3,
+      subtasks: const [
+        TaskSubtask(id: 'st1', title: 'Passport — father', done: true),
+        TaskSubtask(id: 'st2', title: 'Passport — mother', done: true),
+        TaskSubtask(id: 'st3', title: 'Passport — son', done: false),
+        TaskSubtask(id: 'st4', title: 'Passport — daughter', done: false),
+      ],
     ),
     TaskItem(
       id: 't2',
@@ -91,6 +98,27 @@ class FakeTaskRepository implements TaskRepository {
     return _delayed(
       result == null ? const Result.err(NotFoundFailure()) : Result.ok(result),
     );
+  }
+
+  @override
+  Future<Result<TaskItem>> updateSubtaskStatus(
+    String taskId,
+    String subtaskId,
+    bool done,
+  ) {
+    final index = _items.indexWhere((t) => t.id == taskId);
+    if (index == -1) {
+      return _delayed(const Result.err(NotFoundFailure()));
+    }
+    final task = _items[index];
+    final updated = task.copyWith(
+      subtasks: [
+        for (final s in task.subtasks)
+          if (s.id == subtaskId) s.copyWith(done: done) else s,
+      ],
+    );
+    _items = [..._items]..[index] = updated;
+    return _delayed(Result.ok(updated));
   }
 
   var _nextId = 90;

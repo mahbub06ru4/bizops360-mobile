@@ -1,11 +1,13 @@
 import '../../domain/entities/employee.dart';
 
-/// `EmployeeResource` ↔ [Employee]. Endpoint/field names are a best guess
-/// following the rest of the app's convention — not yet confirmed against a
-/// running backend.
+/// `EmployeeResource` ↔ [Employee]. Verified against
+/// `app/Modules/Organization/Http/Resources/EmployeeResource.php`: status is
+/// `employment_status` (active, probation, on_leave, terminated), and nested
+/// `designation` uses `title` (not `name`); `department` does use `name`.
 const Map<String, EmploymentStatus> _statusFromApi = {
   'active': EmploymentStatus.active,
   'on_leave': EmploymentStatus.onLeave,
+  'probation': EmploymentStatus.active,
   'inactive': EmploymentStatus.inactive,
   'terminated': EmploymentStatus.inactive,
 };
@@ -16,10 +18,11 @@ Employee employeeFromJson(Map<String, dynamic> json) {
 
   return Employee(
     id: json['id'].toString(),
-    name: json['name'] as String? ?? json['full_name'] as String? ?? '',
-    status: _statusFromApi[json['status']] ?? EmploymentStatus.active,
+    name: json['full_name'] as String? ?? json['name'] as String? ?? '',
+    status:
+        _statusFromApi[json['employment_status']] ?? EmploymentStatus.active,
     designation: designation is Map
-        ? designation['name'] as String?
+        ? designation['title'] as String?
         : designation as String?,
     department: department is Map
         ? department['name'] as String?

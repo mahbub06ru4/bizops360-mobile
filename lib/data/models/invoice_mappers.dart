@@ -1,25 +1,36 @@
 import '../../domain/entities/invoice.dart';
 
-/// `InvoiceResource` ↔ [Invoice]. Endpoint/field names are a best guess
-/// following the rest of the app's convention (snake_case, `amount` fields as
-/// numeric strings or numbers) — not yet confirmed against a running backend.
-/// Adjust here only; nothing above the data layer needs to change.
+/// `InvoiceResource` / `InvoicePaymentResource` ↔ [Invoice]. Verified against
+/// `app/Modules/Finance/Http/Resources/InvoiceResource.php` and
+/// `InvoicePaymentResource.php`: the invoice reference field is `number`
+/// (not `invoice_number`), the running-paid total is `amount_paid` (not
+/// `paid_amount`), and a payment's date is `paid_on` (not `paid_at`).
+/// `amount`/`amount_paid` are decimal-string minor-unit-free values
+/// (`Money::fromDecimal`, same convention as the live expense mapper), so
+/// they parse the same way here. There is no `booking` relation on the
+/// backend Invoice — `bookingReference` will always be null against the real
+/// API; the "create invoice from booking" flow has no backend counterpart
+/// (see repository impl).
 const Map<String, InvoiceStatus> _statusFromApi = {
+  // Backend InvoiceStatus: draft, sent, partial, paid, refunded, void.
+  'draft': InvoiceStatus.unpaid,
+  'sent': InvoiceStatus.unpaid,
   'unpaid': InvoiceStatus.unpaid,
   'partially_paid': InvoiceStatus.partial,
   'partial': InvoiceStatus.partial,
   'paid': InvoiceStatus.paid,
   'overdue': InvoiceStatus.overdue,
+  'refunded': InvoiceStatus.cancelled,
   'cancelled': InvoiceStatus.cancelled,
   'void': InvoiceStatus.cancelled,
 };
 
 const Map<InvoiceStatus, String> invoiceStatusToApi = {
-  InvoiceStatus.unpaid: 'unpaid',
-  InvoiceStatus.partial: 'partially_paid',
+  InvoiceStatus.unpaid: 'sent',
+  InvoiceStatus.partial: 'partial',
   InvoiceStatus.paid: 'paid',
-  InvoiceStatus.overdue: 'overdue',
-  InvoiceStatus.cancelled: 'cancelled',
+  InvoiceStatus.overdue: 'sent',
+  InvoiceStatus.cancelled: 'void',
 };
 
 num _money(dynamic v) => v is num ? v : num.tryParse(v?.toString() ?? '') ?? 0;
@@ -33,7 +44,7 @@ InvoicePayment invoicePaymentFromJson(Map<String, dynamic> json) {
     amount: _money(json['amount']),
     method:
         json['method'] as String? ?? json['payment_method'] as String? ?? '',
-    paidAt: _date(json['paid_at'] ?? json['created_at']),
+    paidAt: _date(json['paid_on'] ?? json['paid_at'] ?? json['created_at']),
     note: json['note'] as String?,
   );
 }
@@ -46,13 +57,16 @@ Invoice invoiceFromJson(Map<String, dynamic> json) {
   return Invoice(
     id: json['id'].toString(),
     reference:
-        json['invoice_number'] as String? ?? json['reference'] as String? ?? '',
+        json['number'] as String? ??
+        json['invoice_number'] as String? ??
+        json['reference'] as String? ??
+        '',
     customerName:
         (customer is Map ? customer['name'] as String? : null) ??
         json['customer_name'] as String? ??
         '',
-    amount: _money(json['total_amount'] ?? json['amount']),
-    paidAmount: _money(json['paid_amount']),
+    amount: _money(json['amount'] ?? json['total_amount']),
+    paidAmount: _money(json['amount_paid'] ?? json['paid_amount']),
     dueDate: _date(json['due_date']),
     status: _statusFromApi[json['status']] ?? InvoiceStatus.unpaid,
     bookingReference:

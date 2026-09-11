@@ -50,7 +50,13 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
     String? note,
   }) {
     return guardRequest(() async {
-      final body = <String, dynamic>{'amount': amount, 'method': method};
+      // Backend `RecordInvoicePaymentRequest` requires `paid_on`; the caller
+      // doesn't have a date to pick, so default to today.
+      final body = <String, dynamic>{
+        'amount': amount,
+        'method': method,
+        'paid_on': DateTime.now().toIso8601String().split('T').first,
+      };
       if (note != null) body['note'] = note;
       return invoiceFromJson(await _remote.recordPayment(invoiceId, body));
     });

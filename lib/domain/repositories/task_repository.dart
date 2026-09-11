@@ -10,6 +10,14 @@ abstract interface class TaskRepository {
 
   Future<Result<TaskItem>> updateStatus(String id, TaskStatus status);
 
+  /// Toggles one subtask's done state; returns the parent task's `id`,
+  /// title unused — callers refresh the subtask list from [byId].
+  Future<Result<TaskItem>> updateSubtaskStatus(
+    String taskId,
+    String subtaskId,
+    bool done,
+  );
+
   /// Manager action — create and (optionally) assign a task.
   Future<Result<TaskItem>> create({
     required String title,

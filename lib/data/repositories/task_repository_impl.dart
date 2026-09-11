@@ -51,6 +51,18 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
+  Future<Result<TaskItem>> updateSubtaskStatus(
+    String taskId,
+    String subtaskId,
+    bool done,
+  ) {
+    return guardRequest(() async {
+      await _remote.changeStatus(subtaskId, done ? 'done' : 'todo');
+      return taskFromJson(await _remote.byId(taskId));
+    });
+  }
+
+  @override
   Future<Result<List<TaskComment>>> comments(String taskId) {
     return guardRequest(
       () async => (await _remote.comments(

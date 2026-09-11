@@ -15,6 +15,7 @@ import '../../../modules/travel/dashboard/pending_visa_docs_section.dart';
 import '../../../modules/travel/dashboard/ticket_tasks_section.dart';
 import '../../../modules/travel/dashboard/visa_summary_section.dart';
 import '../../crm/controllers/follow_ups_controller.dart';
+import '../../notifications/controllers/notifications_controller.dart';
 import '../../tasks/controllers/tasks_controller.dart';
 import '../widgets/agenda_section.dart';
 import '../widgets/quick_actions_section.dart';
@@ -66,9 +67,11 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => Get.toNamed<void>(Routes.notifications),
-            icon: const AppBadge(
-              count: 3,
-              child: Icon(Icons.notifications_none),
+            icon: Obx(
+              () => AppBadge(
+                count: Get.find<NotificationsController>().unreadCount,
+                child: const Icon(Icons.notifications_none),
+              ),
             ),
           ),
           SizedBox(width: AppSpacing.xs),
@@ -81,6 +84,9 @@ class HomeScreen extends StatelessWidget {
           }
           if (Get.isRegistered<FollowUpsController>()) {
             await Get.find<FollowUpsController>().load();
+          }
+          if (Get.isRegistered<NotificationsController>()) {
+            await Get.find<NotificationsController>().load();
           }
         },
         child: ListView(

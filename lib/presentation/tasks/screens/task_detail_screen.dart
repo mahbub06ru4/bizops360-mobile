@@ -15,15 +15,6 @@ import '../task_display.dart';
 class TaskDetailScreen extends GetView<TaskDetailController> {
   const TaskDetailScreen({super.key});
 
-  // TODO(api): subtasks come from the task detail payload — the checklist is
-  // a placeholder shape until the backend exposes them. Comments are live.
-  static const _subtasks = [
-    (label: 'Passport — father', done: true),
-    (label: 'Passport — mother', done: true),
-    (label: 'Passport — son', done: false),
-    (label: 'Passport — daughter', done: false),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,27 +79,29 @@ class TaskDetailScreen extends GetView<TaskDetailController> {
               SizedBox(height: AppSpacing.lg),
               Text(task.description!, style: text.bodyLarge),
             ],
-            SizedBox(height: AppSpacing.xl),
-            AppSectionLabel(
-              '${Tr.taskSubtasks.tr} · ${_subtasks.where((s) => s.done).length}/${_subtasks.length}',
-            ),
-            SizedBox(height: AppSpacing.xs),
-            LinearProgressIndicator(
-              value: _subtasks.where((s) => s.done).length / _subtasks.length,
-              borderRadius: AppRadius.brPill,
-              minHeight: 6,
-              backgroundColor: c.surfaceAlt,
-            ),
-            SizedBox(height: AppSpacing.sm),
-            for (final s in _subtasks)
-              CheckboxListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-                value: s.done,
-                onChanged: (_) {},
-                title: Text(s.label),
+            if (task.subtasks.isNotEmpty) ...[
+              SizedBox(height: AppSpacing.xl),
+              AppSectionLabel(
+                '${Tr.taskSubtasks.tr} · ${task.subtasksDone}/${task.subtasksTotal}',
               ),
+              SizedBox(height: AppSpacing.xs),
+              LinearProgressIndicator(
+                value: task.subtaskProgress,
+                borderRadius: AppRadius.brPill,
+                minHeight: 6,
+                backgroundColor: c.surfaceAlt,
+              ),
+              SizedBox(height: AppSpacing.sm),
+              for (final s in task.subtasks)
+                CheckboxListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  value: s.done,
+                  onChanged: (v) => controller.toggleSubtask(s.id, v ?? false),
+                  title: Text(s.title),
+                ),
+            ],
             SizedBox(height: AppSpacing.xl),
             Obx(() {
               final list = controller.comments.value.valueOrNull ?? const [];

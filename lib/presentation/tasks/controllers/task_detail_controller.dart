@@ -51,6 +51,13 @@ class TaskDetailController extends GetxController {
     setStatus(task.isDone ? TaskStatus.open : TaskStatus.done);
   }
 
+  Future<void> toggleSubtask(String subtaskId, bool done) async {
+    final task = state.value.valueOrNull;
+    if (task == null) return;
+    final result = await _repo.updateSubtaskStatus(_taskId, subtaskId, done);
+    result.fold((t) => state.value = AsyncValue.data(t), (_) {});
+  }
+
   Future<void> addComment(String body) async {
     if (body.trim().isEmpty || sendingComment.value) return;
     sendingComment.value = true;
