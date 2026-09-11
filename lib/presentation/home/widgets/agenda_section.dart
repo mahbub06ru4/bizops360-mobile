@@ -7,7 +7,8 @@ import '../../../core/widgets/widgets.dart';
 import 'dashboard_section.dart';
 
 /// A short list of dated items (tasks, follow-ups) on the Home dashboard.
-/// [items] is sample data until the owning repository lands.
+/// Purely presentational — callers feed it live data from their own
+/// controller (see `_TasksPreview` / `_FollowUpsPreview` in `home_screen.dart`).
 class AgendaItem {
   const AgendaItem(this.title, this.meta, {this.tone = ChipTone.neutral});
 

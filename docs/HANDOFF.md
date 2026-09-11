@@ -189,7 +189,8 @@ Bring the scaffold up to the target architecture.
 4. **Notifications** (`presentation/notifications/`) — ✅ grouped Today / Earlier
    list, unread emphasis + dot, mark-all-read, tap → markRead + optional route,
    pull-to-refresh. `FakeNotificationRepository` seeded. Home bell navigates
-   here (badge count still static — wire to a real unread count later).
+   here; the badge now reads `NotificationsController.unreadCount` live
+   (**2026-09-11**, `NotificationsBinding` registered permanent in `ShellBinding`).
 5. **Profile edit / app-lock** — profile is read-only for now; edit + biometric
    app-lock (`local_auth`) land with M6 hardening.
 6. **Tasks** (`presentation/tasks/`) — ✅ list (Today / Overdue / Upcoming tabs
