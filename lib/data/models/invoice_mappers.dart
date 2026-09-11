@@ -7,10 +7,9 @@ import '../../domain/entities/invoice.dart';
 /// `paid_amount`), and a payment's date is `paid_on` (not `paid_at`).
 /// `amount`/`amount_paid` are decimal-string minor-unit-free values
 /// (`Money::fromDecimal`, same convention as the live expense mapper), so
-/// they parse the same way here. There is no `booking` relation on the
-/// backend Invoice — `bookingReference` will always be null against the real
-/// API; the "create invoice from booking" flow has no backend counterpart
-/// (see repository impl).
+/// they parse the same way here. `booking` is present only on an invoice
+/// raised from `POST /bookings/{id}/invoice` (`{id, reference, pnr}`); a
+/// standalone invoice has no booking and `bookingReference` is null.
 const Map<String, InvoiceStatus> _statusFromApi = {
   // Backend InvoiceStatus: draft, sent, partial, paid, refunded, void.
   'draft': InvoiceStatus.unpaid,
@@ -69,9 +68,9 @@ Invoice invoiceFromJson(Map<String, dynamic> json) {
     paidAmount: _money(json['amount_paid'] ?? json['paid_amount']),
     dueDate: _date(json['due_date']),
     status: _statusFromApi[json['status']] ?? InvoiceStatus.unpaid,
-    bookingReference:
-        (booking is Map ? booking['pnr'] as String? : null) ??
-        json['booking_reference'] as String?,
+    bookingReference: booking is Map
+        ? (booking['reference'] as String? ?? booking['pnr'] as String?)
+        : null,
     payments: payments is List
         ? payments
               .whereType<Map<dynamic, dynamic>>()

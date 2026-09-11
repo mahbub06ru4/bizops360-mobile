@@ -7,11 +7,11 @@ abstract interface class InvoiceRepository {
 
   Future<Result<Invoice>> byId(String id);
 
-  /// Raise an invoice against a booking (spec §6 `Actions/Invoices/CreateInvoice`).
+  /// Raise an invoice against an issued booking (spec §6
+  /// `Actions/Invoices/CreateInvoice`). The backend resolves the customer and
+  /// amount from the booking itself.
   Future<Result<Invoice>> createFromBooking({
-    required String bookingReference,
-    required String customerName,
-    required num amount,
+    required String bookingId,
     required DateTime dueDate,
   });
 

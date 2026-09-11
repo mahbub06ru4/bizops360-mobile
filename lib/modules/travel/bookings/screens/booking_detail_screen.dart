@@ -185,9 +185,7 @@ class _CreateInvoiceButtonState extends State<_CreateInvoiceButton> {
     setState(() => _busy = true);
     ensureInvoiceRepo();
     final result = await Get.find<InvoiceRepository>().createFromBooking(
-      bookingReference: widget.booking.reference,
-      customerName: widget.booking.travellerName,
-      amount: widget.booking.amount,
+      bookingId: widget.booking.id,
       dueDate: DateTime.now().add(const Duration(days: 7)),
     );
     if (!mounted) return;

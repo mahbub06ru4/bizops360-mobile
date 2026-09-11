@@ -1,14 +1,16 @@
 import '../../core/error/result.dart';
 import '../../domain/entities/invoice.dart';
 import '../../domain/repositories/invoice_repository.dart';
+import '../datasources/booking_remote_datasource.dart';
 import '../datasources/finance_remote_datasource.dart';
 import '../models/invoice_mappers.dart';
 import 'remote_guard.dart';
 
 class InvoiceRepositoryImpl implements InvoiceRepository {
-  InvoiceRepositoryImpl(this._remote);
+  InvoiceRepositoryImpl(this._remote, this._bookings);
 
   final FinanceRemoteDataSource _remote;
+  final BookingRemoteDataSource _bookings;
 
   @override
   Future<Result<List<Invoice>>> invoices() {
@@ -26,19 +28,14 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
 
   @override
   Future<Result<Invoice>> createFromBooking({
-    required String bookingReference,
-    required String customerName,
-    required num amount,
+    required String bookingId,
     required DateTime dueDate,
   }) {
     return guardRequest(() async {
       final body = <String, dynamic>{
-        'booking_reference': bookingReference,
-        'customer_name': customerName,
-        'amount': amount,
-        'due_date': dueDate.toIso8601String(),
+        'due_date': dueDate.toIso8601String().split('T').first,
       };
-      return invoiceFromJson(await _remote.createInvoice(body));
+      return invoiceFromJson(await _bookings.raiseInvoice(bookingId, body));
     });
   }
 

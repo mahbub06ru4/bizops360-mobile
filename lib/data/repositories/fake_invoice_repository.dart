@@ -95,19 +95,17 @@ class FakeInvoiceRepository implements InvoiceRepository {
 
   @override
   Future<Result<Invoice>> createFromBooking({
-    required String bookingReference,
-    required String customerName,
-    required num amount,
+    required String bookingId,
     required DateTime dueDate,
   }) {
     final invoice = Invoice(
       id: 'inv${_nextInvoiceId++}',
       reference: 'INV-${_nextInvoiceId}00',
-      customerName: customerName,
-      amount: amount,
+      customerName: 'Booking $bookingId customer',
+      amount: 0,
       dueDate: dueDate,
       status: InvoiceStatus.unpaid,
-      bookingReference: bookingReference,
+      bookingReference: bookingId,
     );
     _items = [invoice, ..._items];
     return _delayed(Result.ok(invoice));

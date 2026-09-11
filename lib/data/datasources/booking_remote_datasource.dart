@@ -39,4 +39,15 @@ class BookingRemoteDataSource {
     );
     return envelopeObject(res.data);
   }
+
+  Future<Map<String, dynamic>> raiseInvoice(
+    String id,
+    Map<String, dynamic> body,
+  ) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/bookings/$id/invoice',
+      body: body,
+    );
+    return envelopeObject(res.data);
+  }
 }
