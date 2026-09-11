@@ -87,6 +87,11 @@ class WorkspaceScreen extends StatelessWidget {
               permission: Perm.documentView,
               feature: Feature.documents,
             ),
+            _Row(
+              Icons.calendar_month_outlined,
+              Tr.wsHolidays.tr,
+              () => Get.toNamed<void>(Routes.holidays),
+            ),
           ]),
 
           if (Get.find<PermissionsController>().isTravel)
@@ -115,7 +120,7 @@ class WorkspaceScreen extends StatelessWidget {
             _Row(
               Icons.groups_outlined,
               Tr.wsTeam.tr,
-              () => _soon(Tr.wsTeam.tr),
+              () => Get.toNamed<void>(Routes.team),
               permission: Perm.employeeView,
             ),
             _Row(
@@ -124,6 +129,12 @@ class WorkspaceScreen extends StatelessWidget {
               () => Get.toNamed<void>(Routes.followUps),
               permission: Perm.followUpManage,
               feature: Feature.crm,
+            ),
+            _Row(
+              Icons.receipt_outlined,
+              Tr.wsInvoices.tr,
+              () => Get.toNamed<void>(Routes.invoices),
+              permission: Perm.invoiceView,
             ),
             _Row(
               Icons.insights_outlined,

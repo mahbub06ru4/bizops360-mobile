@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/widgets.dart';
+import '../../../domain/entities/task_comment.dart';
 import '../../../domain/entities/task_item.dart';
 import '../controllers/task_detail_controller.dart';
 import '../task_display.dart';
@@ -14,16 +15,13 @@ import '../task_display.dart';
 class TaskDetailScreen extends GetView<TaskDetailController> {
   const TaskDetailScreen({super.key});
 
-  // TODO(api): subtasks + comments come from the task detail payload.
+  // TODO(api): subtasks come from the task detail payload — the checklist is
+  // a placeholder shape until the backend exposes them. Comments are live.
   static const _subtasks = [
     (label: 'Passport — father', done: true),
     (label: 'Passport — mother', done: true),
     (label: 'Passport — son', done: false),
     (label: 'Passport — daughter', done: false),
-  ];
-  static const _comments = [
-    (author: 'Nadia', when: '2h', body: 'Father and mother collected today.'),
-    (author: 'You', when: '1h', body: 'Chasing the kids\' passports tomorrow.'),
   ];
 
   @override
@@ -112,41 +110,97 @@ class TaskDetailScreen extends GetView<TaskDetailController> {
                 title: Text(s.label),
               ),
             SizedBox(height: AppSpacing.xl),
-            AppSectionLabel('${Tr.taskComments.tr} · ${_comments.length}'),
+            Obx(() {
+              final list = controller.comments.value.valueOrNull ?? const [];
+              return AppSectionLabel('${Tr.taskComments.tr} · ${list.length}');
+            }),
             SizedBox(height: AppSpacing.xs),
-            for (final m in _comments)
-              Padding(
-                padding: EdgeInsets.only(bottom: AppSpacing.md),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            Obx(
+              () => AsyncView<List<TaskComment>>(
+                value: controller.comments.value,
+                isEmpty: (l) => l.isEmpty,
+                empty: Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  child: Text(Tr.taskNoComments.tr, style: text.bodyMedium),
+                ),
+                data: (list) => Column(
                   children: [
-                    AppAvatar(name: m.author, size: 32),
-                    SizedBox(width: AppSpacing.sm),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${m.author} · ${m.when}',
-                            style: text.bodySmall,
-                          ),
-                          Text(m.body, style: text.bodyMedium),
-                        ],
+                    for (final m in list)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: AppSpacing.md),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppAvatar(name: m.author, size: 32),
+                            SizedBox(width: AppSpacing.sm),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${m.author} · ${DateFormat.MMMd().add_jm().format(m.at)}',
+                                    style: text.bodySmall,
+                                  ),
+                                  Text(m.body, style: text.bodyMedium),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
-            AppTextField(
-              label: Tr.taskAddComment.tr,
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.send_outlined, size: 20),
+            ),
+            Obx(
+              () => _CommentComposer(
+                sending: controller.sendingComment.value,
+                onSend: controller.addComment,
               ),
             ),
           ],
         );
       },
+    );
+  }
+}
+
+class _CommentComposer extends StatefulWidget {
+  const _CommentComposer({required this.onSend, required this.sending});
+
+  final Future<void> Function(String) onSend;
+  final bool sending;
+
+  @override
+  State<_CommentComposer> createState() => _CommentComposerState();
+}
+
+class _CommentComposerState extends State<_CommentComposer> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final text = _controller.text;
+    if (text.trim().isEmpty || widget.sending) return;
+    await widget.onSend(text);
+    _controller.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppTextField(
+      label: Tr.taskAddComment.tr,
+      controller: _controller,
+      onSubmitted: (_) => _submit(),
+      suffixIcon: IconButton(
+        onPressed: widget.sending ? null : _submit,
+        icon: const Icon(Icons.send_outlined, size: 20),
+      ),
     );
   }
 }

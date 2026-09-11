@@ -21,6 +21,10 @@ abstract final class Routes {
   static const bookingDetail = '/booking';
   static const departures = '/departures';
   static const reports = '/reports';
+  static const invoices = '/invoices';
+  static const invoiceDetail = '/invoice';
+  static const team = '/team';
+  static const holidays = '/holidays';
 
   // Workspace destinations
   static const settings = '/settings';

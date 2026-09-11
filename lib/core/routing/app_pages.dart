@@ -20,9 +20,13 @@ import '../../presentation/documents/screens/documents_screen.dart';
 import '../../presentation/expenses/bindings/expenses_binding.dart';
 import '../../presentation/expenses/screens/expense_new_screen.dart';
 import '../../presentation/expenses/screens/expenses_screen.dart';
+import '../../presentation/finance/bindings/finance_bindings.dart';
+import '../../presentation/finance/screens/invoice_detail_screen.dart';
+import '../../presentation/finance/screens/invoices_screen.dart';
 import '../../presentation/hr/bindings/hr_bindings.dart';
 import '../../presentation/hr/screens/approvals_screen.dart';
 import '../../presentation/hr/screens/attendance_screen.dart';
+import '../../presentation/hr/screens/holidays_screen.dart';
 import '../../presentation/hr/screens/leave_request_screen.dart';
 import '../../presentation/hr/screens/leave_screen.dart';
 import '../../presentation/notifications/bindings/notifications_binding.dart';
@@ -37,6 +41,8 @@ import '../../presentation/splash/splash_binding.dart';
 import '../../presentation/splash/splash_screen.dart';
 import '../../presentation/tasks/bindings/task_detail_binding.dart';
 import '../../presentation/tasks/screens/task_detail_screen.dart';
+import '../../presentation/team/bindings/team_binding.dart';
+import '../../presentation/team/screens/team_screen.dart';
 import 'app_routes.dart';
 import 'route_guard.dart';
 
@@ -146,6 +152,22 @@ abstract final class AppPages {
       Routes.reports,
       () => const ReportsScreen(),
       binding: ReportsBinding(),
+    ),
+    _guarded(
+      Routes.invoices,
+      () => const InvoicesScreen(),
+      binding: InvoicesBinding(),
+    ),
+    _guarded(
+      Routes.invoiceDetail,
+      () => const InvoiceDetailScreen(),
+      binding: InvoiceDetailBinding(),
+    ),
+    _guarded(Routes.team, () => const TeamScreen(), binding: TeamBinding()),
+    _guarded(
+      Routes.holidays,
+      () => const HolidaysScreen(),
+      binding: HolidaysBinding(),
     ),
     _guarded(Routes.settings, () => const SettingsScreen()),
     _guarded(Routes.profile, () => const ProfileScreen()),

@@ -195,6 +195,47 @@ abstract final class Tr {
   static const expStatusRejected = 'exp.status_rejected';
   static const expStatusReimbursed = 'exp.status_reimbursed';
 
+  // Invoices / payments
+  static const invoicesTitle = 'inv.title';
+  static const invRef = 'inv.ref';
+  static const invCustomer = 'inv.customer';
+  static const invAmount = 'inv.amount';
+  static const invPaid = 'inv.paid';
+  static const invDue = 'inv.due';
+  static const invDueDate = 'inv.due_date';
+  static const invBooking = 'inv.booking';
+  static const invOutstanding = 'inv.outstanding';
+  static const invPayments = 'inv.payments';
+  static const invNoPayments = 'inv.no_payments';
+  static const invRecordPayment = 'inv.record_payment';
+  static const invPaymentAmount = 'inv.payment_amount';
+  static const invPaymentMethod = 'inv.payment_method';
+  static const invPaymentNote = 'inv.payment_note';
+  static const invPaymentRecorded = 'inv.payment_recorded';
+  static const invCreateFromBooking = 'inv.create_from_booking';
+  static const invCreated = 'inv.created';
+  static const invStatusUnpaid = 'inv.status_unpaid';
+  static const invStatusPartial = 'inv.status_partial';
+  static const invStatusPaid = 'inv.status_paid';
+  static const invStatusOverdue = 'inv.status_overdue';
+  static const invStatusCancelled = 'inv.status_cancelled';
+
+  // Team directory
+  static const teamTitle = 'team.title';
+  static const teamSearch = 'team.search';
+  static const empStatusActive = 'team.status_active';
+  static const empStatusOnLeave = 'team.status_on_leave';
+  static const empStatusInactive = 'team.status_inactive';
+
+  // Holidays
+  static const holidaysTitle = 'hol.title';
+  static const holidaysUpcoming = 'hol.upcoming';
+  static const holidaysPast = 'hol.past';
+  static const holidaysEmpty = 'hol.empty';
+
+  // Task comments
+  static const taskNoComments = 'tasks.no_comments';
+
   // Tasks
   static const tasksEmpty = 'tasks.empty';
   static const taskStatusOpen = 'tasks.status_open';
@@ -260,6 +301,8 @@ abstract final class Tr {
   static const wsTravellers = 'workspace.travellers';
   static const wsBookings = 'workspace.bookings';
   static const wsDepartures = 'workspace.departures';
+  static const wsInvoices = 'workspace.invoices';
+  static const wsHolidays = 'workspace.holidays';
   static const wsSectionTravel = 'workspace.section_travel';
   static const wsSectionWork = 'workspace.section_work';
   static const wsSectionManage = 'workspace.section_manage';

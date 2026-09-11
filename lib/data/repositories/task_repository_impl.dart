@@ -1,4 +1,5 @@
 import '../../core/error/result.dart';
+import '../../domain/entities/task_comment.dart';
 import '../../domain/entities/task_item.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../datasources/task_remote_datasource.dart';
@@ -47,5 +48,21 @@ class TaskRepositoryImpl implements TaskRepository {
       };
       return taskFromJson(await _remote.create(body));
     });
+  }
+
+  @override
+  Future<Result<List<TaskComment>>> comments(String taskId) {
+    return guardRequest(
+      () async => (await _remote.comments(
+        taskId,
+      )).map(taskCommentFromJson).toList(growable: false),
+    );
+  }
+
+  @override
+  Future<Result<TaskComment>> addComment(String taskId, String body) {
+    return guardRequest(
+      () async => taskCommentFromJson(await _remote.addComment(taskId, body)),
+    );
   }
 }

@@ -373,3 +373,37 @@ Customers · Visa · Tasks · More) → Visa queue + detail render live
 - CI pins `flutter-version: 3.38.5` in `ci.yaml` — bump it with your local SDK.
 - This mobile repo is independent of `bizops360-api`; check
   `git rev-parse --show-toplevel` before any git command.
+
+---
+
+## 5. Backend-spec module audit (2026-09-11)
+
+Checked mobile coverage against the platform spec's Phase 1–5 modules
+(Organization / HR / Operations / CRM / Finance). New this pass, all
+UI-first against a fake (`registerRepo` picks a guarded, best-effort live impl
+too — endpoint shapes are a guess following the app's REST convention, **not
+confirmed against a running backend**):
+
+| Phase | Spec item | Status |
+|---|---|---|
+| 1 Organization | Company / Branch / Department / Designation, Roles / Permissions | **Deliberately out of scope for this app** — company setup and role/permission grants are Filament (web admin) work; the spec's own "planned employee/manager mobile features" list never includes them. The app only *consumes* permissions (`Perm.*`) to gate the UI. |
+| 1 Organization | Employee, Users | ✅ **new** — `presentation/team/` (`TeamScreen`): read-only directory, search by name/designation/department, status chip. Reached from Workspace → Team. No create/edit (that's admin work too). |
+| 2 HR | Attendance, Leave | ✅ already live (see §M2/M4 above) |
+| 2 HR | Holidays | ✅ **new** — `presentation/hr/` (`HolidaysScreen`): Upcoming / Past, `FakeHolidayRepository` seeded. Workspace → Holidays. |
+| 2 HR | Employee documents | ✅ already covered by the general `DocumentsScreen` (owner-type `employee`) |
+| 3 Operations | Tasks, assignments, notifications | ✅ already live |
+| 3 Operations | Comments | ✅ **new, live** — `TaskRepository.comments()` / `.addComment()`; `TaskDetailScreen`'s comment thread is no longer static sample data. `TaskItem.subtasksTotal/Done` stay backend-driven; the subtask *checklist* UI is still a placeholder shape (`// TODO(api)`) since the backend doesn't expose individual subtask records yet. |
+| 3 Operations | Attachments | ❌ **deferred** — needs a file/camera package (`image_picker` or `file_picker`) plus native permission wiring; same "hard to verify without a device" call as the dropped biometric app-lock. Revisit with a device in hand. |
+| 3 Operations | Projects, Teams (as an org hierarchy) | ❌ **deferred** — not in the spec's mobile feature list; "Team" here means the read-only directory above, not project/team management. |
+| 4 CRM | Leads, customers, pipeline, follow-ups, activities | ✅ already live |
+| 4 CRM | Contacts (distinct multi-contact-per-customer) | ❌ **deferred** — `Customer` already carries one phone/email, which covers the mobile MVP; a separate contacts sub-list is low value until a real workflow needs it |
+| 5 Finance | Expenses, reports | ✅ already live |
+| 5 Finance | Invoices, Payments, Receivables | ✅ **new** — `presentation/finance/`: `InvoicesScreen` (status filter, outstanding-total banner), `InvoiceDetailScreen` (amount/paid/due, payment history, record-payment sheet). `BookingDetailScreen` gained a **Create invoice** action (`Can(Perm.invoiceManage)`, ticketed bookings only) — the mobile side of spec §6 `Actions/Invoices/{CreateInvoice,RecordPayment}`. Reached from Workspace → Invoices (`Can(Perm.invoiceView)`). |
+| 5 Finance | Income (other, non-customer) | ❌ **deferred** — "customer payments" income is covered by invoice payments above; a separate "other income" entry screen wasn't built (low value without a confirmed backend line-item shape) |
+
+**Endpoints guessed, unverified:** `/employees`, `/holidays`, `/invoices`
+(+`/{id}`, `POST`, `POST /{id}/payments`), `/tasks/{id}/comments` (`GET`+`POST`).
+Same pattern as every other module here — fold in the real field names in the
+matching `*_mappers.dart` once confirmed on the Mac; nothing above the data
+layer changes. Tests: `finance_controller_test.dart`, `team_holidays_test.dart`,
+`task_comments_test.dart` — 88 green total (`--exclude-tags integration`).

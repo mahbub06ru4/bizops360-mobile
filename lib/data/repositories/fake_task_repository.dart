@@ -1,5 +1,6 @@
 import '../../core/error/failure.dart';
 import '../../core/error/result.dart';
+import '../../domain/entities/task_comment.dart';
 import '../../domain/entities/task_item.dart';
 import '../../domain/repositories/task_repository.dart';
 
@@ -111,5 +112,43 @@ class FakeTaskRepository implements TaskRepository {
     );
     _items = [task, ..._items];
     return _delayed(Result.ok(task));
+  }
+
+  final Map<String, List<TaskComment>> _comments = {
+    't1': [
+      TaskComment(
+        id: 'c1',
+        author: 'Nadia',
+        body: 'Father and mother collected today.',
+        at: DateTime.now().subtract(const Duration(hours: 2)),
+      ),
+      TaskComment(
+        id: 'c2',
+        author: 'You',
+        body: "Chasing the kids' passports tomorrow.",
+        at: DateTime.now().subtract(const Duration(hours: 1)),
+      ),
+    ],
+  };
+  var _nextCommentId = 90;
+
+  @override
+  Future<Result<List<TaskComment>>> comments(String taskId) =>
+      _delayed(Result.ok(List.unmodifiable(_comments[taskId] ?? const [])));
+
+  @override
+  Future<Result<TaskComment>> addComment(String taskId, String body) {
+    final comment = TaskComment(
+      id: 'c${_nextCommentId++}',
+      author: 'You',
+      body: body,
+      at: DateTime.now(),
+    );
+    _comments.update(
+      taskId,
+      (list) => [...list, comment],
+      ifAbsent: () => [comment],
+    );
+    return _delayed(Result.ok(comment));
   }
 }

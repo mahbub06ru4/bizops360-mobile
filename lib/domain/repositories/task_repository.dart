@@ -1,4 +1,5 @@
 import '../../core/error/result.dart';
+import '../entities/task_comment.dart';
 import '../entities/task_item.dart';
 
 abstract interface class TaskRepository {
@@ -16,4 +17,9 @@ abstract interface class TaskRepository {
     DateTime? dueDate,
     String? assigneeName,
   });
+
+  /// The comment thread on a task, oldest first.
+  Future<Result<List<TaskComment>>> comments(String taskId);
+
+  Future<Result<TaskComment>> addComment(String taskId, String body);
 }

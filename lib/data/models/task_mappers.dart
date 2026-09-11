@@ -1,3 +1,4 @@
+import '../../domain/entities/task_comment.dart';
 import '../../domain/entities/task_item.dart';
 
 /// `TaskResource` ↔ [TaskItem].
@@ -57,5 +58,17 @@ TaskItem taskFromJson(Map<String, dynamic> json) {
               .where((t) => t['status'] == 'done' || t['status'] == 'cancelled')
               .length
         : 0,
+  );
+}
+
+TaskComment taskCommentFromJson(Map<String, dynamic> json) {
+  final author = json['author'] ?? json['user'] ?? json['created_by'];
+  return TaskComment(
+    id: json['id'].toString(),
+    author: author is Map ? author['name'] as String? ?? '' : '',
+    body: json['body'] as String? ?? json['comment'] as String? ?? '',
+    at:
+        DateTime.tryParse(json['created_at']?.toString() ?? '') ??
+        DateTime.now(),
   );
 }

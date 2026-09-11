@@ -34,4 +34,17 @@ class TaskRemoteDataSource {
     );
     return envelopeObject(res.data);
   }
+
+  Future<List<Map<String, dynamic>>> comments(String id) async {
+    final res = await _client.get<Map<String, dynamic>>('/tasks/$id/comments');
+    return envelopeList(res.data);
+  }
+
+  Future<Map<String, dynamic>> addComment(String id, String body) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/tasks/$id/comments',
+      body: {'body': body},
+    );
+    return envelopeObject(res.data);
+  }
 }

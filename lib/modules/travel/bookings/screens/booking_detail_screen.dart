@@ -4,11 +4,16 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/extensions/money_format.dart';
 import '../../../../core/localization/translation_keys.dart';
+import '../../../../core/permissions/can.dart';
+import '../../../../core/permissions/permissions.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../../../../domain/entities/booking.dart';
+import '../../../../domain/repositories/invoice_repository.dart';
+import '../../../../presentation/finance/bindings/finance_bindings.dart';
 import '../booking_display.dart';
 import '../controllers/booking_detail_controller.dart';
 
@@ -134,6 +139,10 @@ class BookingDetailScreen extends GetView<BookingDetailController> {
           SizedBox(height: AppSpacing.xs),
           Text(b.itinerary!, style: text.bodyLarge),
         ],
+        if (b.status == BookingStatus.ticketed) ...[
+          SizedBox(height: AppSpacing.lg),
+          Can(Perm.invoiceManage, child: _CreateInvoiceButton(booking: b)),
+        ],
       ],
     );
   }
@@ -153,6 +162,50 @@ class BookingDetailScreen extends GetView<BookingDetailController> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Raises an invoice against a ticketed booking — the mobile side of spec §6's
+/// `Actions/Invoices/CreateInvoice`. Due in a week by default; adjust on the
+/// invoice once created.
+class _CreateInvoiceButton extends StatefulWidget {
+  const _CreateInvoiceButton({required this.booking});
+
+  final Booking booking;
+
+  @override
+  State<_CreateInvoiceButton> createState() => _CreateInvoiceButtonState();
+}
+
+class _CreateInvoiceButtonState extends State<_CreateInvoiceButton> {
+  bool _busy = false;
+
+  Future<void> _create() async {
+    setState(() => _busy = true);
+    ensureInvoiceRepo();
+    final result = await Get.find<InvoiceRepository>().createFromBooking(
+      bookingReference: widget.booking.reference,
+      customerName: widget.booking.travellerName,
+      amount: widget.booking.amount,
+      dueDate: DateTime.now().add(const Duration(days: 7)),
+    );
+    if (!mounted) return;
+    setState(() => _busy = false);
+    result.fold((invoice) {
+      AppSnackbar.show(Tr.invCreated.tr, tone: FeedbackTone.success);
+      Get.toNamed<void>(Routes.invoiceDetail, arguments: invoice);
+    }, (f) => AppSnackbar.error(f.message));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppButton(
+      label: Tr.invCreateFromBooking.tr,
+      variant: AppButtonVariant.secondary,
+      icon: Icons.receipt_long_outlined,
+      loading: _busy,
+      onPressed: _create,
     );
   }
 }
