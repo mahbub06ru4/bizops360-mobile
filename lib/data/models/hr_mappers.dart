@@ -1,5 +1,6 @@
 import '../../domain/entities/attendance.dart';
 import '../../domain/entities/leave_request.dart';
+import '../../domain/entities/office_location.dart';
 
 // Attendance ----------------------------------------------------------------
 
@@ -16,12 +17,20 @@ const Map<String, AttendanceStatus> _attStatusFromApi = {
 
 DateTime? _ts(dynamic v) => DateTime.tryParse(v?.toString() ?? '');
 
+PunchZone? _zone(dynamic v) => switch (v?.toString()) {
+  'office' => PunchZone.office,
+  'outside' => PunchZone.outside,
+  _ => null,
+};
+
 AttendanceDay attendanceDayFromJson(Map<String, dynamic> json) {
   return AttendanceDay(
     date: _ts(json['date']) ?? DateTime.now(),
     status: _attStatusFromApi[json['status']] ?? AttendanceStatus.present,
     checkIn: _ts(json['check_in_at']),
     checkOut: _ts(json['check_out_at']),
+    checkInZone: _zone(json['check_in_zone']),
+    checkOutZone: _zone(json['check_out_zone']),
   );
 }
 
@@ -37,6 +46,8 @@ AttendanceToday attendanceTodayFrom(List<Map<String, dynamic>> rows) {
       return AttendanceToday(
         checkIn: _ts(r['check_in_at']),
         checkOut: _ts(r['check_out_at']),
+        checkInZone: _zone(r['check_in_zone']),
+        checkOutZone: _zone(r['check_out_zone']),
       );
     }
   }
@@ -47,8 +58,32 @@ AttendanceToday attendanceTodayFromResource(Map<String, dynamic> json) {
   return AttendanceToday(
     checkIn: _ts(json['check_in_at']),
     checkOut: _ts(json['check_out_at']),
+    checkInZone: _zone(json['check_in_zone']),
+    checkOutZone: _zone(json['check_out_zone']),
   );
 }
+
+// Office location -----------------------------------------------------------
+
+OfficeLocation officeLocationFromJson(Map<String, dynamic> json) {
+  return OfficeLocation(
+    label: json['label'] as String? ?? '',
+    latitude: (json['latitude'] as num?)?.toDouble() ?? 0,
+    longitude: (json['longitude'] as num?)?.toDouble() ?? 0,
+    radiusMeters: (json['radius_meters'] as num?)?.toDouble() ?? 500,
+    startTime: json['start_time'] as String? ?? '10:00',
+    endTime: json['end_time'] as String? ?? '18:00',
+  );
+}
+
+Map<String, dynamic> officeLocationToJson(OfficeLocation o) => {
+  'label': o.label,
+  'latitude': o.latitude,
+  'longitude': o.longitude,
+  'radius_meters': o.radiusMeters,
+  'start_time': o.startTime,
+  'end_time': o.endTime,
+};
 
 // Leave -------------------------------------------------------------------
 

@@ -7,7 +7,9 @@ abstract interface class AttendanceRepository {
   /// Most-recent day first.
   Future<Result<List<AttendanceDay>>> history();
 
-  Future<Result<AttendanceToday>> checkIn();
+  /// [zone] is decided client-side from the device fix against the office
+  /// geofence — punching is never blocked by distance, only tagged by it.
+  Future<Result<AttendanceToday>> checkIn(PunchZone zone);
 
-  Future<Result<AttendanceToday>> checkOut();
+  Future<Result<AttendanceToday>> checkOut(PunchZone zone);
 }

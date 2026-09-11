@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -34,6 +35,7 @@ class AttendanceScreen extends GetView<AttendanceController> {
                 data: (t) => _PunchCard(
                   today: t,
                   busy: controller.busy.value,
+                  locationError: controller.locationError.value,
                   onPunch: controller.punch,
                 ),
               ),
@@ -63,10 +65,12 @@ class _PunchCard extends StatelessWidget {
     required this.today,
     required this.busy,
     required this.onPunch,
+    this.locationError,
   });
 
   final AttendanceToday today;
   final bool busy;
+  final String? locationError;
   final VoidCallback onPunch;
 
   @override
@@ -101,15 +105,25 @@ class _PunchCard extends StatelessWidget {
                 _Stamp(
                   label: Tr.attCheckIn.tr,
                   time: fmt.format(today.checkIn!),
+                  zone: today.checkInZone,
                 ),
                 if (today.checkOut != null) ...[
                   Icon(Icons.arrow_right_alt, color: c.inkFaint),
                   _Stamp(
                     label: Tr.attCheckOut.tr,
                     time: fmt.format(today.checkOut!),
+                    zone: today.checkOutZone,
                   ),
                 ],
               ],
+            ),
+          ],
+          if (locationError != null) ...[
+            SizedBox(height: AppSpacing.sm),
+            Text(
+              locationError!,
+              style: text.bodySmall?.copyWith(color: c.critical),
+              textAlign: TextAlign.center,
             ),
           ],
           SizedBox(height: AppSpacing.md),
@@ -127,10 +141,11 @@ class _PunchCard extends StatelessWidget {
 }
 
 class _Stamp extends StatelessWidget {
-  const _Stamp({required this.label, required this.time});
+  const _Stamp({required this.label, required this.time, this.zone});
 
   final String label;
   final String time;
+  final PunchZone? zone;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +156,16 @@ class _Stamp extends StatelessWidget {
         children: [
           Text(label, style: text.bodySmall),
           Text(time, style: text.titleMedium),
+          if (zone != null) ...[
+            SizedBox(height: AppSpacing.xs),
+            AppStatusChip(
+              zone == PunchZone.office
+                  ? Tr.attZoneOffice.tr
+                  : Tr.attZoneOutside.tr,
+              tone: zone == PunchZone.office ? ChipTone.brand : ChipTone.signal,
+              dot: false,
+            ),
+          ],
         ],
       ),
     );
@@ -155,6 +180,7 @@ class _HistoryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final c = context.colors;
     final worked = day.worked;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
@@ -179,6 +205,10 @@ class _HistoryRow extends StatelessWidget {
               style: text.bodyMedium,
             ),
           ),
+          if (day.checkInZone == PunchZone.outside) ...[
+            Icon(Icons.location_off_outlined, size: 14.sp, color: c.signal),
+            SizedBox(width: AppSpacing.xs),
+          ],
           AppStatusChip(day.status.labelKey.tr, tone: day.status.tone),
         ],
       ),

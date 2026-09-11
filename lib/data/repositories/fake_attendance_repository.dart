@@ -15,14 +15,14 @@ class FakeAttendanceRepository implements AttendanceRepository {
   Future<Result<AttendanceToday>> today() => _delayed(Result.ok(_today));
 
   @override
-  Future<Result<AttendanceToday>> checkIn() {
-    _today = AttendanceToday(checkIn: DateTime.now());
+  Future<Result<AttendanceToday>> checkIn(PunchZone zone) {
+    _today = AttendanceToday(checkIn: DateTime.now(), checkInZone: zone);
     return _delayed(Result.ok(_today));
   }
 
   @override
-  Future<Result<AttendanceToday>> checkOut() {
-    _today = _today.copyWith(checkOut: DateTime.now());
+  Future<Result<AttendanceToday>> checkOut(PunchZone zone) {
+    _today = _today.copyWith(checkOut: DateTime.now(), checkOutZone: zone);
     return _delayed(Result.ok(_today));
   }
 
@@ -49,6 +49,7 @@ class FakeAttendanceRepository implements AttendanceRepository {
         _ => AttendanceStatus.present,
       };
       final inH = status == AttendanceStatus.late ? 10 : 9;
+      final zone = rnd.nextInt(6) == 0 ? PunchZone.outside : PunchZone.office;
       days.add(
         AttendanceDay(
           date: date,
@@ -65,6 +66,8 @@ class FakeAttendanceRepository implements AttendanceRepository {
                   status == AttendanceStatus.earlyLeave ? 15 : 18,
                   5,
                 ),
+          checkInZone: status == AttendanceStatus.onLeave ? null : zone,
+          checkOutZone: status == AttendanceStatus.onLeave ? null : zone,
         ),
       );
     }

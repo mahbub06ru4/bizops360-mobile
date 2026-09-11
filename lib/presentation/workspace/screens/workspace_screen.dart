@@ -149,6 +149,12 @@ class WorkspaceScreen extends StatelessWidget {
               () => Get.toNamed<void>(Routes.approvals),
               anyOf: const [Perm.leaveApprove, Perm.expenseApprove],
             ),
+            _Row(
+              Icons.location_on_outlined,
+              Tr.wsOfficeLocation.tr,
+              () => Get.toNamed<void>(Routes.officeLocation),
+              permission: Perm.attendanceManage,
+            ),
           ]),
 
           _Group(Tr.wsSectionAccount.tr, [

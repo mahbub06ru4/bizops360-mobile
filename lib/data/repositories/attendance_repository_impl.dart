@@ -27,16 +27,18 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   }
 
   @override
-  Future<Result<AttendanceToday>> checkIn() {
+  Future<Result<AttendanceToday>> checkIn(PunchZone zone) {
     return guardRequest(
-      () async => attendanceTodayFromResource(await _remote.checkIn()),
+      () async =>
+          attendanceTodayFromResource(await _remote.checkIn(zone: zone.name)),
     );
   }
 
   @override
-  Future<Result<AttendanceToday>> checkOut() {
+  Future<Result<AttendanceToday>> checkOut(PunchZone zone) {
     return guardRequest(
-      () async => attendanceTodayFromResource(await _remote.checkOut()),
+      () async =>
+          attendanceTodayFromResource(await _remote.checkOut(zone: zone.name)),
     );
   }
 }

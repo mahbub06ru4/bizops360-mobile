@@ -29,6 +29,7 @@ import '../../presentation/hr/screens/attendance_screen.dart';
 import '../../presentation/hr/screens/holidays_screen.dart';
 import '../../presentation/hr/screens/leave_request_screen.dart';
 import '../../presentation/hr/screens/leave_screen.dart';
+import '../../presentation/hr/screens/office_location_screen.dart';
 import '../../presentation/notifications/bindings/notifications_binding.dart';
 import '../../presentation/notifications/screens/notifications_screen.dart';
 import '../../presentation/profile/screens/profile_screen.dart';
@@ -87,6 +88,11 @@ abstract final class AppPages {
       Routes.attendance,
       () => const AttendanceScreen(),
       binding: AttendanceBinding(),
+    ),
+    _guarded(
+      Routes.officeLocation,
+      () => const OfficeLocationScreen(),
+      binding: OfficeLocationBinding(),
     ),
     _guarded(Routes.leave, () => const LeaveScreen(), binding: LeaveBinding()),
     // No binding — reuses the LeaveController from the LeaveScreen beneath it.

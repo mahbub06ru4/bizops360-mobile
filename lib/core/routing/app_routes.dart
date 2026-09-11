@@ -6,6 +6,7 @@ abstract final class Routes {
   static const notifications = '/notifications';
   static const taskDetail = '/task';
   static const attendance = '/attendance';
+  static const officeLocation = '/attendance/office-location';
   static const leave = '/leave';
   static const leaveRequest = '/leave/request';
   static const approvals = '/approvals';

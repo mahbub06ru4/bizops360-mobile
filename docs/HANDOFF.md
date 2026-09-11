@@ -407,3 +407,38 @@ Same pattern as every other module here — fold in the real field names in the
 matching `*_mappers.dart` once confirmed on the Mac; nothing above the data
 layer changes. Tests: `finance_controller_test.dart`, `team_holidays_test.dart`,
 `task_comments_test.dart` — 88 green total (`--exclude-tags integration`).
+
+## 6. Geofenced attendance (2026-09-11)
+
+Implements the requested "punch in only near the office, else tag it
+outside" flow. **Resolved ambiguity**: the request said both "only [within
+500m] can punch in" and "staff can punch outside... it will consider as
+outside punch" — those two read as contradictory, so the app never blocks a
+punch on distance. A location fix is the only hard requirement to punch at
+all (no GPS/permission → punch is blocked with an inline error); once a fix
+exists, the punch always goes through and is tagged `PunchZone.office` or
+`PunchZone.outside` depending on distance to the configured office. Flip that
+to hard-blocking later is a one-line change in
+`AttendanceController.punch()` if the business actually wants strict denial.
+
+- `geolocator` added; `core/location/` holds `LocationService` (abstract),
+  `GeolocatorLocationService` (real), `FakeLocationService` (fixed fix inside
+  the seeded office, used under `Env.useFakeData`), and a pure-Dart haversine
+  `distanceMeters()` so controllers/tests never touch the plugin directly.
+- `OfficeLocation` entity + `OfficeLocationRepository`
+  (`FakeOfficeLocationRepository` seeded at House 1, Road 1, Gulshan-1, Dhaka,
+  500 m radius, 10:00–18:00) — editable via **Workspace → Office location**
+  (`Can(Perm.attendanceManage)`, new permission), with a "use current
+  location" button so no maps SDK is needed to pin coordinates.
+- `AttendanceRepository.checkIn/checkOut` now take a `PunchZone`;
+  `AttendanceToday`/`AttendanceDay` carry `checkInZone`/`checkOutZone`. The
+  attendance screen shows an Office/Outside chip next to each stamp and a
+  location-off icon on outside history rows.
+- Android `ACCESS_FINE_LOCATION`/`ACCESS_COARSE_LOCATION`, iOS
+  `NSLocationWhenInUseUsageDescription` added.
+- **Endpoint guessed, unverified:** `POST /attendance/check-in|check-out`
+  body now carries `{zone: 'office'|'outside'}`; `GET/PUT /office-location`
+  is a new guessed pair — confirm shapes on the Mac same as the rest of §5.
+- Tests: `attendance_controller_test.dart` (office vs. outside tagging, and
+  the no-fix-blocks-the-punch case) — 91 green total
+  (`--exclude-tags integration`).

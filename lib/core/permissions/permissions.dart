@@ -17,6 +17,7 @@ abstract final class Perm {
   // Attendance & leave
   static const attendanceSelf = 'attendance.check_in';
   static const attendanceView = 'attendance.view';
+  static const attendanceManage = 'attendance.manage';
   static const leaveRequest = 'leave.request';
   static const leaveApprove = 'leave.approve';
 

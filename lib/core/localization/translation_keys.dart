@@ -38,6 +38,19 @@ abstract final class Tr {
   static const attStatusAbsent = 'att.status_absent';
   static const attStatusLeave = 'att.status_leave';
   static const attStatusHoliday = 'att.status_holiday';
+  static const attZoneOffice = 'att.zone_office';
+  static const attZoneOutside = 'att.zone_outside';
+
+  static const officeLocTitle = 'office_loc.title';
+  static const officeLocLabel = 'office_loc.label';
+  static const officeLocLat = 'office_loc.lat';
+  static const officeLocLng = 'office_loc.lng';
+  static const officeLocUseCurrent = 'office_loc.use_current';
+  static const officeLocRadius = 'office_loc.radius';
+  static const officeLocStart = 'office_loc.start';
+  static const officeLocEnd = 'office_loc.end';
+  static const officeLocInvalid = 'office_loc.invalid';
+  static const officeLocSaved = 'office_loc.saved';
 
   // Leave
   static const leaveTitle = 'leave.title';
@@ -296,6 +309,7 @@ abstract final class Tr {
   static const wsCrm = 'workspace.crm';
   static const wsReports = 'workspace.reports';
   static const wsApprovals = 'workspace.approvals';
+  static const wsOfficeLocation = 'workspace.office_location';
   static const wsSettings = 'workspace.settings';
   static const wsHelp = 'workspace.help';
   static const wsTravellers = 'workspace.travellers';

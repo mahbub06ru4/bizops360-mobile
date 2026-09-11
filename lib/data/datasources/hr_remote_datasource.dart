@@ -19,16 +19,39 @@ class HrRemoteDataSource {
     return envelopeList(res.data);
   }
 
-  Future<Map<String, dynamic>> checkIn() async {
+  /// `zone` ('office' | 'outside') is the client's geofence read — the backend
+  /// shape for this is unconfirmed, so the field is sent best-effort and
+  /// re-derived from `outside` if the response echoes it back.
+  Future<Map<String, dynamic>> checkIn({required String zone}) async {
     final res = await _client.post<Map<String, dynamic>>(
       '/attendance/check-in',
+      body: {'zone': zone},
     );
     return envelopeObject(res.data);
   }
 
-  Future<Map<String, dynamic>> checkOut() async {
+  Future<Map<String, dynamic>> checkOut({required String zone}) async {
     final res = await _client.post<Map<String, dynamic>>(
       '/attendance/check-out',
+      body: {'zone': zone},
+    );
+    return envelopeObject(res.data);
+  }
+
+  // Office location -----------------------------------------------------
+
+  /// Unconfirmed endpoint — guessed following the app's REST convention.
+  Future<Map<String, dynamic>> officeLocation() async {
+    final res = await _client.get<Map<String, dynamic>>('/office-location');
+    return envelopeObject(res.data);
+  }
+
+  Future<Map<String, dynamic>> updateOfficeLocation(
+    Map<String, dynamic> body,
+  ) async {
+    final res = await _client.put<Map<String, dynamic>>(
+      '/office-location',
+      body: body,
     );
     return envelopeObject(res.data);
   }
