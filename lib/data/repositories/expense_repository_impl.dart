@@ -1,4 +1,3 @@
-import '../../core/error/failure.dart';
 import '../../core/error/result.dart';
 import '../../domain/entities/expense.dart';
 import '../../domain/repositories/expense_repository.dart';
@@ -22,6 +21,12 @@ const Map<String, ExpenseCategory> _categoryFromApi = {
   'other': ExpenseCategory.other,
 };
 
+const Map<String, ExpenseStatus> _statusFromApi = {
+  'pending': ExpenseStatus.pending,
+  'approved': ExpenseStatus.approved,
+  'rejected': ExpenseStatus.rejected,
+};
+
 Expense _expenseFromJson(Map<String, dynamic> json) {
   final employee = json['employee'];
   return Expense(
@@ -30,8 +35,7 @@ Expense _expenseFromJson(Map<String, dynamic> json) {
     amount: num.tryParse(json['amount']?.toString() ?? '') ?? 0,
     date:
         DateTime.tryParse(json['spent_on']?.toString() ?? '') ?? DateTime.now(),
-    // The backend has no approval workflow — a recorded expense is final.
-    status: ExpenseStatus.approved,
+    status: _statusFromApi[json['status']] ?? ExpenseStatus.pending,
     note: json['note'] as String? ?? json['title'] as String?,
     submittedBy: employee is Map ? employee['name'] as String? : null,
   );
@@ -73,17 +77,19 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @override
-  Future<Result<List<Expense>>> pendingApprovals() async {
-    // No server-side expense approval yet — nothing to approve.
-    return const Result.ok(<Expense>[]);
+  Future<Result<List<Expense>>> pendingApprovals() {
+    return guardRequest(
+      () async => (await _remote.pendingExpenses())
+          .map(_expenseFromJson)
+          .toList(growable: false),
+    );
   }
 
   @override
   Future<Result<Expense>> decide({required String id, required bool approve}) {
-    return Future.value(
-      const Result.err(
-        ForbiddenFailure('Expense approval is not available yet.'),
-      ),
+    return guardRequest(
+      () async =>
+          _expenseFromJson(await _remote.decideExpense(id, approve: approve)),
     );
   }
 }

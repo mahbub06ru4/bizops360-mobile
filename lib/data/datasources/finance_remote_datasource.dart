@@ -25,6 +25,26 @@ class FinanceRemoteDataSource {
     return envelopeObject(res.data);
   }
 
+  Future<List<Map<String, dynamic>>> pendingExpenses() async {
+    final res = await _client.get<Map<String, dynamic>>(
+      '/expenses',
+      query: {'per_page': 100, 'status': 'pending'},
+    );
+    return envelopeList(res.data);
+  }
+
+  Future<Map<String, dynamic>> decideExpense(
+    String id, {
+    required bool approve,
+    String? note,
+  }) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/expenses/$id/${approve ? 'approve' : 'reject'}',
+      body: {if (note != null && note.isNotEmpty) 'note': note},
+    );
+    return envelopeObject(res.data);
+  }
+
   // Invoices — endpoint shape follows the rest of the app's REST convention;
   // not yet confirmed against a running backend (spec §6 names the actions
   // `CreateInvoice` / `RecordPayment` but doesn't fix routes).
