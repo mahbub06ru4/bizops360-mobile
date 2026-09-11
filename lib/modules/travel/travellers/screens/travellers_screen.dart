@@ -38,9 +38,8 @@ class TravellersScreen extends GetView<TravellersController> {
               AppSpacing.lg,
               AppSpacing.xs,
             ),
-            child: AppTextField(
-              label: Tr.travSearch.tr,
-              prefixIcon: Icons.search,
+            child: AppSearchField(
+              hint: Tr.travSearch.tr,
               onChanged: (v) => controller.query.value = v,
             ),
           ),

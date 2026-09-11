@@ -10,7 +10,9 @@ import '../controllers/booking_detail_controller.dart';
 import '../controllers/bookings_controller.dart';
 import '../controllers/departures_controller.dart';
 
-void _ensureRepo() => registerRepo<BookingRepository>(
+/// Public so `TicketTasksSection` (Home dashboard) can pull `BookingRepository`
+/// in without a full `BookingsBinding` — it only ever needs `.departures()`.
+void ensureBookingRepo() => registerRepo<BookingRepository>(
   (client) => BookingRepositoryImpl(BookingRemoteDataSource(client)),
   FakeBookingRepository.new,
 );
@@ -18,7 +20,7 @@ void _ensureRepo() => registerRepo<BookingRepository>(
 class BookingsBinding extends Bindings {
   @override
   void dependencies() {
-    _ensureRepo();
+    ensureBookingRepo();
     Get.lazyPut<BookingsController>(() => BookingsController(Get.find()));
   }
 }
@@ -26,7 +28,7 @@ class BookingsBinding extends Bindings {
 class BookingDetailBinding extends Bindings {
   @override
   void dependencies() {
-    _ensureRepo();
+    ensureBookingRepo();
     final arg = Get.arguments;
     final seed = arg is Booking ? arg : null;
     final id = seed?.id ?? (arg is String ? arg : '');
@@ -39,7 +41,7 @@ class BookingDetailBinding extends Bindings {
 class DeparturesBinding extends Bindings {
   @override
   void dependencies() {
-    _ensureRepo();
+    ensureBookingRepo();
     Get.lazyPut<DeparturesController>(() => DeparturesController(Get.find()));
   }
 }

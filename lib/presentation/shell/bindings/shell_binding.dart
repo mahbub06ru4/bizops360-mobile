@@ -13,6 +13,7 @@ class ShellBinding extends Bindings {
     Get.lazyPut<ShellController>(() => ShellController(Get.find()));
     TasksBinding().dependencies();
     CustomersBinding().dependencies();
+    FollowUpsBinding().dependencies();
     VisaQueueBinding().dependencies();
   }
 }

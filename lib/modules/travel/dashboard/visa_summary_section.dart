@@ -1,35 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../application/navigation/shell_controller.dart';
 import '../../../core/localization/translation_keys.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../domain/entities/visa_application.dart';
 import '../../../presentation/home/widgets/dashboard_section.dart';
+import '../visa/controllers/visa_queue_controller.dart';
 
-/// Home dashboard: a glance at the visa pipeline. Counts are wired to
-/// `VisaRepository` in M4 — static sample for now.
+/// Home dashboard: a glance at the visa pipeline, read live from the same
+/// [VisaQueueController] the Visa tab uses (registered permanent in the shell).
 class VisaSummarySection extends StatelessWidget {
   const VisaSummarySection({super.key});
 
-  // TODO(M4): replace with VisaRepository.pipelineSummary().
-  static const _inProgress = 8;
-  static const _awaitingDocs = 3;
-  static const _decisionDue = 2;
-
   @override
   Widget build(BuildContext context) {
-    return DashboardSection(
-      title: Tr.homeVisaSummary.tr,
-      onViewAll: () {},
-      child: Row(
-        children: [
-          _Stat(_inProgress, Tr.homeVisaInProgress.tr),
-          const _Divider(),
-          _Stat(_awaitingDocs, Tr.homeVisaAwaitingDocs.tr),
-          const _Divider(),
-          _Stat(_decisionDue, Tr.homeVisaDecisionDue.tr),
-        ],
-      ),
-    );
+    final controller = Get.find<VisaQueueController>();
+
+    return Obx(() {
+      final apps = controller.state.value.valueOrNull ?? const [];
+      final awaitingDocs = apps
+          .where((a) => !a.allDocsCollected && !a.isDecided)
+          .length;
+      final inProgress = apps
+          .where(
+            (a) =>
+                a.stage == VisaStage.submitted ||
+                a.stage == VisaStage.processing,
+          )
+          .length;
+      final decisionDue = apps
+          .where((a) => a.stage == VisaStage.processing)
+          .length;
+
+      return DashboardSection(
+        title: Tr.homeVisaSummary.tr,
+        onViewAll: () => Get.find<ShellController>().selectTab(ShellTabId.visa),
+        child: Row(
+          children: [
+            _Stat(inProgress, Tr.homeVisaInProgress.tr),
+            const _Divider(),
+            _Stat(awaitingDocs, Tr.homeVisaAwaitingDocs.tr),
+            const _Divider(),
+            _Stat(decisionDue, Tr.homeVisaDecisionDue.tr),
+          ],
+        ),
+      );
+    });
   }
 }
 

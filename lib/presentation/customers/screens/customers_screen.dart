@@ -27,9 +27,8 @@ class CustomersScreen extends GetView<CustomersController> {
               AppSpacing.lg,
               AppSpacing.xs,
             ),
-            child: AppTextField(
-              label: Tr.crmSearch.tr,
-              prefixIcon: Icons.search,
+            child: AppSearchField(
+              hint: Tr.crmSearch.tr,
               onChanged: (v) => controller.query.value = v,
             ),
           ),

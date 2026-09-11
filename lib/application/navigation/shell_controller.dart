@@ -32,4 +32,12 @@ class ShellController extends GetxController {
   List<ShellTabId> get tabs => shellTabsFor(_perms.resolver);
 
   void select(int index) => currentIndex.value = index;
+
+  /// Jump straight to a destination by id — used by Home dashboard sections'
+  /// "view all" links. No-op if [id] isn't in the current tab set (permission
+  /// revoked, feature off, etc).
+  void selectTab(ShellTabId id) {
+    final i = tabs.indexOf(id);
+    if (i >= 0) currentIndex.value = i;
+  }
 }

@@ -129,8 +129,16 @@ Bring the scaffold up to the target architecture.
    `AppSnackbar` / `AppDialog` / `AppBottomSheet` helpers. Tests in
    `test/widgets/common_widgets_test.dart` via `test/support/test_host.dart`
    (`pumpInHost` = theme + `ScreenUtilInit` + translations).
-   Still to add when first needed: `AppDropdown`, `AppSearchField`,
-   `AppPagination` (infinite-scroll list footer).
+   ✅ **(2026-09-11)** `AppSearchField` (debounced, clear button — now used by
+   Customers + Travellers search), `AppDropdown<T>` (labeled
+   `DropdownButtonFormField`, available for the next form that needs a picker;
+   the CRM stage control stays a bare inline `DropdownButton` — it's a compact
+   trailing control in a row, not a form field), `AppPagination` (footer:
+   spinner / retry / hidden-when-exhausted) + `core/paging/PagingController<T>`
+   (page-merge state machine — not wired into a screen yet since every list
+   repo still returns one full `Result<List<T>>`; adopt it the day a real
+   endpoint starts paginating). Tests: `test/widgets/app_form_widgets_test.dart`,
+   `test/core/paging_controller_test.dart`.
 6. **Permissions layer** — ✅ `core/permissions/`: `Perm.*` + `Feature.*`
    catalogue, pure `PermissionResolver`, `Can(...)` / `Can.anyOf(...)` widget.
    `application/permissions/PermissionsController` derives the resolver from the
@@ -163,10 +171,15 @@ Bring the scaffold up to the target architecture.
    Old Desk/CRM/Insights/Team tabs retired. `nav.*` keys updated (en + bn).
 2. **Travel Home dashboard** — ✅ `presentation/home/`: greeting app bar +
    notification badge, composed `DashboardSection`s — `QuickActionsSection`
-   (self-gating), `AgendaSection` (follow-ups, my tasks), and
-   `modules/travel/dashboard/VisaSummarySection` (travel-gated). All content is
-   **static sample data** (`// TODO(M3/M4)`) until the repos land. Pull-to-refresh
-   wired.
+   (self-gating), `VisaSummarySection`, `PendingVisaDocsSection`,
+   `TicketTasksSection` (`modules/travel/dashboard/`, travel-gated), and the
+   Follow-ups / My Tasks previews. **(2026-09-11) all live**, not sample data —
+   every section reads the same permanent controller/repository its full
+   screen uses (`VisaQueueController`, `TasksController`, `FollowUpsController`,
+   `BookingRepository` via `ensureBookingRepo()`), registered once by
+   `ShellBinding` so Home never duplicates a fetch. "View all" either routes
+   (`/follow-ups`, `/departures`) or jumps tabs (`ShellController.selectTab`).
+   Pull-to-refresh re-loads the Tasks/Follow-ups controllers.
 3. **Workspace ("More") + Settings** — ✅ `presentation/workspace/`:
    role-aware grouped list (`Can`-gated rows) → Profile, Attendance, Leave,
    Expenses, Documents, Team, CRM, Reports, Approvals, Settings, Help. Routes:
@@ -280,14 +293,17 @@ Customers · Visa · Tasks · More) → Visa queue + detail render live
 (needs JDK 17); web build fails (`firebase_core_web` 3.11 vs current Dart
 `isA`); iOS needs CocoaPods (not installed). None block `flutter analyze` /
 `flutter test`. Fix the JDK before an Android run.
-4. **Visa documents & deadlines** — `VisaSummarySection` on Home shows the
-   pipeline counts (static). A dedicated pending-docs list is still ahead.
+4. **Visa documents & deadlines** — ✅ `PendingVisaDocsSection` on Home (live —
+   `VisaQueueController`, cases short on docs, soonest-to-submit first, tap
+   through to the case). No separate deadline-reminder (push/local notification)
+   yet — the app has no scheduled-notification path for a due date today.
 5. **Travel operations** — ✅ `BookingsScreen` (status filter, quick-create
    sheet), `BookingDetailScreen` (PNR mono, flight segments, hotel, itinerary,
-   issue / cancel), `DeparturesScreen` (board grouped by day).
-   `FakeBookingRepository` seeded.
-6. **Travel dashboard sections** — `VisaSummarySection` done; follow-up /
-   ticket-task sections still to register on Home.
+   issue / cancel), `DeparturesScreen` (board grouped by day). Live via
+   `BookingRepositoryImpl` (see the module status table above).
+6. **Travel dashboard sections** — ✅ all three registered and live:
+   `VisaSummarySection`, `PendingVisaDocsSection`, `TicketTasksSection`
+   (soonest departures, `BookingRepository.departures()`).
    Backend: `app/Modules/Industry/Travel` (routes `industry:travel` gated).
 
 ### M7 — Manager dashboards ✅ (static)
@@ -331,10 +347,13 @@ Customers · Visa · Tasks · More) → Visa queue + detail render live
   are a follow-up once the URL scheme / domain is decided.
 - **App-lock (biometric)** — dropped as optional polish; `local_auth` 3.x is
   native-heavy and hard to verify without a device. Revisit if needed.
-- Still ahead: list pagination + response caching (`AppPagination` widget +
-  a `KvStore` TTL cache) once a real endpoint returns large lists;
-  force-update / maintenance banner from a `/me/bootstrap` flag; store assets
-  (icon, splash, screenshots); CI publish to store tracks.
+- ✅ **Pagination building blocks** — `AppPagination` widget +
+  `core/paging/PagingController<T>` (page-merge, retry, exhaustion). Not
+  adopted by a screen yet — every list repo still returns one full page; wire
+  it into the first list whose real endpoint starts truncating.
+- Still ahead: response caching (a `KvStore` TTL cache) once a real endpoint
+  is worth caching; force-update / maintenance banner from a `/me/bootstrap`
+  flag; store assets (icon, splash, screenshots); CI publish to store tracks.
 
 ### Cross-cutting (fold in as you go)
 - `flavor.dart` staging config + a `--flavor` story for Android/iOS if needed.
